@@ -14,7 +14,6 @@ import net.minecraft.world.level.WorldDataConfiguration;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.levelgen.presets.WorldPresets;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,12 +32,14 @@ public class SmokeTest {
     private static int ticksInWorld = 0;
     private static long startNanos = System.nanoTime();
 
-    @SubscribeEvent
-    public static void onScreenInit(ScreenEvent.Init.Post event) {
-        if (!ENABLED || started) return;
-        if (!(event.getScreen() instanceof TitleScreen || event.getScreen() instanceof AccessibilityOnboardingScreen)) return;
-        started = true;
+    private static int idleTicks = 0;
+
+    private static void maybeStart() {
         var mc = Minecraft.getInstance();
+        if (started || mc.getOverlay() != null) return;
+        if (++idleTicks % 100 == 0) LOG.info("VOXY_SMOKE waiting, screen={}", mc.screen);
+        if (!(mc.screen instanceof TitleScreen || mc.screen instanceof AccessibilityOnboardingScreen)) return;
+        started = true;
         mc.options.renderDistance().set(4);
         mc.options.simulationDistance().set(5);
         mc.options.pauseOnLostFocus = false;
@@ -54,6 +55,7 @@ public class SmokeTest {
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (!ENABLED || event.phase != TickEvent.Phase.END) return;
         var mc = Minecraft.getInstance();
+        maybeStart();
         if (System.nanoTime() - startNanos > 12L * 60 * 1_000_000_000L) {
             LOG.error("VOXY_SMOKE_RESULT timeout");
             mc.stop();
