@@ -177,7 +177,7 @@ void main() {
 	bool is_lod = is_lod_terrain(depth, depth_lod);
 
 	if (is_lod) {
-		position_view = screen_to_view_space(dhProjectionInverse, vec3(uv, depth_lod), true);
+		position_view = screen_to_view_space(lod_projection_matrix_inverse, vec3(uv, depth_lod), true);
 	}
 
 	is_sky = is_sky && depth_lod == 1.0;
