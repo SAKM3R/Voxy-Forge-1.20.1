@@ -44,6 +44,7 @@ jobs:
           cp -r run/crash-reports smoke/ 2>/dev/null || true
           grep "VOXY_SMOKE" run/logs/latest.log || true
           if grep -q "Mixin apply failed" run/logs/latest.log; then echo "::error::A mixin failed to apply"; exit 1; fi
+          if grep -q "Missing metadata in pack mod:voxy\|VOXY_SMOKE loading screen modLoadWarnings = \[[^]]" run/logs/latest.log; then echo "::error::Forge reported a mod loading warning"; exit 1; fi
           grep -q "VOXY_SMOKE final .*renderSystem=true" run/logs/latest.log || { echo "::error::Voxy did not start"; exit 1; }
           grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Smoke test did not finish"; exit 1; }
 
