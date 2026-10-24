@@ -95,8 +95,8 @@ public class SmokeTest {
     private static void report(String stage) {
         var mc = Minecraft.getInstance();
         var vrs = ((IGetVoxyRenderSystem) mc.levelRenderer).getVoxyRenderSystem();
-        LOG.info("VOXY_SMOKE {} ticks={} available={} instance={} renderSystem={} compute={} indirect={} subgroup={}",
-                stage, ticksInWorld, VoxyCommon.isAvailable(), VoxyCommon.getInstance() != null, vrs != null,
+        LOG.info("VOXY_SMOKE {} ticks={} shaderPack={} available={} instance={} renderSystem={} compute={} indirect={} subgroup={}",
+                stage, ticksInWorld, me.cortex.voxy.client.core.util.IrisUtil.irisShaderPackEnabled(), VoxyCommon.isAvailable(), VoxyCommon.getInstance() != null, vrs != null,
                 Capabilities.INSTANCE.compute, Capabilities.INSTANCE.indirectParameters, Capabilities.INSTANCE.subgroup);
         if (vrs != null) {
             var lines = new java.util.ArrayList<String>();

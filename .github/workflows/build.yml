@@ -47,6 +47,31 @@ jobs:
           grep -q "VOXY_SMOKE final .*renderSystem=true" run/logs/latest.log || { echo "::error::Voxy did not start"; exit 1; }
           grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Smoke test did not finish"; exit 1; }
 
+      # Same, with Oculus and a shader pack that supports Voxy (voxy.json)
+      - name: Shader smoke test
+        run: |
+          export LIBGL_ALWAYS_SOFTWARE=1 MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460
+          mkdir -p smoke-shaders run/shaderpacks run/config
+          rm -rf run/logs run/screenshots run/crash-reports run/saves
+          for p in complementary-reimagined complementary-unbound photon-shader solas-shader; do
+            url=$(curl -s "https://api.modrinth.com/v2/project/$p/version" | jq -r '[.[] | select(.loaders | index("iris"))][0].files[0].url')
+            [ "$url" = "null" ] || [ -z "$url" ] && continue
+            f="run/shaderpacks/$(basename "$url" | sed 's/%2B/+/g')"
+            curl -sL -o "$f" "$url"
+            echo "$p $(basename "$f"): $(unzip -l "$f" | grep -c 'voxy.json') voxy.json" | tee -a smoke-shaders/packs.txt
+          done
+          PACK=$(for f in run/shaderpacks/*.zip; do unzip -l "$f" | grep -q 'voxy.json' && { basename "$f"; break; }; done)
+          echo "Using shader pack: $PACK" | tee -a smoke-shaders/packs.txt
+          if [ -n "$PACK" ]; then
+            printf 'enableShaders=true\nshaderPack=%s\n' "$PACK" > run/config/oculus.properties
+            timeout 1500 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest -PwithOculus --console=plain > smoke-shaders/smoke.log 2>&1 || true
+            cp run/logs/latest.log run/screenshots/*.png smoke-shaders/ 2>/dev/null || true
+            cp -r run/crash-reports smoke-shaders/ 2>/dev/null || true
+            grep "VOXY_SMOKE\|Voxy render system created\|Creating voxy iris" run/logs/latest.log || true
+            if grep -q "Mixin apply failed" run/logs/latest.log; then echo "::error::A mixin failed to apply"; exit 1; fi
+            grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Shader smoke test did not finish"; exit 1; }
+          fi
+
       # Logs for development: build.log and the smoke test output on the ci-out branch
       - name: Publish CI logs
         if: always()
@@ -54,6 +79,7 @@ jobs:
           mkdir -p ci-out
           cp build.log ci-out/ 2>/dev/null || true
           cp -r smoke/. ci-out/ 2>/dev/null || true
+          mkdir -p ci-out/shaders && cp -r smoke-shaders/. ci-out/shaders/ 2>/dev/null || true
           echo "${{ github.sha }}" > ci-out/commit
           echo "${{ job.status }}" > ci-out/status
           cd ci-out
