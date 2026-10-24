@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches: [main]
-    paths-ignore: ['**.md', 'screenshots/**']
+    paths-ignore: ['**.md']
   workflow_dispatch:
 
 concurrency:
@@ -27,74 +27,41 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Build
-        id: build
         run: |
           chmod +x gradlew
-          set +e
-          ./gradlew build --console=plain --stacktrace 2>&1 | tee build.log
-          echo "status=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+          ./gradlew build --console=plain
 
-      # Boots the game on a software (Mesa llvmpipe) GPU, creates a world and checks that Voxy starts and
-      # that every mixin applies. Results land in ci-out (smoke.log, latest.log).
+      # Boots the game on a software GPU (Mesa llvmpipe), creates a world, plays ~75 seconds and checks that
+      # every mixin applies and Voxy's renderer comes up (src/smoketest).
       - name: Smoke test
-        if: steps.build.outputs.status == '0' && hashFiles('ci/smoketest') != ''
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb libgl1-mesa-dri mesa-utils > /dev/null
+          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb libgl1-mesa-dri > /dev/null
           export LIBGL_ALWAYS_SOFTWARE=1 MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460
-          mkdir -p ci-out
-          xvfb-run -a -s "-screen 0 1280x720x24" glxinfo -B > ci-out/glxinfo.txt 2>&1 || true
-          set +e
-          timeout 1200 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest --console=plain > ci-out/smoke.log 2>&1
-          echo "exit=$?" >> ci-out/smoke.log
-          cp run/logs/latest.log ci-out/ 2>/dev/null
-          cp run/logs/debug.log ci-out/ 2>/dev/null
-          cp -r run/crash-reports ci-out/ 2>/dev/null
-          cp run/screenshots/*.png ci-out/ 2>/dev/null
-          true
+          timeout 1200 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest --console=plain > smoke.log 2>&1 || true
+          mkdir -p smoke
+          cp smoke.log run/logs/latest.log run/screenshots/*.png smoke/ 2>/dev/null || true
+          cp -r run/crash-reports smoke/ 2>/dev/null || true
+          grep "VOXY_SMOKE" run/logs/latest.log || true
+          if grep -q "Mixin apply failed" run/logs/latest.log; then echo "::error::A mixin failed to apply"; exit 1; fi
+          grep -q "VOXY_SMOKE final .*renderSystem=true" run/logs/latest.log || { echo "::error::Voxy did not start"; exit 1; }
+          grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Smoke test did not finish"; exit 1; }
 
-      # Development aid: signatures of the Minecraft / Forge / Embeddium classes listed in
-      # ci/javap.txt, so the port can be checked against the real 1.20.1 APIs.
-      - name: Signature dump
+      - name: Upload smoke test output
         if: always()
-        run: |
-          mkdir -p ci-out
-          cp build.log ci-out/ || true
-          echo "${{ steps.build.outputs.status }}" > ci-out/status
-          echo "${{ github.sha }}" > ci-out/commit
-          ./gradlew printCompileClasspath --console=plain -q || true
-          if [ -f build/compile-classpath.txt ] && [ -s ci/javap.txt ]; then
-            CP=$(cat build/compile-classpath.txt)
-            grep -v '^\s*#' ci/javap.txt | grep -v '^\s*$' | while read -r cls; do
-              echo "=== $cls" >> ci-out/javap.txt
-              javap -p -cp "$CP" "$cls" >> ci-out/javap.txt 2>&1 || true
-            done
-          fi
-          if [ -f build/compile-classpath.txt ] && [ -s ci/list-packages.txt ]; then
-            tr ':' '\n' < build/compile-classpath.txt | while read -r jar; do
-              [ -f "$jar" ] || continue
-              unzip -Z1 "$jar" 2>/dev/null | grep '\.class$' | grep -E "$(grep -v '^\s*$' ci/list-packages.txt | paste -sd'|')" | sed 's/\.class$//; s|/|.|g' >> ci-out/classes.txt || true
-            done
-          fi
-          cp build/libs/*.jar ci-out/ 2>/dev/null || true
-          if [ -f ci/want-srg ]; then for f in $(find build -maxdepth 3 -name "*.srg" -o -maxdepth 3 -name "*.tsrg"); do cp "$f" "ci-out/$(echo "$f" | tr / _)"; done; fi
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-test
+          path: smoke/
+          if-no-files-found: ignore
 
-      - name: Publish CI output
-        if: always()
-        run: |
-          cd ci-out
-          git init -q -b ci-out
-          git config user.name ci
-          git config user.email ci@localhost
-          git add -A
-          git commit -qm "CI output for ${{ github.sha }}"
-          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ci-out
-
-      - name: Publish dev build
-        if: steps.build.outputs.status == '0'
+      - name: Publish release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          VERSION=$(grep '^mod_version' gradle.properties | cut -d= -f2 | tr -d ' ')
+          TAG="v${VERSION}-forge-1.20.1"
           JAR=$(ls build/libs/*.jar | grep -v -- '-slim' | head -1)
-          gh release delete dev-build --yes --cleanup-tag || true
-          gh release create dev-build "$JAR" --prerelease --title "Development build" \
-            --notes "Automatic build of ${{ github.sha }}. Requires Forge 47.3.0+ and Embeddium 0.3.31 on Minecraft 1.20.1."
+          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
+          gh release delete dev-build --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$TAG" "$JAR" --target "$GITHUB_SHA" --title "Voxy ${VERSION} for Forge 1.20.1 + Embeddium" \
+            --notes "Build of ${GITHUB_SHA}. Requires Minecraft 1.20.1, Forge 47.1+ and Embeddium 0.3.x. See the README for details."

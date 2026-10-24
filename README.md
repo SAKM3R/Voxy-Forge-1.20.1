@@ -65,7 +65,7 @@ gradlew build
 ZSTD, LZ4 и MixinExtras).
 
 `gradlew runClient` запускает игру из исходников с Embeddium. `gradlew runClient -Psmoketest` — автоматический
-прогон: создаёт мир, летает в нём ~45 секунд, пишет состояние Voxy в лог (`VOXY_SMOKE ...`) и выходит.
+прогон: создаёт мир, летает в нём ~75 секунд, пишет состояние Voxy в лог (`VOXY_SMOKE ...`) и выходит.
 Этот же прогон GitHub Actions делает на программном GPU (Mesa llvmpipe) при каждом пуше.
 
 ## Лицензия

@@ -224,12 +224,3 @@ reobf {
 tasks.named('jar').configure { finalizedBy 'reobfJar' }
 tasks.named('jarJar').configure { finalizedBy 'reobfJarJar' }
 tasks.named('build').configure { dependsOn 'jarJar' }
-
-// CI helper: writes the compile classpath so the workflow can javap Minecraft / Embeddium signatures.
-tasks.register('printCompileClasspath') {
-	doLast {
-		def f = file("${buildDir}/compile-classpath.txt")
-		f.parentFile.mkdirs()
-		f.text = sourceSets.main.compileClasspath.files.collect { it.absolutePath }.join(File.pathSeparator)
-	}
-}

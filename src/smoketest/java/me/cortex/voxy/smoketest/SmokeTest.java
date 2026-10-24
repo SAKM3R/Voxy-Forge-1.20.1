@@ -76,16 +76,10 @@ public class SmokeTest {
         ticksInWorld++;
         if (ticksInWorld == 20) {
             mc.player.getAbilities().flying = true;
-            mc.player.setPos(mc.player.getX(), mc.player.getY() + 60, mc.player.getZ());
+            mc.player.setPos(mc.player.getX(), mc.player.getY() + 25, mc.player.getZ());
             mc.player.setXRot(15);
         }
-        if (ticksInWorld == 1300) {
-            //Compare against plain vanilla/Embeddium rendering
-            me.cortex.voxy.client.config.VoxyConfig.CONFIG.enableRendering = false;
-            ((IGetVoxyRenderSystem) mc.levelRenderer).shutdownRenderer();
-            LOG.info("VOXY_SMOKE voxy rendering off");
-        }
-        if (ticksInWorld == 1200 || ticksInWorld == 1500) {
+        if (ticksInWorld == 1500) {
             net.minecraft.client.Screenshot.grab(mc.gameDirectory, "voxy-smoke-" + ticksInWorld + ".png", mc.getMainRenderTarget(), msg -> LOG.info("VOXY_SMOKE screenshot: {}", msg.getString()));
         }
         if (ticksInWorld % 100 == 0) {
