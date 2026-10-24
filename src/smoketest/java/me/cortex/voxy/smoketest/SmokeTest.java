@@ -38,6 +38,17 @@ public class SmokeTest {
         var mc = Minecraft.getInstance();
         if (started || mc.getOverlay() != null) return;
         if (++idleTicks % 100 == 0) LOG.info("VOXY_SMOKE waiting, screen={}", mc.screen);
+        if (mc.screen instanceof net.minecraftforge.client.gui.LoadingErrorScreen les) {
+            //Forge shows this for load warnings as well as errors; log what it holds, then continue
+            for (var f : les.getClass().getDeclaredFields()) {
+                try {
+                    f.setAccessible(true);
+                    LOG.info("VOXY_SMOKE loading screen {} = {}", f.getName(), f.get(les));
+                } catch (Throwable ignored) {}
+            }
+            mc.setScreen(new TitleScreen());
+            return;
+        }
         if (!(mc.screen instanceof TitleScreen || mc.screen instanceof AccessibilityOnboardingScreen)) return;
         started = true;
         mc.options.renderDistance().set(4);
