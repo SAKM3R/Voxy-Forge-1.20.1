@@ -5,7 +5,7 @@ package me.cortex.voxy.client.core.rendering;
 // import net.fabricmc.loader.api.FabricLoader;
 // import org.vivecraft.api.client.VRRenderingAPI;
 // import static org.vivecraft.api.client.data.RenderPass.VANILLA;
-import net.neoforged.fml.ModList;
+import net.minecraftforge.fml.ModList;
 
 import java.util.HashMap;
 import java.util.Map;

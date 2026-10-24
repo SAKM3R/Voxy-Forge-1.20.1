@@ -1,6 +1,6 @@
 package me.cortex.voxy.client.core.model;
 
-import net.caffeinemc.mods.sodium.client.util.color.ColorSRGB;
+import me.jellysquid.mods.sodium.client.util.color.ColorSRGB;
 import net.minecraft.client.renderer.texture.MipmapGenerator;
 // MC 1.21.1: ARGB class moved/removed - TODO: find replacement for linearToSrgbChannel()
 // import net.minecraft.util.ARGB;

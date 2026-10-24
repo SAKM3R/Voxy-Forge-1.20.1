@@ -35,9 +35,9 @@ import me.cortex.voxy.common.Logger;
 import me.cortex.voxy.common.thread.ServiceManager;
 import me.cortex.voxy.common.world.WorldEngine;
 import me.cortex.voxy.commonImpl.VoxyCommon;
-import net.caffeinemc.mods.sodium.client.render.chunk.ChunkRenderMatrices;
+import me.jellysquid.mods.sodium.client.render.chunk.ChunkRenderMatrices;
 // TODO: FogParameters removed in Sodium 0.6.x - fog rendering disabled for now
-// import net.caffeinemc.mods.sodium.client.util.FogParameters;
+// import me.jellysquid.mods.sodium.client.util.FogParameters;
 import net.minecraft.client.Minecraft;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
@@ -278,6 +278,10 @@ public class VoxyRenderSystem {
         // Skip Voxy LOD during Iris' shadow pass: the LOD pipeline's framebuffer isn't valid there and
         // would crash with an incomplete framebuffer. LOD terrain simply won't cast shadows under shaders.
         if (IrisUtil.irisShadowActive()) {
+            return;
+        }
+        // Oculus shader packs: Voxy's shader-pack pipeline is not ported to 1.20.1, so stand down while one is active.
+        if (IrisUtil.shaderPackActive()) {
             return;
         }
         // If LOD-under-shaders has errored before, keep shaders usable and just skip Voxy LOD.

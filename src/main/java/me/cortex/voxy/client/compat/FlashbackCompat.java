@@ -7,7 +7,7 @@ package me.cortex.voxy.client.compat;
 import me.cortex.voxy.common.Logger;
 import me.cortex.voxy.common.config.section.SectionStorageConfig;
 // NeoForge: FabricLoader replaced with ModList (unused - Flashback integration disabled)
-// import net.neoforged.fml.ModList;
+// import net.minecraftforge.fml.ModList;
 
 import java.nio.file.Path;
 

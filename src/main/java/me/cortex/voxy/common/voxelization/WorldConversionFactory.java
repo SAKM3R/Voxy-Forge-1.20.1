@@ -5,7 +5,7 @@ import me.cortex.voxy.common.world.other.Mapper;
 import me.cortex.voxy.common.world.other.Mipper;
 import net.caffeinemc.mods.lithium.common.world.chunk.LithiumHashPalette;
 import net.minecraft.core.Holder;
-import net.neoforged.fml.ModList;
+import net.minecraftforge.fml.ModList;
 import net.minecraft.util.SimpleBitStorage;
 import net.minecraft.util.ZeroBitStorage;
 import net.minecraft.world.level.biome.Biome;

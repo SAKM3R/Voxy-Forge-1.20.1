@@ -10,24 +10,23 @@ import me.cortex.voxy.client.core.rendering.CenterLodRegion;
 import me.cortex.voxy.client.core.util.IrisUtil;
 import me.cortex.voxy.common.world.service.VoxelIngestService;
 import me.cortex.voxy.commonImpl.VoxyCommon;
-import net.caffeinemc.mods.sodium.client.gl.device.CommandList;
-import net.caffeinemc.mods.sodium.client.render.chunk.RenderSection;
-import net.caffeinemc.mods.sodium.client.render.chunk.RenderSectionManager;
-import net.caffeinemc.mods.sodium.client.render.chunk.compile.executor.ChunkBuilder;
-import net.caffeinemc.mods.sodium.client.render.chunk.data.BuiltSectionInfo;
-import net.caffeinemc.mods.sodium.client.render.chunk.lists.RenderSectionVisitor;
-import net.caffeinemc.mods.sodium.client.render.chunk.map.ChunkTrackerHolder;
-import net.caffeinemc.mods.sodium.client.render.chunk.translucent_sorting.SortBehavior;
-import net.caffeinemc.mods.sodium.client.render.viewport.Viewport;
+import me.jellysquid.mods.sodium.client.gl.device.CommandList;
+import me.jellysquid.mods.sodium.client.render.chunk.RenderSection;
+import me.jellysquid.mods.sodium.client.render.chunk.RenderSectionManager;
+import me.jellysquid.mods.sodium.client.render.chunk.compile.executor.ChunkBuilder;
+import me.jellysquid.mods.sodium.client.render.chunk.data.BuiltSectionInfo;
+import me.jellysquid.mods.sodium.client.render.chunk.occlusion.OcclusionCuller;
+import me.jellysquid.mods.sodium.client.render.chunk.map.ChunkTrackerHolder;
+import me.jellysquid.mods.sodium.client.render.viewport.Viewport;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.neoforged.fml.ModList;
+import net.minecraftforge.fml.ModList;
 import net.minecraft.core.SectionPos;
 import org.joml.Matrix4f;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.level.chunk.ChunkStatus;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,14 +43,13 @@ public class MixinRenderSectionManager {
     @Unique
     private static final boolean BOBBY_INSTALLED = ModList.get().isLoaded("bobby");
 
-    @Shadow @Final private ClientLevel level;
+    @Shadow @Final private ClientLevel world;
 
     @Shadow @Final private ChunkBuilder builder;
 
-    // Sodium 0.8: Constructor signature is (ClientLevel, int, SortBehavior, CommandList)
-    // (the SortBehavior parameter, dropped in 0.6.x, was reintroduced in the modern Sodium 0.8 backport)
+    // Embeddium 0.3.x: constructor is (ClientLevel, int, CommandList)
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void voxy$resetChunkTracker(ClientLevel level, int renderDistance, SortBehavior sortBehavior, CommandList commandList, CallbackInfo ci) {
+    private void voxy$resetChunkTracker(ClientLevel level, int renderDistance, CommandList commandList, CallbackInfo ci) {
         if (level.levelRenderer != null) {
             var system = ((IGetVoxyRenderSystem)(level.levelRenderer)).getVoxyRenderSystem();
             if (system != null) {
@@ -59,7 +57,7 @@ public class MixinRenderSectionManager {
             }
         }
         // MC 1.21.1: Use getMinBuildHeight() instead of getMinY()
-        this.bottomSectionY = ((net.minecraft.world.level.Level)this.level).getMinBuildHeight()>>4;
+        this.bottomSectionY = ((net.minecraft.world.level.Level)this.world).getMinBuildHeight()>>4;
     }
 
     // Render the OUTERMOST ~1-chunk ring of the vanilla render distance as Voxy LOD instead of vanilla.
@@ -72,7 +70,7 @@ public class MixinRenderSectionManager {
     // affected; chunk loading/ingest still happen at full distance.
     @ModifyArg(
         method = "createTerrainRenderList",
-        at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/occlusion/OcclusionCuller;findVisible(Lnet/caffeinemc/mods/sodium/client/render/chunk/lists/RenderSectionVisitor;Lnet/caffeinemc/mods/sodium/client/render/viewport/Viewport;FZI)V"),
+        at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/render/chunk/occlusion/OcclusionCuller;findVisible(Lme/jellysquid/mods/sodium/client/render/chunk/occlusion/OcclusionCuller$Visitor;Lme/jellysquid/mods/sodium/client/render/viewport/Viewport;FZI)V"),
         index = 2
     )
     private float voxy$cullOutermostVanillaRing(float searchDistance) {
@@ -89,9 +87,9 @@ public class MixinRenderSectionManager {
     // which Sodium re-runs every frame the camera rotates, so the planes stay current. Skipped during
     // Iris' shadow pass (shadow casters must stay full-FOV).
     @Inject(method = "createTerrainRenderList", at = @At("HEAD"))
-    private void voxy$prepareBandCull(Camera camera, Viewport viewport, int frame, boolean spectator, CallbackInfoReturnable<Boolean> cir) {
+    private void voxy$prepareBandCull(Camera camera, Viewport viewport, int frame, boolean spectator, CallbackInfo ci) {
         CenterLodRegion.beginBandCull();
-        if (IrisUtil.irisShadowActive()) {
+        if (IrisUtil.irisShadowActive() || IrisUtil.shaderPackActive()) {
             return;
         }
         int[] scissor = CenterLodRegion.computeScissor();
@@ -115,18 +113,21 @@ public class MixinRenderSectionManager {
     // not the culler), so connectivity/occlusion is unchanged - no holes inside the band.
     @ModifyArg(
         method = "createTerrainRenderList",
-        at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/occlusion/OcclusionCuller;findVisible(Lnet/caffeinemc/mods/sodium/client/render/chunk/lists/RenderSectionVisitor;Lnet/caffeinemc/mods/sodium/client/render/viewport/Viewport;FZI)V"),
+        at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/render/chunk/occlusion/OcclusionCuller;findVisible(Lme/jellysquid/mods/sodium/client/render/chunk/occlusion/OcclusionCuller$Visitor;Lme/jellysquid/mods/sodium/client/render/viewport/Viewport;FZI)V"),
         index = 0
     )
-    private RenderSectionVisitor voxy$bandCullVisitor(RenderSectionVisitor original) {
+    private OcclusionCuller.Visitor voxy$bandCullVisitor(OcclusionCuller.Visitor original) {
         if (!CenterLodRegion.isBandCullActive()) {
             return original;
         }
-        return section -> {
-            if (CenterLodRegion.isSectionInWings(section.getChunkX() << 4, section.getChunkY() << 4, section.getChunkZ() << 4)) {
-                return;//Drop wing section from the render list
+        // Embeddium's VisibleChunkCollector also queues rebuilds from visit(), so a wing section is still
+        // passed through - only flagged invisible - which keeps it out of the render list but lets it build.
+        return (section, visible) -> {
+            if (visible && CenterLodRegion.isSectionInWings(section.getChunkX() << 4, section.getChunkY() << 4, section.getChunkZ() << 4)) {
+                original.visit(section, false);//Drop wing section from the render list
+                return;
             }
-            original.visit(section);
+            original.visit(section, visible);
         };
     }
 
@@ -134,7 +135,7 @@ public class MixinRenderSectionManager {
     private void injectIngest(int x, int z, CallbackInfo ci) {
         //TODO: Am not quite sure if this is right
         if (VoxyConfig.CONFIG.ingestEnabled && !BOBBY_INSTALLED) {
-            var cccm = (ICheekyClientChunkCache)this.level.getChunkSource();
+            var cccm = (ICheekyClientChunkCache)this.world.getChunkSource();
             if (cccm != null) {
                 var chunk = cccm.voxy$cheekyGetChunk(x, z);
                 if (chunk != null) {
@@ -145,17 +146,17 @@ public class MixinRenderSectionManager {
     }
 
 
-    // Sodium 0.8: when a section is disposed (chunk unloads / leaves render distance), explicitly
+    // When a section is disposed (chunk unloads / leaves render distance), explicitly
     // clear it from the LOD-occlusion bound. The build-state redirect (voxy$updateOnUpload) misses
     // this in 0.8 because RenderSection.setInfo() returns false during disposal, which made the
     // section keep masking Voxy's LOD - so the area went invisible for a moment until something
     // else cleared it. Keying matches voxy$updateOnUpload so add/remove line up.
     @Inject(method = "onSectionRemoved", at = @At("HEAD"))
     private void voxy$clearBoundOnSectionRemoved(int x, int y, int z, CallbackInfo ci) {
-        if (this.level.levelRenderer == null) {
+        if (this.world.levelRenderer == null) {
             return;
         }
-        var system = ((IGetVoxyRenderSystem)(this.level.levelRenderer)).getVoxyRenderSystem();
+        var system = ((IGetVoxyRenderSystem)(this.world.levelRenderer)).getVoxyRenderSystem();
         if (system == null) {
             return;
         }
@@ -171,8 +172,8 @@ public class MixinRenderSectionManager {
 
     @Inject(method = "onChunkAdded", at = @At("HEAD"))
     private void voxy$ingestOnAdd(int x, int z, CallbackInfo ci) {
-        if (this.level.levelRenderer != null && VoxyConfig.CONFIG.ingestEnabled) {
-            var cccm = this.level.getChunkSource();
+        if (this.world.levelRenderer != null && VoxyConfig.CONFIG.ingestEnabled) {
+            var cccm = this.world.getChunkSource();
             if (cccm != null) {
                 var chunk = cccm.getChunk(x, z, ChunkStatus.FULL, false);
                 if (chunk != null) {
@@ -185,8 +186,8 @@ public class MixinRenderSectionManager {
     /*
     @Inject(method = "onChunkRemoved", at = @At("HEAD"))
     private void voxy$trackChunkRemove(int x, int z, CallbackInfo ci) {
-        if (this.level.worldRenderer != null) {
-            var system = ((IGetVoxyRenderSystem)(this.level.worldRenderer)).getVoxyRenderSystem();
+        if (this.world.worldRenderer != null) {
+            var system = ((IGetVoxyRenderSystem)(this.world.worldRenderer)).getVoxyRenderSystem();
             if (system != null) {
                 system.chunkBoundRenderer.removeSection(ChunkPos.toLong(x, z));
             }
@@ -197,29 +198,28 @@ public class MixinRenderSectionManager {
     @Unique private int cachedChunkStatus;
     @Unique private int bottomSectionY;
 
-    @Redirect(method = "updateSectionInfo", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/RenderSection;setInfo(Lnet/caffeinemc/mods/sodium/client/render/chunk/data/BuiltSectionInfo;)Z"))
-    private boolean voxy$updateOnUpload(RenderSection instance, BuiltSectionInfo info) {
+    // Embeddium 0.3.x: RenderSection.setInfo returns void
+    @Redirect(method = "updateSectionInfo", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/render/chunk/RenderSection;setInfo(Lme/jellysquid/mods/sodium/client/render/chunk/data/BuiltSectionInfo;)V"))
+    private void voxy$updateOnUpload(RenderSection instance, BuiltSectionInfo info) {
         boolean wasBuilt = instance.getFlags()!=0;
         int flags = instance.getFlags();
-        if (!instance.setInfo(info)) {
-            return false;
-        }
+        instance.setInfo(info);
         if (wasBuilt == (instance.getFlags()!=0)) {//Only want to do stuff on change
-            return true;
+            return;
         }
 
         flags |= instance.getFlags();
         if (flags == 0)//Only process things with stuff
-            return true;
+            return;
 
-        VoxyRenderSystem system = ((IGetVoxyRenderSystem)(this.level.levelRenderer)).getVoxyRenderSystem();
+        VoxyRenderSystem system = ((IGetVoxyRenderSystem)(this.world.levelRenderer)).getVoxyRenderSystem();
         if (system == null) {
-            return true;
+            return;
         }
         int x = instance.getChunkX(), y = instance.getChunkY(), z = instance.getChunkZ();
 
         if (wasBuilt && VoxyConfig.CONFIG.ingestEnabled) {
-            var tracker = ((AccessorChunkTracker)ChunkTrackerHolder.get(this.level)).getChunkStatus();
+            var tracker = ((AccessorChunkTracker)ChunkTrackerHolder.get(this.world)).getChunkStatus();
             //in theory the cache value could be wrong but is so soso unlikely and at worst means we either duplicate ingest a chunk
             // which... could be bad ;-; or we dont ingest atall which is ok!
             long key = ChunkPos.asLong(x, z);
@@ -228,8 +228,8 @@ public class MixinRenderSectionManager {
                 this.cachedChunkStatus = tracker.getOrDefault(key, 0);
             }
             if (this.cachedChunkStatus == 3) {//If this chunk still has surrounding chunks
-                var section = this.level.getChunk(x,z).getSection(y-this.bottomSectionY);
-                var lp = this.level.getLightEngine();
+                var section = this.world.getChunk(x,z).getSection(y-this.bottomSectionY);
+                var lp = this.world.getLightEngine();
 
                 var csp = SectionPos.of(x,y,z);
                 var blp = lp.getLayerListener(LightLayer.BLOCK).getDataLayerData(csp);
@@ -255,6 +255,5 @@ public class MixinRenderSectionManager {
         } else {//Add
             system.chunkBoundRenderer.addSection(pos);
         }
-        return true;
     }
 }

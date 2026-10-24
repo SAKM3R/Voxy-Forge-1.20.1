@@ -16,7 +16,7 @@ import me.cortex.voxy.common.config.storage.rocksdb.RocksDBStorageBackend;
 import me.cortex.voxy.commonImpl.ImportManager;
 import me.cortex.voxy.commonImpl.VoxyInstance;
 import me.cortex.voxy.commonImpl.WorldIdentifier;
-import net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer;
+import me.jellysquid.mods.sodium.client.render.SodiumWorldRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.storage.LevelResource;
 import java.nio.file.Files;

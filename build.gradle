@@ -47,14 +47,12 @@ mixin {
 
 repositories {
 	mavenCentral()
-	exclusiveContent {
-		forRepository {
-			maven {
-				name = 'Modrinth'
-				url = 'https://api.modrinth.com/maven'
-			}
-		}
-		filter {
+	// Not exclusiveContent: ForgeGradle serves the deobfuscated copy (fg.deobf) under the same group
+	// from its own local repository.
+	maven {
+		name = 'Modrinth'
+		url = 'https://api.modrinth.com/maven'
+		content {
 			includeGroup 'maven.modrinth'
 		}
 	}

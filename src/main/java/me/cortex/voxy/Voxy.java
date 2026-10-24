@@ -1,15 +1,15 @@
 package me.cortex.voxy;
 
 import me.cortex.voxy.commonImpl.VoxyCommon;
-import net.caffeinemc.mods.sodium.client.config.ConfigManager;
-import net.caffeinemc.mods.sodium.client.config.structure.OptionPage;
-import net.caffeinemc.mods.sodium.client.gui.VideoSettingsScreen;
+import me.jellysquid.mods.sodium.client.config.ConfigManager;
+import me.jellysquid.mods.sodium.client.config.structure.OptionPage;
+import me.jellysquid.mods.sodium.client.gui.VideoSettingsScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.loading.FMLLoader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 /**

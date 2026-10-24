@@ -5,9 +5,9 @@ import me.cortex.voxy.client.config.VoxyConfig;
 import me.cortex.voxy.commonImpl.VoxyCommon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
@@ -45,7 +45,7 @@ public class DistantGenerationManager {
 
     private static boolean isGroundworkPresent() {
         if (groundworkPresent == null) {
-            groundworkPresent = net.neoforged.fml.ModList.get().isLoaded("groundwork");
+            groundworkPresent = net.minecraftforge.fml.ModList.get().isLoaded("groundwork");
         }
         return groundworkPresent;
     }

@@ -4,7 +4,7 @@ import me.cortex.voxy.client.core.gl.GlBuffer;
 import me.cortex.voxy.client.core.rendering.util.DepthFramebuffer;
 import me.cortex.voxy.client.core.rendering.util.HiZBuffer;
 // TODO: FogParameters removed in Sodium 0.6.x - fog rendering disabled for now
-// import net.caffeinemc.mods.sodium.client.util.FogParameters;
+// import me.jellysquid.mods.sodium.client.util.FogParameters;
 import net.minecraft.util.Mth;
 import org.joml.*;
 import org.jetbrains.annotations.Nullable;
