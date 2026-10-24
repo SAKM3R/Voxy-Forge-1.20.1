@@ -49,8 +49,8 @@ public class ShaderLoader {
         String processed = "\n" + shaderSource + "\n//beans";
 
         // Apply Sodium's shader constants processing (handles #define etc.)
-        // Sodium 0.8 changed parseShader() to return a ParsedShader record; .src() yields the source.
-        processed = ShaderParser.parseShader(processed, ShaderConstants.builder().build()).src();
+        // Embeddium (Sodium 0.5) parseShader() returns the processed source directly.
+        processed = ShaderParser.parseShader(processed, ShaderConstants.builder().build());
 
         // Normalize line endings and strip original #version (upstream behavior)
         processed = processed.replaceAll("\r\n", "\n");

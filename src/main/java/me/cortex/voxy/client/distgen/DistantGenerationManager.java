@@ -8,8 +8,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.neoforged.neoforge.event.server.ServerStoppingEvent;
-import net.neoforged.neoforge.event.tick.ServerTickEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,10 @@ public class DistantGenerationManager {
     }
 
     @SubscribeEvent
-    public static void onServerTick(ServerTickEvent.Post event) {
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
         if (isGroundworkPresent()) {
             return;
         }
@@ -65,12 +69,15 @@ public class DistantGenerationManager {
             return;
         }
         var instance = (VoxyClientInstance) VoxyCommon.getInstance();
-        var server = event.getServer();
+        var server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) {
+            return;
+        }
 
         //Backpressure: never enqueue faster than the rest of the pipeline can drain
         boolean allowNewWork = instance.getIngestService().getTaskCount() < MAX_INGEST_BACKLOG
                 && instance.savingServiceRateLimiter.getAsBoolean()
-                && server.getAverageTickTimeNanos() < cfg.distantGenMaxMspt * 1_000_000L;
+                && server.getAverageTickTime() < cfg.distantGenMaxMspt;
 
         for (ServerLevel level : server.getAllLevels()) {
             var players = level.players();

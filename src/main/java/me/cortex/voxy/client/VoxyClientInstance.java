@@ -97,17 +97,17 @@ public class VoxyClientInstance extends VoxyInstance {
         if (iserver != null) {
             basePath = iserver.getWorldPath(LevelResource.ROOT).resolve("voxy");
         } else {
-            var netHandle = Minecraft.getInstance().gameMode;
+            var netHandle = Minecraft.getInstance().getConnection();
             if (netHandle == null) {
                 Logger.error("Network handle null");
                 basePath = basePath.resolve("UNKNOWN");
             } else {
-                var info = netHandle.connection.getServerData();
+                var info = netHandle.getServerData();
                 if (info == null) {
                     Logger.error("Server info null");
                     basePath = basePath.resolve("UNKNOWN");
                 } else {
-                    if (info.isRealm()) {
+                    if (Minecraft.getInstance().isConnectedToRealms()) {
                         basePath = basePath.resolve("realms");
                     } else {
                         basePath = basePath.resolve(info.ip.replace(":", "_"));

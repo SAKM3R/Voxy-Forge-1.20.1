@@ -1,7 +1,6 @@
 package me.cortex.voxy.common.util;
 
 import org.lwjgl.system.*;
-import org.lwjgl.system.windows.Kernel32;
 
 //Platform specific code to assist in thread utilities
 public class ThreadUtils {

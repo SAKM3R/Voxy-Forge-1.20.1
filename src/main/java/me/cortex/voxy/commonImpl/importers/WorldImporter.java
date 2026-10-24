@@ -28,7 +28,7 @@ import net.minecraft.world.level.chunk.DataLayer;
 import net.minecraft.world.level.chunk.PalettedContainer;
 import net.minecraft.world.level.chunk.PalettedContainer.Strategy;
 import net.minecraft.world.level.chunk.PalettedContainerRO;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.storage.RegionFileVersion;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
@@ -191,7 +191,7 @@ public class WorldImporter implements IDataImporter {
     public void importZippedRegionDirectoryAsync(File zip, String innerDirectory) {
         try {
             innerDirectory = innerDirectory.replace("\\\\", "\\").replace("\\", "/");
-            var file = ZipFile.builder().setFile(zip).get();
+            var file = new ZipFile(zip);
             ArrayList<ZipArchiveEntry> regions = new ArrayList<>();
             for (var e = file.getEntries(); e.hasMoreElements();) {
                 var entry = e.nextElement();
@@ -497,11 +497,12 @@ public class WorldImporter implements IDataImporter {
 
         // MC 1.21.1: getCompound() returns CompoundTag directly, not Optional
         var blockStatesRes = blockStateCodec.parse(NbtOps.INSTANCE, section.getCompound("block_states"));
-        if (!blockStatesRes.hasResultOrPartial()) {
+        var blockStatesOpt = blockStatesRes.resultOrPartial(e -> {});
+        if (blockStatesOpt.isEmpty()) {
             //TODO: if its only partial, it means should try to upgrade the nbt format with datafixerupper probably
             return;
         }
-        var blockStates = blockStatesRes.getPartialOrThrow();
+        var blockStates = blockStatesOpt.get();
         var biomes = this.defaultBiomeProvider;
         // MC 1.21.1: getCompound() returns CompoundTag directly, check if tag exists
         if (section.contains("biomes")) {

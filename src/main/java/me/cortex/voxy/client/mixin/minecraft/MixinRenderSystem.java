@@ -20,7 +20,7 @@ public class MixinRenderSystem {
     //We need to inject before iris to initalize our systems
     // MC 1.21.1: initRenderer signature: (int debugVerbosity, boolean synchronous)
     // Verified against NeoForge 21.1.217 decompiled sources
-    @Inject(method = "initRenderer", order = 900, remap = false, at = @At("RETURN"))
+    @Inject(method = "initRenderer", remap = false, at = @At("RETURN"))
     private static void voxy$injectInit(int debugVerbosity, boolean synchronous, CallbackInfo ci) {
         VoxyClient.initVoxyClient();
     }

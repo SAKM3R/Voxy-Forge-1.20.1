@@ -5,6 +5,7 @@ import me.cortex.voxy.client.core.VoxyRenderSystem;
 import me.cortex.voxy.client.core.gl.Capabilities;
 import me.cortex.voxy.client.core.model.bakery.BudgetBufferRenderer;
 import me.cortex.voxy.client.core.rendering.util.SharedIndexBuffer;
+import me.cortex.voxy.client.compat.EmbeddiumCompat;
 import me.cortex.voxy.common.Logger;
 import me.cortex.voxy.commonImpl.VoxyCommon;
 import net.minecraft.ChatFormatting;
@@ -26,12 +27,19 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * Client initialization for Voxy on NeoForge.
- * Uses NeoForge event bus for command registration.
+ * Client initialization for Voxy on Forge.
+ * Uses the Forge event bus for command registration.
  */
 @EventBusSubscriber(modid = "voxy", value = Dist.CLIENT)
 public class VoxyClient {
     private static final HashSet<String> FREX = new HashSet<>();
+
+    /**
+     * Called from the mod constructor on the client.
+     */
+    public static void registerEvents() {
+        EmbeddiumCompat.init();
+    }
 
     public static void initVoxyClient() {
         Capabilities.init();//Ensure clinit is called

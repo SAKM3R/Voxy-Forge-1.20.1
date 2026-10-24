@@ -40,10 +40,10 @@ public class MixinClientChunkCache implements ICheekyClientChunkCache {
     // storage slot with null - the dropped chunk itself is never seen there, only its still-loaded neighbours (which
     // lose their "ready" status). The chunk's light data is still available here: handleForgetLevelChunk calls
     // drop() first and only queues the light removal afterwards.
-    @Inject(method = "drop", at = @At("HEAD"))
-    public void voxy$captureChunkBeforeUnload(ChunkPos pos, CallbackInfo ci) {
+    @Inject(method = "drop(II)V", at = @At("HEAD"))
+    public void voxy$captureChunkBeforeUnload(int x, int z, CallbackInfo ci) {
         if (VoxyConfig.CONFIG.ingestEnabled) {
-            var chunk = this.voxy$cheekyGetChunk(pos.x, pos.z);
+            var chunk = this.voxy$cheekyGetChunk(x, z);
             if (chunk != null) {
                 VoxelIngestService.tryAutoIngestChunk(chunk);
             }

@@ -1,5 +1,6 @@
 package me.cortex.voxy.commonImpl.importers;
 
+import me.cortex.voxy.common.util.Bits;
 import me.cortex.voxy.common.Logger;
 import me.cortex.voxy.common.thread.Service;
 import me.cortex.voxy.common.thread.ServiceManager;
@@ -230,7 +231,7 @@ public class DHImporter implements IDataImporter {
             if (idx == -1)
                 throw new IllegalStateException();
             {
-                var biomeRes = ResourceLocation.parse(encEntry.substring(0, idx));
+                var biomeRes = new ResourceLocation(encEntry.substring(0, idx));
                 // MC 1.21.1: RegistryLookup.get() requires ResourceKey, returns Optional<Holder.Reference<T>>
                 // Explicit type needed because orElse() with Holder<Biome> default causes type mismatch
                 var biomeKey = ResourceKey.create(Registries.BIOME, biomeRes);
@@ -247,7 +248,7 @@ public class DHImporter implements IDataImporter {
                     if (sIdx != -1) {
                         bStateStr = encEntry.substring(sIdx + STATE_STRING_SEPARATOR.length());
                     }
-                    var bId = ResourceLocation.parse(encEntry.substring(b, sIdx != -1 ? sIdx : encEntry.length()));
+                    var bId = new ResourceLocation(encEntry.substring(b, sIdx != -1 ? sIdx : encEntry.length()));
                     // MC 1.21.1: RegistryLookup.get() requires ResourceKey, returns Optional<Holder<T>>
                     var blockKey = ResourceKey.create(Registries.BLOCK, bId);
                     var maybeBlock = this.blockRegistry.get(blockKey);
@@ -348,8 +349,8 @@ public class DHImporter implements IDataImporter {
         byte[] col = ctx.colScratch;
         for (int x = 0; x < 64; x++) {
             for (int z = 0; z < 64; z++) {
-                int bPos = Integer.expand(x&0xF, 0b00_00_0000_0000_1111) |
-                           Integer.expand(z, 0b00_11_0000_1111_0000);
+                int bPos = Bits.expand(x&0xF, 0b00_00_0000_0000_1111) |
+                           Bits.expand(z, 0b00_11_0000_1111_0000);
                 short cl = stream.readShort();
                 if (cl < 0) {
                     throw new IllegalStateException();
@@ -365,8 +366,8 @@ public class DHImporter implements IDataImporter {
                     //    int a = 0;
                     //}
                     //Insert all entries into data cache
-                    startY = Integer.expand(startY, 0b11111111_00_1111_0000_0000);
-                    endY = Integer.expand(endY, 0b11111111_00_1111_0000_0000);
+                    startY = Bits.expand(startY, 0b11111111_00_1111_0000_0000);
+                    endY = Bits.expand(endY, 0b11111111_00_1111_0000_0000);
                     final int Msk = 0b11111111_00_1111_0000_0000;
                     final int iMsk1 = (~Msk)+1;
                     for (int y = startY; y != endY; y = (y+iMsk1)&Msk) {

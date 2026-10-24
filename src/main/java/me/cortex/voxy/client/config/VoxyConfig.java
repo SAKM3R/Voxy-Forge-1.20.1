@@ -1,5 +1,6 @@
 package me.cortex.voxy.client.config;
 
+import me.cortex.voxy.common.util.Bits;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -171,17 +172,17 @@ public class VoxyConfig {
     // Clamp hand-edited config values into the ranges the renderer assumes; out-of-range fog or
     // cloud values otherwise reach the shaders/mixins unchecked.
     private void sanitize() {
-        this.skyFogDistance = Math.clamp(this.skyFogDistance, 0, 1024);
-        this.fogIntensity = Math.clamp(this.fogIntensity, 0.0f, 1.0f);
-        this.fogDensity = Math.clamp(this.fogDensity, 0.0f, 1.0f);
-        this.fogDistancePercent = Math.clamp(this.fogDistancePercent, 5, 200);
-        this.fogStartPercent = Math.clamp(this.fogStartPercent, 0, 95);
-        this.caveFogDistance = Math.clamp(this.caveFogDistance, 8, 256);
-        this.cloudDistance = Math.clamp(this.cloudDistance, 0, MAX_CLOUD_DISTANCE);
+        this.skyFogDistance = Bits.clamp(this.skyFogDistance, 0, 1024);
+        this.fogIntensity = Bits.clamp(this.fogIntensity, 0.0f, 1.0f);
+        this.fogDensity = Bits.clamp(this.fogDensity, 0.0f, 1.0f);
+        this.fogDistancePercent = Bits.clamp(this.fogDistancePercent, 5, 200);
+        this.fogStartPercent = Bits.clamp(this.fogStartPercent, 0, 95);
+        this.caveFogDistance = Bits.clamp(this.caveFogDistance, 8, 256);
+        this.cloudDistance = Bits.clamp(this.cloudDistance, 0, MAX_CLOUD_DISTANCE);
     }
 
     public int getLodRenderDistanceBlocks() {
         // sectionRenderDistance is in top-level sections of 32 chunks; *32*16 converts to blocks.
-        return Math.clamp(this.sectionRenderDistance * 32 * 16, 64, 32768);
+        return Bits.clamp(this.sectionRenderDistance * 32 * 16, 64, 32768);
     }
 }

@@ -5,7 +5,7 @@ import org.lwjgl.system.JNI;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.system.windows.GDI32;
-import org.lwjgl.system.windows.Kernel32;
+import me.cortex.voxy.common.util.Kernel32;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

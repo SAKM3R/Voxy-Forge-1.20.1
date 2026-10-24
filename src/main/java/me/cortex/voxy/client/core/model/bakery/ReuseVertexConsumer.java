@@ -27,7 +27,7 @@ public final class ReuseVertexConsumer implements VertexConsumer {
         return this;
     }
 
-    @Override
+    // MC 1.20.1 VertexConsumer: vertex() starts a vertex, the attribute setters follow, endVertex() closes it.
     public ReuseVertexConsumer addVertex(float x, float y, float z) {
         this.ensureCanPut();
         this.ptr += VERTEX_FORMAT_SIZE; this.count++; //Goto next vertex
@@ -38,22 +38,21 @@ public final class ReuseVertexConsumer implements VertexConsumer {
         return this;
     }
 
+    @Override
+    public ReuseVertexConsumer vertex(double x, double y, double z) {
+        return this.addVertex((float) x, (float) y, (float) z);
+    }
+
     public ReuseVertexConsumer meta(int metadata) {
         MemoryUtil.memPutInt(this.ptr + 12, metadata);
         return this;
     }
 
     @Override
-    public ReuseVertexConsumer setColor(int red, int green, int blue, int alpha) {
+    public ReuseVertexConsumer color(int red, int green, int blue, int alpha) {
         return this;
     }
 
-    @Override
-    public VertexConsumer setColor(int i) {
-        return this;
-    }
-
-    @Override
     public ReuseVertexConsumer setUv(float u, float v) {
         MemoryUtil.memPutFloat(this.ptr + 16, u);
         MemoryUtil.memPutFloat(this.ptr + 20, v);
@@ -61,27 +60,38 @@ public final class ReuseVertexConsumer implements VertexConsumer {
     }
 
     @Override
-    public ReuseVertexConsumer setUv1(int u, int v) {
+    public ReuseVertexConsumer uv(float u, float v) {
+        return this.setUv(u, v);
+    }
+
+    @Override
+    public ReuseVertexConsumer overlayCoords(int u, int v) {
         return this;
     }
 
     @Override
-    public ReuseVertexConsumer setUv2(int u, int v) {
+    public ReuseVertexConsumer uv2(int u, int v) {
         return this;
     }
 
     @Override
-    public ReuseVertexConsumer setNormal(float x, float y, float z) {
+    public ReuseVertexConsumer normal(float x, float y, float z) {
         return this;
     }
 
-    // MC 1.21.1: setLineWidth() removed from VertexConsumer interface
-    public VertexConsumer setLineWidth(float f) {
-        return null;
+    @Override
+    public void endVertex() {
+    }
+
+    @Override
+    public void defaultColor(int r, int g, int b, int a) {
+    }
+
+    @Override
+    public void unsetDefaultColor() {
     }
 
     public ReuseVertexConsumer quad(BakedQuad quad, int metadata) {
-        // MC 1.21.1: BakedQuad API changed - shade() → isShade(), sprite() → getSprite()
         this.anyShaded |= quad.isShade();
         // MC 1.21.1: MipmapStrategy check removed - darkened textures not detected
         this.anyDarkendTex = false;

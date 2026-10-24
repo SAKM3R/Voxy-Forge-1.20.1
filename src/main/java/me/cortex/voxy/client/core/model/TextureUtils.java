@@ -1,5 +1,6 @@
 package me.cortex.voxy.client.core.model;
 
+import me.cortex.voxy.common.util.Bits;
 import me.jellysquid.mods.sodium.client.util.color.ColorSRGB;
 import net.minecraft.client.renderer.texture.MipmapGenerator;
 // MC 1.21.1: ARGB class moved/removed - TODO: find replacement for linearToSrgbChannel()
@@ -240,6 +241,6 @@ public class TextureUtils {
      * Replacement for ARGB.linearToSrgbChannel() which doesn't exist in MC 1.21.1
      */
     private static int linearToSrgbChannel(float linear) {
-        return Math.clamp((int) (Math.pow(linear, 1.0 / 2.2) * 255), 0, 255);
+        return Bits.clamp((int) (Math.pow(linear, 1.0 / 2.2) * 255), 0, 255);
     }
 }

@@ -303,7 +303,7 @@ public class VoxyCommands {
             //We are in a world directory, so import the current dimension we are in
             /*
             for (var dim : new String[]{"overworld", "the_nether", "the_end"}) {//This is so annoying that you cant loop through all the dimensions
-                var id = ResourceKey.create(Registries.DIMENSION, ResourceLocation.withDefaultNamespace(dim));
+                var id = ResourceKey.create(Registries.DIMENSION, new ResourceLocation("minecraft", dim));
                 var dimPath = DimensionType.getStorageFolder(id, file);
                 dimPath = dimPath.resolve("region");
                 var dimFile = dimPath.toFile();

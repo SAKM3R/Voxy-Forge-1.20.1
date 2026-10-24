@@ -3,7 +3,6 @@ package me.cortex.voxy.client.core.model.bakery;
 import com.mojang.blaze3d.systems.RenderSystem;
 // TODO: MC 1.21.1 - GpuTexture not accessible
 // import com.mojang.blaze3d.textures.GpuTexture;
-import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import me.cortex.voxy.client.core.gl.GlBuffer;
 import me.cortex.voxy.client.core.gl.GlVertexArray;

@@ -381,7 +381,7 @@ public class Mapper {
 
         public static StateEntry deserialize(int id, byte[] data, boolean[] forceResave) {
             try {
-                var compound = NbtIo.readCompressed(new ByteArrayInputStream(data), NbtAccounter.unlimitedHeap());
+                var compound = NbtIo.readCompressed(new ByteArrayInputStream(data));
                 // MC 1.21.1: CompoundTag.getIntOr() → contains() + getInt()
                 if ((compound.contains("id") ? compound.getInt("id") : -1) != id) {
                     throw new IllegalStateException("Encoded id != expected id");
@@ -410,12 +410,12 @@ public class Mapper {
                         Logger.error("Could not decode blockstate setting to air. id:" + id + " error: " + state.error().get().message());
                         return new StateEntry(id, Blocks.AIR.defaultBlockState());
                     } else {
-                        Logger.info("Fixed blockstate to: " + state.getOrThrow());
+                        Logger.info("Fixed blockstate to: " + state.getOrThrow(false, e -> {}));
                         forceResave[0] |= true;
-                        return new StateEntry(id, state.getOrThrow());
+                        return new StateEntry(id, state.getOrThrow(false, e -> {}));
                     }
                 } else {
-                    return new StateEntry(id, state.getOrThrow());
+                    return new StateEntry(id, state.getOrThrow(false, e -> {}));
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -447,7 +447,7 @@ public class Mapper {
 
         public static BiomeEntry deserialize(int id, byte[] data) {
             try {
-                var compound = NbtIo.readCompressed(new ByteArrayInputStream(data), NbtAccounter.unlimitedHeap());
+                var compound = NbtIo.readCompressed(new ByteArrayInputStream(data));
                 // MC 1.21.1: CompoundTag.getIntOr() → contains() + getInt()
                 if ((compound.contains("id") ? compound.getInt("id") : -1) != id) {
                     throw new IllegalStateException("Encoded id != expected id");

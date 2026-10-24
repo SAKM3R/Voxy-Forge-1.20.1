@@ -1,5 +1,6 @@
 package me.cortex.voxy.client.core;
 
+import me.cortex.voxy.common.util.Bits;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.cortex.voxy.client.config.VoxyConfig;
 import me.cortex.voxy.client.core.util.FogCompat;
@@ -139,7 +140,7 @@ public class NormalRenderPipeline extends AbstractRenderPipeline {
                 float handoff = Minecraft.getInstance().options.getEffectiveRenderDistance() * 16.0f;
                 // Needs real room between handoff and edge, or the curve is a cliff.
                 if (edge > handoff + 16.0f) {
-                    float atHandoff = Math.clamp((handoff - nearStart) / span, 0.0f, 1.0f);
+                    float atHandoff = Bits.clamp((handoff - nearStart) / span, 0.0f, 1.0f);
                     float slope = (1.0f - atHandoff) / (edge - handoff);
                     if (Float.isFinite(slope) && slope > 0.0f) {
                         // Same line, expressed as the (start, end) pair the shader consumes.
@@ -175,8 +176,8 @@ public class NormalRenderPipeline extends AbstractRenderPipeline {
             // Required fog (the camera's medium, an effect, or fog another mod owns) is applied
             // exactly as it was computed for the near terrain: full intensity, no density bend.
             // Optional distance fog uses the user's intensity/density instead.
-            glUniform1f(7, requiredFog ? 1.0f : Math.clamp(VoxyConfig.CONFIG.fogIntensity, 0.0f, 1.0f));
-            glUniform1f(8, requiredFog ? 0.0f : Math.clamp(VoxyConfig.CONFIG.fogDensity, 0.0f, 1.0f));
+            glUniform1f(7, requiredFog ? 1.0f : Bits.clamp(VoxyConfig.CONFIG.fogIntensity, 0.0f, 1.0f));
+            glUniform1f(8, requiredFog ? 0.0f : Bits.clamp(VoxyConfig.CONFIG.fogDensity, 0.0f, 1.0f));
             // Always the smoothstep curve: Sodium runs every fog type through one
             // smoothstep(fogStart, fogEnd, dist) (assets/sodium/shaders/include/fog.glsl), so a
             // linear ramp here would part company with the near terrain mid-fade and show a seam.

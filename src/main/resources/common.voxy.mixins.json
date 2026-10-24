@@ -2,6 +2,8 @@
   "required": true,
   "package": "me.cortex.voxy.commonImpl.mixin",
   "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "refmap": "voxy.refmap.json",
   "injectors": {
     "defaultRequire": 1
   },

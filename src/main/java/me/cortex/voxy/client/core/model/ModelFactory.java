@@ -270,7 +270,7 @@ public class ModelFactory {
         while (biomeEntry != null) {
             var biomeRegistry = Minecraft.getInstance().level.registryAccess().lookupOrThrow(Registries.BIOME);
             // MC 1.21.1: RegistryLookup.getValue(ResourceLocation) → need ResourceKey, use get() which returns Optional<Holder<T>>
-            var biomeKey = ResourceKey.create(Registries.BIOME, ResourceLocation.parse(biomeEntry.biome));
+            var biomeKey = ResourceKey.create(Registries.BIOME, new ResourceLocation(biomeEntry.biome));
             var res = this.addBiome0(biomeEntry.id, biomeRegistry.get(biomeKey).map(Holder::value).orElse(DEFAULT_BIOME.value()));
             if (res != null) {
                 this.uploadResults.add(res);
