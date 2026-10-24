@@ -88,6 +88,18 @@ public class SmokeTest {
         if (ticksInWorld == 1150) {
             mc.player.setYRot(90);//Look back (-X)
         }
+        if (ticksInWorld == 1302) {
+            //Same view without Voxy: shows which parts of the frame are LOD
+            me.cortex.voxy.client.config.VoxyConfig.CONFIG.enableRendering = false;
+            ((IGetVoxyRenderSystem) mc.levelRenderer).shutdownRenderer();
+        }
+        if (ticksInWorld == 1340) {
+            net.minecraft.client.Screenshot.grab(mc.gameDirectory, "voxy-smoke-1340-novoxy.png", mc.getMainRenderTarget(), msg -> {});
+        }
+        if (ticksInWorld == 1345) {
+            me.cortex.voxy.client.config.VoxyConfig.CONFIG.enableRendering = true;
+            ((IGetVoxyRenderSystem) mc.levelRenderer).createRenderer();
+        }
         if (ticksInWorld == 1350) {
             mc.player.setYRot(-90);//Look ahead (+X)
         }
