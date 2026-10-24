@@ -1,0 +1,118 @@
+{
+  "voxy.config.title": "Voxy",
+
+  "voxy.config.general": "General",
+  "voxy.config.rendering": "Rendering",
+  "voxy.config.distantgen": "Distant Generation",
+  "voxy.config.advanced": "Advanced",
+
+  "voxy.config.distantgen.enabled": "Distant generation",
+  "voxy.config.distantgen.enabled.tooltip": "Generate chunks beyond the vanilla render distance in the background (singleplayer/LAN host only) and feed them into the LOD store. Chunks generate in expanding rings around you, closest first, and are only generated up to the lighting stage - no entities or ticking - so it is much cheaper than normal chunk loading. Progress is remembered between sessions.",
+  "voxy.config.distantgen.radius": "Generation radius",
+  "voxy.config.distantgen.radius.tooltip": "How far out (in chunks) to generate LOD terrain around you. 96 chunks = 1536 blocks. Larger radii take proportionally longer to fill in but keep working quietly in the background.",
+  "voxy.config.distantgen.maxInFlight": "Concurrent chunks",
+  "voxy.config.distantgen.maxInFlight.tooltip": "How many chunks may be generating at the same time. Higher fills the map faster but puts more load on the server thread and worldgen workers.",
+  "voxy.config.distantgen.maxMspt": "Server load limit",
+  "voxy.config.distantgen.maxMspt.tooltip": "Distant generation only starts new chunks while the server's average tick time is below this. Lower = more polite to gameplay, higher = faster generation.",
+
+  "voxy.config.advanced.center_lod_width": "Center vanilla width",
+  "voxy.config.advanced.center_lod_width.tooltip": "Width of the screen-centered, full-height column that keeps rendering vanilla chunks, as a percentage of your monitor's width. Everything to the left/right of it renders as Voxy LOD. 100% = off (the column is at least as wide as the game window). Lower it to turn the side 'wings' into LOD - great for ultrawide monitors.",
+
+  "voxy.config.advanced.lod_boundary_buffer": "LOD boundary overlap",
+  "voxy.config.advanced.lod_boundary_buffer.tooltip": "Extra inward shrink of each vanilla chunk's LOD-occlusion box, in blocks. Leave at Exact (0): the boundary is already aligned, so overlap (>0) only makes flat water z-fight at the seam.",
+
+  "voxy.config.advanced.earth_curve": "World curvature",
+  "voxy.config.advanced.earth_curve.tooltip": "Simulates standing on a spherical planet. Disabled = flat world. Higher values = smaller planet (more curvature). Values below 50 snap to 50. Inspired by Distant Horizons.",
+
+  "voxy.config.general.enabled": "Enable Voxy",
+  "voxy.config.general.enabled.tooltip": "Fully enables or disables voxy",
+
+  "voxy.config.general.serviceThreads": "Service threads",
+  "voxy.config.general.serviceThreads.tooltip": "Number of threads the ServiceThreadPool can use",
+
+  "voxy.config.general.useSodiumBuilder": "Use sodium threads",
+  "voxy.config.general.useSodiumBuilder.tooltip": "Uses sodium builder threads as part of voxys thread pool, can reduce stuttering and lag when moving quickly at high render distance",
+
+  "voxy.config.general.ingest": "Chunk Ingest",
+  "voxy.config.general.ingest.tooltip": "Enables or disables voxies ability to convert new chunks into LoDs",
+
+  "voxy.config.general.rendering": "Voxy Rendering",
+  "voxy.config.general.rendering.tooltip": "Enables or disables voxy rendering",
+
+  "voxy.config.general.subDivisionSize": "Pixels^2 of subdivision size",
+  "voxy.config.general.subDivisionSize.tooltip": "Maximum size in pixels (squared) of screenspace AABB before subdiving to smaller LoDs (Smaller being higher quality)",
+
+  "voxy.config.general.renderDistance": "Render distance",
+  "voxy.config.general.renderDistance.tooltip": "Render distance of voxy in chunks",
+
+  "voxy.config.general.environmental_fog": "Enable environmental fog",
+  "voxy.config.general.environmental_fog.tooltip": "Blend distance fog over LOD terrain. Fog from being underwater/in lava or from blindness/darkness is always applied to LODs, even with this off.",
+
+  "voxy.config.general.skyFogDistance": "Sky fog distance",
+  "voxy.config.general.skyFogDistance.tooltip": "End distance of the sky fog and of the LOD terrain's distance fog, in chunks",
+
+  "voxy.config.general.fogIntensity": "Fog intensity",
+  "voxy.config.general.fogIntensity.tooltip": "Strength of the LOD distance fog. 0% disables it, 100% reaches the full fog colour at the end distance.",
+
+  "voxy.config.general.fogDensity": "Fog density",
+  "voxy.config.general.fogDensity.tooltip": "0% matches Sodium's terrain fog curve. Higher values keep fog thin until near the end distance, then thicken it sharply.",
+
+  "voxy.config.general.fogDistancePercent": "Fog end distance",
+  "voxy.config.general.fogDistancePercent.tooltip": "Where the LOD distance fog ends, as a percentage of the LOD render distance",
+
+  "voxy.config.general.fogStartPercent": "Fog start distance",
+  "voxy.config.general.fogStartPercent.tooltip": "Where the LOD distance fog starts fading in, as a percentage of its end distance. 0% = fog rises from right in front of you, 95% = a thin fog band at the end distance.",
+
+  "voxy.config.general.caveFog": "Cave fog",
+  "voxy.config.general.caveFog.tooltip": "Pull the fog in close while you are fully underground (no sky light), on both normal terrain and LODs. Fades in and out smoothly when entering or leaving caves. Stands down when Better Fog is installed.",
+
+  "voxy.config.general.caveFogDistance": "Cave fog distance",
+  "voxy.config.general.caveFogDistance.tooltip": "How far you can see before cave fog fully sets in",
+
+  "voxy.config.general.adaptCloudDistance": "Extend clouds with LODs",
+  "voxy.config.general.adaptCloudDistance.tooltip": "Extend Sodium's cloud render distance to match the LOD render distance, so clouds don't stop at the vanilla distance while terrain keeps going",
+
+  "voxy.config.general.cloudDistance": "Cloud distance",
+  "voxy.config.general.cloudDistance.tooltip": "Fixed cloud render distance in chunks, used when 'Extend clouds with LODs' is off. Vanilla = leave the cloud distance alone.",
+
+  "voxy.config.general.render_fog": "Enable render fog",
+  "voxy.config.general.render_fog.tooltip": "Enables or disables render fog effect",
+
+  "voxy.config.general.render_statistics": "Enable render statistics",
+  "voxy.config.general.render_statistics.tooltip": "Enable render statistics in F3 menu, useful for debugging",
+
+  "voxy.sodium.page.title": "Voxy",
+
+  "voxy.sodium.option.enabled": "Enable Voxy",
+  "voxy.sodium.option.enabled.tooltip": "Master switch to enable or disable the Voxy LOD system",
+
+  "voxy.sodium.option.enable_rendering": "LOD Rendering",
+  "voxy.sodium.option.enable_rendering.tooltip": "Enable rendering of LOD terrain. Disable to keep data ingestion running without visual output.",
+
+  "voxy.sodium.option.ingest_enabled": "Chunk Ingestion",
+  "voxy.sodium.option.ingest_enabled.tooltip": "Enable automatic conversion of visited chunks into LOD data",
+
+  "voxy.sodium.option.render_distance": "LOD Render Distance",
+  "voxy.sodium.option.render_distance.tooltip": "How far LOD terrain renders. Value is multiplied by 32 to get chunk distance. Example: 16 = 512 chunks.",
+
+  "voxy.sodium.option.service_threads": "Service Threads",
+  "voxy.sodium.option.service_threads.tooltip": "Number of background threads for LOD processing. More threads = faster LOD generation but higher CPU usage.",
+
+  "voxy.sodium.option.subdivision_size": "Subdivision Size",
+  "voxy.sodium.option.subdivision_size.tooltip": "Maximum screen-space size before subdividing to higher detail LODs. Lower = more detail but more GPU work.",
+
+  "voxy.sodium.option.environmental_fog": "Environmental Fog",
+  "voxy.sodium.option.environmental_fog.tooltip": "Apply environmental fog effects to LOD terrain",
+
+  "voxy.sodium.option.dont_use_sodium_threads": "Separate Thread Pool",
+  "voxy.sodium.option.dont_use_sodium_threads.tooltip": "Don't share threads with Sodium's chunk builder. Enable if you experience stuttering.",
+
+  "voxy.sodium.option.lod_boundary_buffer": "LOD Boundary Overlap",
+  "voxy.sodium.option.lod_boundary_buffer.tooltip": "Controls overlap between vanilla chunks and LODs. Higher = smoother transitions when flying fast, but slight overdraw.",
+
+  "voxy.sodium.option.render_statistics": "Debug Statistics",
+  "voxy.sodium.option.render_statistics.tooltip": "Show LOD render statistics in the F3 debug screen",
+
+  "voxy.sodium.option.earth_curve_ratio": "World Curvature",
+  "voxy.sodium.option.earth_curve_ratio.tooltip": "Simulates standing on a spherical planet. 0 = flat world. Higher values = smaller planet effect (more curvature). Inspired by Distant Horizons."
+}

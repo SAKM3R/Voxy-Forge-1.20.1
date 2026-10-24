@@ -1,0 +1,212 @@
+plugins {
+	id 'eclipse'
+	id 'idea'
+	id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
+	id 'org.spongepowered.mixin' version '0.7.+'
+}
+
+version = "${mod_version}+forge-${minecraft_version}"
+group = maven_group
+
+base {
+	archivesName = archives_base_name
+}
+
+// Gradle builds with JDK 21 (downloaded if it isn't installed); see java_release in gradle.properties.
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+jarJar.enable()
+
+minecraft {
+	mappings channel: 'official', version: minecraft_version
+	copyIdeResources = true
+
+	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+	runs {
+		client {
+			workingDirectory project.file('run')
+			property 'forge.logging.markers', 'REGISTRIES'
+			property 'forge.logging.console.level', 'info'
+			property 'mixin.env.remapRefMap', 'true'
+			property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+			mods {
+				voxy {
+					source sourceSets.main
+				}
+			}
+		}
+	}
+}
+
+mixin {
+	add sourceSets.main, 'voxy.refmap.json'
+	config 'client.voxy.mixins.json'
+	config 'common.voxy.mixins.json'
+}
+
+repositories {
+	mavenCentral()
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = 'Modrinth'
+				url = 'https://api.modrinth.com/maven'
+			}
+		}
+		filter {
+			includeGroup 'maven.modrinth'
+		}
+	}
+}
+
+// LWJGL native binaries (lmdb, zstd) that Minecraft does not ship. They are copied to the root of
+// the mod jar, where LWJGL's SharedLibraryLoader finds them on the classpath.
+configurations {
+	lwjglNativesRaw { transitive = false }
+}
+
+dependencies {
+	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+	// Embeddium (Sodium for Forge 1.20.1). Required at runtime; Voxy mixes into its chunk renderer.
+	compileOnly fg.deobf("maven.modrinth:embeddium:${embeddium_version}")
+	runtimeOnly fg.deobf("maven.modrinth:embeddium:${embeddium_version}")
+
+	// MixinExtras (@WrapMethod, @WrapOperation, ...). Bundled so the mod does not depend on which
+	// MixinExtras version Forge or another mod happens to ship.
+	compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}"))
+	implementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixinextras_version}")) {
+		jarJar.ranged(it, "[${mixinextras_version},)")
+	}
+
+	compileOnly 'org.jspecify:jspecify:1.0.0'
+
+	// LWJGL-LMDB and LWJGL-ZSTD: required by Voxy, not provided by Minecraft
+	implementation(jarJar("org.lwjgl:lwjgl-lmdb:${lwjgl_version}")) {
+		jarJar.ranged(it, "[3.3.0,4.0.0)")
+	}
+	implementation(jarJar("org.lwjgl:lwjgl-zstd:${lwjgl_version}")) {
+		jarJar.ranged(it, "[3.3.0,4.0.0)")
+	}
+	lwjglNativesRaw "org.lwjgl:lwjgl-lmdb:${lwjgl_version}:natives-windows"
+	lwjglNativesRaw "org.lwjgl:lwjgl-zstd:${lwjgl_version}:natives-windows"
+	lwjglNativesRaw "org.lwjgl:lwjgl-lmdb:${lwjgl_version}:natives-linux"
+	lwjglNativesRaw "org.lwjgl:lwjgl-zstd:${lwjgl_version}:natives-linux"
+	lwjglNativesRaw "org.lwjgl:lwjgl-lmdb:${lwjgl_version}:natives-macos"
+	lwjglNativesRaw "org.lwjgl:lwjgl-zstd:${lwjgl_version}:natives-macos"
+	lwjglNativesRaw "org.lwjgl:lwjgl-lmdb:${lwjgl_version}:natives-macos-arm64"
+	lwjglNativesRaw "org.lwjgl:lwjgl-zstd:${lwjgl_version}:natives-macos-arm64"
+
+	// RocksDB - default storage backend
+	implementation(jarJar('org.rocksdb:rocksdbjni:10.2.1')) {
+		jarJar.ranged(it, '[10.0.0,11.0.0)')
+	}
+
+	// Redis storage backend
+	implementation(jarJar('redis.clients:jedis:5.1.0')) {
+		transitive = false
+		jarJar.ranged(it, '[5.0.0,6.0.0)')
+	}
+	implementation(jarJar('org.apache.commons:commons-pool2:2.12.0')) {
+		jarJar.ranged(it, '[2.11.0,3.0.0)')
+	}
+
+	// Distant Horizons import support
+	implementation(jarJar('org.tukaani:xz:1.10')) {
+		jarJar.ranged(it, '[1.9,2.0)')
+	}
+	implementation(jarJar('org.xerial:sqlite-jdbc:3.49.1.0')) {
+		jarJar.ranged(it, '[3.40.0.0,4.0.0.0)')
+	}
+
+	// Forge dev runs do not put jarJar'd libraries on the classpath; add them for runClient.
+	minecraftLibrary "org.lwjgl:lwjgl-lmdb:${lwjgl_version}"
+	minecraftLibrary "org.lwjgl:lwjgl-zstd:${lwjgl_version}"
+	minecraftLibrary 'org.rocksdb:rocksdbjni:10.2.1'
+	minecraftLibrary 'org.tukaani:xz:1.10'
+	minecraftLibrary 'org.xerial:sqlite-jdbc:3.49.1.0'
+}
+
+def extractedNativesDir = layout.buildDirectory.dir('extracted-natives')
+def extractLwjglNatives = tasks.register('extractLwjglNatives', Copy) {
+	from({ configurations.lwjglNativesRaw.collect { zipTree(it) } }) {
+		include '**/*.dll', '**/*.so', '**/*.dylib'
+		eachFile { it.relativePath = new RelativePath(true, it.name) }
+		includeEmptyDirs = false
+	}
+	into extractedNativesDir
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+def gitCommitHash = { ->
+	try {
+		def p = ['git', 'rev-parse', '--short', 'HEAD'].execute(null, projectDir)
+		def out = p.text.trim()
+		return p.waitFor() == 0 && out ? out : 'unknown'
+	} catch (ignored) {
+		return 'unknown'
+	}
+}
+
+tasks.named('processResources', ProcessResources).configure {
+	def props = [version: mod_version, forge_version: forge_version, commit: gitCommitHash()]
+	inputs.properties props
+	filesMatching(['META-INF/mods.toml']) {
+		expand props
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+	options.release = (java_release as String).toInteger()
+	options.compilerArgs.addAll(['-Xmaxerrs', '5000'])
+}
+
+def manifestAttributes = [
+	'Specification-Title'     : 'voxy',
+	'Specification-Vendor'    : 'MCRcortex',
+	'Specification-Version'   : '1',
+	'Implementation-Title'    : project.name,
+	'Implementation-Version'  : project.version,
+	'Implementation-Vendor'   : 'MCRcortex',
+	'MixinConfigs'            : 'client.voxy.mixins.json,common.voxy.mixins.json'
+]
+
+tasks.named('jar', Jar).configure {
+	archiveClassifier = 'slim'
+	dependsOn extractLwjglNatives
+	from(extractedNativesDir)
+	from(rootProject.file('LICENSE.md')) {
+		rename { "${it}_voxy" }
+	}
+	manifest { attributes(manifestAttributes) }
+}
+
+tasks.named('jarJar').configure {
+	archiveClassifier = ''
+	dependsOn extractLwjglNatives
+	from(extractedNativesDir)
+	from(rootProject.file('LICENSE.md')) {
+		rename { "${it}_voxy" }
+	}
+	manifest { attributes(manifestAttributes) }
+}
+
+reobf {
+	jarJar {}
+}
+
+tasks.named('jar').configure { finalizedBy 'reobfJar' }
+tasks.named('jarJar').configure { finalizedBy 'reobfJarJar' }
+tasks.named('build').configure { dependsOn 'jarJar' }
+
+// CI helper: writes the compile classpath so the workflow can javap Minecraft / Embeddium signatures.
+tasks.register('printCompileClasspath') {
+	doLast {
+		def f = file("${buildDir}/compile-classpath.txt")
+		f.parentFile.mkdirs()
+		f.text = sourceSets.main.compileClasspath.files.collect { it.absolutePath }.join(File.pathSeparator)
+	}
+}

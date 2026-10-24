@@ -1,0 +1,36 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "All-Rights-Reserved"
+issueTrackerURL = "https://github.com/SAKM3R/Voxy-Forge-1.20.1/issues"
+
+[[mods]]
+modId = "voxy"
+version = "${version}"
+displayName = "Voxy"
+description = '''Far distance rendering mod utilising LoDs. Unofficial Forge 1.20.1 + Embeddium port of Voxy by MCRcortex.'''
+authors = "Cortex (original mod); Forge 1.20.1 port"
+displayURL = "https://github.com/MCRcortex/voxy"
+logoFile = "assets/voxy/icon.png"
+# Voxy works client-only (LOD rendering) and also server-side (distant generation); neither side needs the other.
+displayTest = "IGNORE_ALL_VERSION"
+
+[[dependencies.voxy]]
+modId = "forge"
+mandatory = true
+versionRange = "[47.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.voxy]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,1.20.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.voxy]]
+modId = "embeddium"
+mandatory = true
+versionRange = "[0.3.25,0.4)"
+ordering = "AFTER"
+side = "CLIENT"
