@@ -90,7 +90,7 @@ dependencies {
 	compileOnly fg.deobf("maven.modrinth:oculus:${oculus_version}")
 	if (project.hasProperty('withOculus')) {
 		runtimeOnly fg.deobf("maven.modrinth:oculus:${oculus_version}")
-		minecraftLibrary 'org.anarres:jcpp:1.4.14' //jar-in-jar'd by Oculus, not picked up in dev runs
+		minecraftLibrary('org.anarres:jcpp:1.4.14') { transitive = false } //jar-in-jar'd by Oculus, not picked up in dev runs
 	}
 
 	// MixinExtras (@WrapMethod, @WrapOperation, ...). Bundled so the mod does not depend on which
