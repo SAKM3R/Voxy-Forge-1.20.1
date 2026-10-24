@@ -51,8 +51,8 @@ public class ChunkBoundRenderer {
     // 12 frames @ 60fps = ~200ms delay for LOD system to prepare
     private static final int REMOVAL_DELAY_FRAMES = 12;
 
-    // Set each frame by MixinRenderSectionManager.voxy$cullOutermostVanillaRing to the EXACT distance
-    // (blocks) within which Sodium still renders vanilla (its search distance minus our 1-chunk cull).
+    // Set each frame by MixinRenderSectionManager to the EXACT distance (blocks) within which Embeddium
+    // still renders vanilla sections (its section search distance).
     // The LOD-occlusion circle below uses this so it lands precisely on the vanilla cull edge. A fixed
     // renderDistance*16 - 16 under-shoots it (Sodium's search distance carries a buffer), leaving a
     // thin LOD-over-vanilla overlap (the faint water bug); over-shooting would leave 1-chunk holes.
@@ -85,17 +85,25 @@ public class ChunkBoundRenderer {
                 .ssbo(1, this.chunkPosBuffer);
     }
 
-    public void addSection(long pos) {
-        // First check if it's pending removal in any delay queue
+    // Bookkeeping invariant: a position is live in chunk2idx, or queued in addQueue, never both; a live
+    // position may additionally sit in exactly one of pendingRemoval (delayed) or remQueue (next frame).
+    // Embeddium reports the same section from several hooks (build-state change and disposal), so every
+    // call below is idempotent.
+
+    private void cancelPendingRemoval(long pos) {
         if (this.pendingRemoval.remove(pos)) {
             for (LongArrayList queue : this.delayedRemovalQueue) {
                 if (queue.rem(pos)) {
                     break;
                 }
             }
-            return; // Was pending removal, now cancelled
         }
-        if (!this.remQueue.remove(pos)) {
+    }
+
+    public void addSection(long pos) {
+        this.cancelPendingRemoval(pos);
+        this.remQueue.remove(pos);
+        if (!this.chunk2idx.containsKey(pos)) {
             this.addQueue.add(pos);
         }
     }
@@ -104,39 +112,23 @@ public class ChunkBoundRenderer {
         if (this.addQueue.remove(pos)) {
             return; // Was a pending add that never became live; just cancel it
         }
-        // Only sections actually being masked need removing. Sodium drives this from several places
-        // (build-state change and section disposal), so ignore anything not currently tracked to
-        // avoid spurious "not in map" churn, and dedupe via pendingRemoval.
-        if (!this.chunk2idx.containsKey(pos)) {
-            return;
+        if (!this.chunk2idx.containsKey(pos) || this.remQueue.contains(pos)) {
+            return; // Not masked, or already being removed next frame
         }
         if (this.pendingRemoval.add(pos)) {
-            // Add to delayed removal queue instead of immediate removal
-            // This gives LOD system time to prepare before chunk bounds disappear
+            // Delayed removal gives the LOD system time to prepare before the chunk bound disappears
             this.delayedRemovalQueue[this.delayQueueIndex].add(pos);
         }
     }
 
     // Removes a section from the occlusion bound on the next frame, skipping the delayed-removal
-    // window. Use this when Sodium has actually disposed the section (chunk unloaded / left render
-    // distance): the LOD is already prepared, so the ~200ms delay would only leave a see-through
-    // gap. The delayed path is still used for transient build-state changes (rebuilds).
+    // window. Use this when the section was actually disposed (chunk unloaded / left render distance).
     public void removeSectionImmediate(long pos) {
-        if (this.addQueue.remove(pos)) {
-            return; // Was a pending add that never became live; just cancel it
+        this.addQueue.remove(pos);
+        this.cancelPendingRemoval(pos);
+        if (this.chunk2idx.containsKey(pos)) {
+            this.remQueue.add(pos);
         }
-        if (!this.chunk2idx.containsKey(pos)) {
-            return;
-        }
-        // Cancel any in-flight delayed removal so we don't process it twice.
-        if (this.pendingRemoval.remove(pos)) {
-            for (LongArrayList queue : this.delayedRemovalQueue) {
-                if (queue.rem(pos)) {
-                    break;
-                }
-            }
-        }
-        this.remQueue.add(pos);
     }
 
     //Bind and render, changing as little gl state as possible so that the caller may configure how it wants to render
@@ -257,7 +249,6 @@ public class ChunkBoundRenderer {
     private void _remPos(long pos) {
         int idx = this.chunk2idx.remove(pos);
         if (idx == -1) {
-            Logger.warn("Chunk not in map: " + pos);
             return;
         }
         if (idx == this.chunk2idx.size()) {
@@ -281,7 +272,6 @@ public class ChunkBoundRenderer {
 
     private void _addPos(long pos) {
         if (this.chunk2idx.containsKey(pos)) {
-            Logger.warn("Chunk already in map: " + pos);
             return;
         }
         this.ensureSize1();//Resize if needed

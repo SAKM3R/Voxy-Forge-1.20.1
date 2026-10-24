@@ -82,6 +82,7 @@ jobs:
           cp build.log ci-out/ 2>/dev/null || true
           cp -r smoke/. ci-out/ 2>/dev/null || true
           mkdir -p ci-out/shaders && cp -r smoke-shaders/. ci-out/shaders/ 2>/dev/null || true
+          find ci-out -name '*.log' -size +20M -exec truncate -s 20M {} \;
           echo "${{ github.sha }}" > ci-out/commit
           echo "${{ job.status }}" > ci-out/status
           cd ci-out

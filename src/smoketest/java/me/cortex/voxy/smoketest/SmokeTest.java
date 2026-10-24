@@ -51,7 +51,7 @@ public class SmokeTest {
         }
         if (!(mc.screen instanceof TitleScreen || mc.screen instanceof AccessibilityOnboardingScreen)) return;
         started = true;
-        mc.options.renderDistance().set(6);
+        mc.options.renderDistance().set(5);
         mc.options.simulationDistance().set(5);
         mc.options.pauseOnLostFocus = false;
         mc.options.onboardAccessibility = false;
@@ -80,8 +80,8 @@ public class SmokeTest {
             mc.player.setXRot(15);
         }
         //Fly across the world so chunks stream in and out around the vanilla/LOD seam
-        if (ticksInWorld > 100 && ticksInWorld <= 600 && ticksInWorld % 5 == 0) {
-            mc.player.setPos(mc.player.getX() + 6, mc.player.getY(), mc.player.getZ());
+        if (ticksInWorld > 100 && ticksInWorld <= 500 && ticksInWorld % 10 == 0) {
+            mc.player.setPos(mc.player.getX() + 8, mc.player.getY(), mc.player.getZ());
         }
         if (ticksInWorld == 1150) {
             mc.player.setYRot(90);//Look back (-X)
