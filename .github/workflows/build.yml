@@ -62,15 +62,23 @@ jobs:
             echo "$p $(basename "$f"): $(unzip -l "$f" | grep -c 'voxy.json') voxy.json" | tee -a smoke-shaders/packs.txt
           done
           PACK=$(for f in run/shaderpacks/*.zip; do unzip -l "$f" | grep -q 'voxy.json' && { basename "$f"; break; }; done)
+          # The repo's own Photon 1.2a build with Voxy support (shaderpack/), tested with the preset shipped next to it
+          if [ -d shaderpack/photon_v1.2a_voxy ]; then
+            (cd shaderpack/photon_v1.2a_voxy && zip -qr ../../run/shaderpacks/photon_v1.2a_voxy.zip .)
+            cp shaderpack/photon_v1.2a_voxy.preset.txt run/shaderpacks/photon_v1.2a_voxy.zip.txt
+            PACK=photon_v1.2a_voxy.zip
+          fi
           echo "Using shader pack: $PACK" | tee -a smoke-shaders/packs.txt
           if [ -n "$PACK" ]; then
             printf 'enableShaders=true\nshaderPack=%s\n' "$PACK" > run/config/oculus.properties
             timeout 1500 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest -PwithOculus --console=plain > smoke-shaders/smoke.log 2>&1 || true
             cp run/logs/latest.log run/screenshots/*.png smoke-shaders/ 2>/dev/null || true
+            cp -r run/patched_shaders smoke-shaders/ 2>/dev/null || true
             cp -r run/crash-reports smoke-shaders/ 2>/dev/null || true
             grep "VOXY_SMOKE\|Voxy render system created\|Creating voxy iris" run/logs/latest.log || true
             if grep -q "Mixin apply failed" run/logs/latest.log; then echo "::error::A mixin failed to apply"; exit 1; fi
             grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Shader smoke test did not finish"; exit 1; }
+            grep -n -i "error\|failed\|exception" run/logs/latest.log | grep -i "shader\|iris\|oculus\|voxy\|glsl" | head -40 || true
             grep -q "using pipeline 'IrisVoxyRenderPipeline'" run/logs/latest.log || { echo "::error::Voxy shader pipeline was not used"; exit 1; }
           fi
 
