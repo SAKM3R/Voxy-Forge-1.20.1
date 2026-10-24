@@ -79,6 +79,10 @@ public class SmokeTest {
             mc.player.setPos(mc.player.getX(), mc.player.getY() + 60, mc.player.getZ());
             mc.player.setXRot(15);
         }
+        if (ticksInWorld == 1300) {
+            me.cortex.voxy.client.config.VoxyConfig.CONFIG.useEnvironmentalFog = false;
+            LOG.info("VOXY_SMOKE environmental fog off");
+        }
         if (ticksInWorld == 1200 || ticksInWorld == 1500) {
             net.minecraft.client.Screenshot.grab(mc.gameDirectory, "voxy-smoke-" + ticksInWorld + ".png", mc.getMainRenderTarget(), msg -> LOG.info("VOXY_SMOKE screenshot: {}", msg.getString()));
         }
