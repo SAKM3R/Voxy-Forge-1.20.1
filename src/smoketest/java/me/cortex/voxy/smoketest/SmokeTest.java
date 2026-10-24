@@ -81,7 +81,9 @@ public class SmokeTest {
         }
         //Fly across the world so chunks stream in and out around the vanilla/LOD seam
         if (ticksInWorld > 100 && ticksInWorld <= 500 && ticksInWorld % 10 == 0) {
-            mc.player.setPos(mc.player.getX() + 8, mc.player.getY(), mc.player.getZ());
+            double nx = mc.player.getX() + 8;
+            int ground = mc.level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, (int) nx, (int) mc.player.getZ());
+            mc.player.setPos(nx, Math.max(mc.player.getY(), ground + 30), mc.player.getZ());
         }
         if (ticksInWorld == 1150) {
             mc.player.setYRot(90);//Look back (-X)
