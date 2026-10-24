@@ -169,3 +169,7 @@ org.lwjgl.system.APIUtil
 org.lwjgl.system.SharedLibrary
 net.minecraft.server.level.ChunkLevel
 net.minecraft.server.level.ChunkHolder$ChunkLoadingFailure
+net.minecraft.client.gui.screens.worldselection.WorldOpenFlows
+net.minecraft.world.level.levelgen.presets.WorldPresets
+net.minecraft.world.level.LevelSettings
+net.minecraft.world.level.levelgen.WorldOptions

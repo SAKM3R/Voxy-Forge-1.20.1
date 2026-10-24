@@ -34,6 +34,23 @@ jobs:
           ./gradlew build --console=plain --stacktrace 2>&1 | tee build.log
           echo "status=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
 
+      # Boots the game on a software (Mesa llvmpipe) GPU, creates a world and checks that Voxy starts and
+      # that every mixin applies. Results land in ci-out (smoke.log, latest.log).
+      - name: Smoke test
+        if: steps.build.outputs.status == '0' && hashFiles('ci/smoketest') != ''
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb libgl1-mesa-dri mesa-utils > /dev/null
+          export LIBGL_ALWAYS_SOFTWARE=1 MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460
+          mkdir -p ci-out
+          xvfb-run -a -s "-screen 0 1280x720x24" glxinfo -B > ci-out/glxinfo.txt 2>&1 || true
+          set +e
+          timeout 1200 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest --console=plain > ci-out/smoke.log 2>&1
+          echo "exit=$?" >> ci-out/smoke.log
+          cp run/logs/latest.log ci-out/ 2>/dev/null
+          cp run/logs/debug.log ci-out/ 2>/dev/null
+          cp -r run/crash-reports ci-out/ 2>/dev/null
+          true
+
       # Development aid: signatures of the Minecraft / Forge / Embeddium classes listed in
       # ci/javap.txt, so the port can be checked against the real 1.20.1 APIs.
       - name: Signature dump

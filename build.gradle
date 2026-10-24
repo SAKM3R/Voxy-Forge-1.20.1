@@ -17,6 +17,14 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 jarJar.enable()
 
+// Development-only smoke test (src/smoketest): loaded into dev runs, never packaged into the jar.
+sourceSets {
+	smoketest {
+		compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+		runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
+	}
+}
+
 minecraft {
 	mappings channel: 'official', version: minecraft_version
 	copyIdeResources = true
@@ -30,9 +38,14 @@ minecraft {
 			property 'forge.logging.console.level', 'info'
 			property 'mixin.env.remapRefMap', 'true'
 			property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+			// ./gradlew runClient -Psmoketest : creates a world, plays for a bit, logs Voxy's state and quits
+			if (project.hasProperty('smoketest')) {
+				property 'voxy.smoketest', 'true'
+			}
 			mods {
 				voxy {
 					source sourceSets.main
+					source sourceSets.smoketest
 				}
 			}
 		}
