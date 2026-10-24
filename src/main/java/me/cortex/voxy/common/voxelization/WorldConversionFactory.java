@@ -17,53 +17,22 @@ import net.minecraft.world.level.chunk.Palette;
 import net.minecraft.world.level.chunk.PalettedContainer;
 import net.minecraft.world.level.chunk.PalettedContainerRO;
 import net.minecraft.world.level.chunk.SingleValuePalette;
-import java.lang.reflect.Field;
 import java.util.WeakHashMap;
 
 public class WorldConversionFactory {
-    // MC 1.21.1: PalettedContainer.Data class is inaccessible, use reflection to access internal fields
-    private static final Field DATA_FIELD;
-    private static final Field PALETTE_FIELD;
-    private static final Field STORAGE_FIELD;
-
-    static {
-        try {
-            DATA_FIELD = PalettedContainer.class.getDeclaredField("data");
-            DATA_FIELD.setAccessible(true);
-
-            Class<?> dataClass = Class.forName("net.minecraft.world.level.chunk.PalettedContainer$Data");
-            PALETTE_FIELD = dataClass.getDeclaredField("palette");
-            PALETTE_FIELD.setAccessible(true);
-            STORAGE_FIELD = dataClass.getDeclaredField("storage");
-            STORAGE_FIELD.setAccessible(true);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to initialize PalettedContainer reflection", e);
-        }
-    }
-
+    // PalettedContainer.data and the PalettedContainer.Data record are opened by the access transformer.
+    // (Reflection by name would break in production, where Forge 1.20.1 uses SRG field names.)
     private static Object getData(PalettedContainer<?> container) {
-        try {
-            return DATA_FIELD.get(container);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Failed to access PalettedContainer.data", e);
-        }
+        return container.data;
     }
 
     @SuppressWarnings("unchecked")
     private static <T> Palette<T> getPalette(Object data) {
-        try {
-            return (Palette<T>) PALETTE_FIELD.get(data);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Failed to access Data.palette", e);
-        }
+        return (Palette<T>) ((PalettedContainer.Data<?>) data).palette();
     }
 
     private static Object getStorage(Object data) {
-        try {
-            return STORAGE_FIELD.get(data);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Failed to access Data.storage", e);
-        }
+        return ((PalettedContainer.Data<?>) data).storage();
     }
 
     private static final class Cache {
