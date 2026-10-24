@@ -68,6 +68,7 @@ jobs:
             # uses 36 KiB (fine on real GPUs), so the CI copy leaves that one pass out
             (cd shaderpack/photon_v1.2a_voxy && zip -qr ../../run/shaderpacks/photon_v1.2a_voxy.zip . -x 'shaders/world*/deferred4_a.csh')
             cp shaderpack/photon_v1.2a_voxy.preset.txt run/shaderpacks/photon_v1.2a_voxy.zip.txt
+            [ -f ci/no-colored-lights ] && sed -i 's/^COLORED_LIGHTS=true/COLORED_LIGHTS=false/' run/shaderpacks/photon_v1.2a_voxy.zip.txt
             PACK=photon_v1.2a_voxy.zip
           fi
           # Comparison run (ci/photon-original): unmodified upstream Photon 1.2a, same preset
