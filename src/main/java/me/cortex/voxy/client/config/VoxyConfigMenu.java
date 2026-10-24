@@ -27,8 +27,8 @@ import java.util.function.Function;
 
 /**
  * Voxy's pages in Embeddium's Video Settings screen (added through Embeddium's OptionGUIConstructionEvent,
- * see {@link me.cortex.voxy.client.compat.EmbeddiumCompat}). Embeddium's options screen does not scroll,
- * so the settings are split over three pages: Voxy, Voxy Fog and Voxy Extra.
+ * see {@link me.cortex.voxy.client.compat.EmbeddiumCompat}). Embeddium groups pages by mod id, so they show
+ * up as three tabs (General, Fog & Clouds, Advanced) under a "Voxy" heading.
  *
  * Values are written to {@link VoxyConfig} when the user presses Apply/Done, then saved to voxy-config.json.
  */
@@ -95,7 +95,7 @@ public final class VoxyConfigMenu {
     }
 
     private static OptionPage mainPage() {
-        return page("general", Component.literal("Voxy"),
+        return page("general", Component.translatable("voxy.config.general"),
                 OptionGroup.createBuilder()
                         .add(bool("general.enabled", (s, v) -> {
                             if (s.enabled == v) return;
@@ -169,7 +169,7 @@ public final class VoxyConfigMenu {
 
     private static OptionPage fogPage() {
         // All fog values are read per frame in NormalRenderPipeline.finish, so none need a reload.
-        return page("fog", Component.literal("Voxy Fog"),
+        return page("fog", Component.literal("Fog & Clouds"),
                 OptionGroup.createBuilder()
                         .add(bool("general.environmental_fog", (s, v) -> s.useEnvironmentalFog = v, s -> s.useEnvironmentalFog, renderingEnabled()))
                         .add(slider("general.skyFogDistance", 16, 512, 8, v -> Component.literal(v + " chunks"),
@@ -198,7 +198,7 @@ public final class VoxyConfigMenu {
 
     private static OptionPage extraPage() {
         BooleanSupplier genEnabled = () -> VoxyConfig.CONFIG.enabled && VoxyConfig.CONFIG.ingestEnabled;
-        return page("extra", Component.literal("Voxy Extra"),
+        return page("extra", Component.translatable("voxy.config.advanced"),
                 OptionGroup.createBuilder()
                         .add(bool("distantgen.enabled", (s, v) -> s.distantGenEnabled = v, s -> s.distantGenEnabled, genEnabled))
                         .add(slider("distantgen.radius", 16, 1024, 16, v -> Component.literal(v + " chunks"),
