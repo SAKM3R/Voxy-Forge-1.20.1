@@ -29,7 +29,8 @@ jobs:
       - name: Build
         run: |
           chmod +x gradlew
-          ./gradlew build --console=plain
+          set -o pipefail
+          ./gradlew build --console=plain 2>&1 | tee build.log
 
       # Boots the game on a software GPU (Mesa llvmpipe), creates a world, plays ~75 seconds and checks that
       # every mixin applies and Voxy's renderer comes up (src/smoketest).
@@ -45,6 +46,23 @@ jobs:
           if grep -q "Mixin apply failed" run/logs/latest.log; then echo "::error::A mixin failed to apply"; exit 1; fi
           grep -q "VOXY_SMOKE final .*renderSystem=true" run/logs/latest.log || { echo "::error::Voxy did not start"; exit 1; }
           grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Smoke test did not finish"; exit 1; }
+
+      # Logs for development: build.log and the smoke test output on the ci-out branch
+      - name: Publish CI logs
+        if: always()
+        run: |
+          mkdir -p ci-out
+          cp build.log ci-out/ 2>/dev/null || true
+          cp -r smoke/. ci-out/ 2>/dev/null || true
+          echo "${{ github.sha }}" > ci-out/commit
+          echo "${{ job.status }}" > ci-out/status
+          cd ci-out
+          git init -q -b ci-out
+          git config user.name ci
+          git config user.email ci@localhost
+          git add -A
+          git commit -qm "CI output for ${{ github.sha }}"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ci-out
 
       - name: Upload smoke test output
         if: always()
