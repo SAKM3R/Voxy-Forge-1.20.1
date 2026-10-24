@@ -280,8 +280,10 @@ public class VoxyRenderSystem {
         if (IrisUtil.irisShadowActive()) {
             return;
         }
-        // Oculus shader packs: Voxy's shader-pack pipeline is not ported to 1.20.1, so stand down while one is active.
-        if (IrisUtil.shaderPackActive()) {
+        // Shader pack active but this renderer was not built with the shader-pack pipeline (the pack has no
+        // voxy.json, or the pipeline was not ready when the renderer was created): drawing the plain LOD pass
+        // into the pack's buffers would look wrong, so stand down.
+        if (IrisUtil.irisShaderPackEnabled() && !(this.pipeline instanceof IrisVoxyRenderPipeline)) {
             return;
         }
         // If LOD-under-shaders has errored before, keep shaders usable and just skip Voxy LOD.

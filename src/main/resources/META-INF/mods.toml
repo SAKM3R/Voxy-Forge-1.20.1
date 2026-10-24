@@ -34,3 +34,10 @@ mandatory = true
 versionRange = "[0.3.25,0.4)"
 ordering = "AFTER"
 side = "CLIENT"
+
+[[dependencies.voxy]]
+modId = "oculus"
+mandatory = false
+versionRange = "[1.7,)"
+ordering = "NONE"
+side = "CLIENT"

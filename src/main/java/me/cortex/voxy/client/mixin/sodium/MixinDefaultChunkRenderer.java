@@ -44,9 +44,8 @@ public abstract class MixinDefaultChunkRenderer extends ShaderChunkRenderer {
             return;
         }
         // Vanilla terrain WILL be drawn this pass: clip it to the central vanilla column so the LOD
-        // takes the left/right wings. Skipped during the shader shadow pass so shadow casting stays full-FOV,
-        // and while a shader pack is active (Voxy stands down then, so vanilla must keep the full screen).
-        this.voxy$bandScissor = !IrisUtil.irisShadowActive() && !IrisUtil.shaderPackActive()
+        // takes the left/right wings. Skipped during the shader shadow pass so shadow casting stays full-FOV.
+        this.voxy$bandScissor = !IrisUtil.irisShadowActive()
                 && CenterLodRegion.applyScissor(CenterLodRegion.computeScissor());
     }
 
@@ -64,7 +63,14 @@ public abstract class MixinDefaultChunkRenderer extends ShaderChunkRenderer {
         if (renderPass == DefaultTerrainRenderPasses.CUTOUT) {
             var renderer = ((IGetVoxyRenderSystem) Minecraft.getInstance().levelRenderer).getVoxyRenderSystem();
             if (renderer != null) {
-                Viewport<?> viewport = renderer.setupViewport(matrices, camera.x, camera.y, camera.z);
+                Viewport<?> viewport;
+                // With a shader pack active, use the viewport captured at renderLevel HEAD (iris.MixinLevelRenderer),
+                // before Iris uploads its per-frame uniforms; otherwise build one here.
+                if (IrisUtil.irisShaderPackEnabled()) {
+                    viewport = renderer.getViewport();
+                } else {
+                    viewport = renderer.setupViewport(matrices, camera.x, camera.y, camera.z);
+                }
                 renderer.renderOpaque(viewport);
             }
         }

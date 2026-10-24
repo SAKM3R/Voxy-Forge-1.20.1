@@ -89,7 +89,7 @@ public class MixinRenderSectionManager {
     @Inject(method = "createTerrainRenderList", at = @At("HEAD"))
     private void voxy$prepareBandCull(Camera camera, Viewport viewport, int frame, boolean spectator, CallbackInfo ci) {
         CenterLodRegion.beginBandCull();
-        if (IrisUtil.irisShadowActive() || IrisUtil.shaderPackActive()) {
+        if (IrisUtil.irisShadowActive()) {
             return;
         }
         int[] scissor = CenterLodRegion.computeScissor();

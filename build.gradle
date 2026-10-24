@@ -56,6 +56,7 @@ mixin {
 	add sourceSets.main, 'voxy.refmap.json'
 	config 'client.voxy.mixins.json'
 	config 'common.voxy.mixins.json'
+	config 'voxy.iris.mixins.json'
 }
 
 repositories {
@@ -84,6 +85,12 @@ dependencies {
 	// Embeddium (Sodium for Forge 1.20.1). Required at runtime; Voxy mixes into its chunk renderer.
 	compileOnly fg.deobf("maven.modrinth:embeddium:${embeddium_version}")
 	runtimeOnly fg.deobf("maven.modrinth:embeddium:${embeddium_version}")
+
+	// Oculus (Iris for Forge 1.20.1): optional, for shader pack support. Oculus 1.7+ uses Iris' net.irisshaders packages.
+	compileOnly fg.deobf("maven.modrinth:oculus:${oculus_version}")
+	if (project.hasProperty('withOculus')) {
+		runtimeOnly fg.deobf("maven.modrinth:oculus:${oculus_version}")
+	}
 
 	// MixinExtras (@WrapMethod, @WrapOperation, ...). Bundled so the mod does not depend on which
 	// MixinExtras version Forge or another mod happens to ship.
@@ -194,7 +201,7 @@ def manifestAttributes = [
 	'Implementation-Title'    : project.name,
 	'Implementation-Version'  : project.version,
 	'Implementation-Vendor'   : 'MCRcortex',
-	'MixinConfigs'            : 'client.voxy.mixins.json,common.voxy.mixins.json'
+	'MixinConfigs'            : 'client.voxy.mixins.json,common.voxy.mixins.json,voxy.iris.mixins.json'
 ]
 
 tasks.named('jar', Jar).configure {

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import me.cortex.voxy.client.RenderStatistics;
 import me.cortex.voxy.client.VoxyClientInstance;
 import me.cortex.voxy.client.core.IGetVoxyRenderSystem;
+import me.cortex.voxy.client.core.util.IrisUtil;
 import me.cortex.voxy.common.util.cpu.CpuLayout;
 import me.cortex.voxy.commonImpl.VoxyCommon;
 import me.jellysquid.mods.sodium.client.gui.options.OptionFlag;
@@ -116,6 +117,8 @@ public final class VoxyConfigMenu {
                                 }
                                 VoxyCommon.shutdownInstance();
                             }
+                            //The shader pack patch is only built while Voxy rendering is enabled
+                            IrisUtil.reload();
                         }, s -> s.enabled, null, OptionFlag.REQUIRES_RENDERER_RELOAD))
                         .build(),
                 OptionGroup.createBuilder()
@@ -148,6 +151,7 @@ public final class VoxyConfigMenu {
                                     vrsh.shutdownRenderer();
                                 }
                             }
+                            IrisUtil.reload();
                         }, s -> s.enableRendering, enabled(), OptionFlag.REQUIRES_RENDERER_RELOAD))
                         .add(slider("general.subDivisionSize", 0, SUBDIV_IN_MAX, 1, v -> Component.literal(Integer.toString(Math.round(ln2subDiv(v)))),
                                 (s, v) -> s.subDivisionSize = ln2subDiv(v), s -> subDiv2ln(s.subDivisionSize), renderingEnabled()))
