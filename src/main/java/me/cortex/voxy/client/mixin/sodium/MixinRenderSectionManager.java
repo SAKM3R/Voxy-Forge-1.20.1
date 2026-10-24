@@ -27,6 +27,7 @@ import org.joml.Matrix4f;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.chunk.ChunkStatus;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -103,27 +104,94 @@ public class MixinRenderSectionManager {
         CenterLodRegion.setupBandCull(cam.x, cam.y, cam.z, vp, bandHalfNdc);
     }
 
-    // Wrap the render-list sink so sections projecting entirely into the wings are never added -> Sodium
-    // issues no draw call and does no vertex work for them. Traversal is untouched (we wrap the visitor,
-    // not the culler), so connectivity/occlusion is unchanged - no holes inside the band.
+    // ---- LOD mask = sections Embeddium actually draws ----
+    // The LOD-occlusion mask (ChunkBoundRenderer) hides LOD wherever vanilla terrain is drawn. It must
+    // only contain sections that are both BUILT and VISITED AS VISIBLE in the latest render-list build:
+    // other mods change which sections Embeddium draws (Better FPS Render Distance culls an ellipsoid via
+    // OcclusionCuller.isWithinRenderDistance, culling mods drop occluded sections, the centre band drops
+    // the wings), and masking a section that is not drawn leaves a see-through hole.
+    @Unique private final LongOpenHashSet voxy$built = new LongOpenHashSet();
+    @Unique private LongOpenHashSet voxy$drawn = new LongOpenHashSet();
+    @Unique private LongOpenHashSet voxy$traversal = new LongOpenHashSet();
+    @Unique private boolean voxy$recording;
+    @Unique private ChunkBoundRenderer voxy$lastBounds;
+
+    @Unique
+    private ChunkBoundRenderer voxy$bounds() {
+        if (this.world.levelRenderer == null) return null;
+        var system = ((IGetVoxyRenderSystem)(this.world.levelRenderer)).getVoxyRenderSystem();
+        return system == null ? null : system.chunkBoundRenderer;
+    }
+
+    // Wrap the render-list sink: records which sections are drawn (see above), and drops sections that
+    // project entirely into the wings when the centre band is active (no draw call, no vertex work).
+    // Traversal is untouched (we wrap the visitor, not the culler), so connectivity/occlusion is unchanged.
     @ModifyArg(
         method = "createTerrainRenderList",
         at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/render/chunk/occlusion/OcclusionCuller;findVisible(Lme/jellysquid/mods/sodium/client/render/chunk/occlusion/OcclusionCuller$Visitor;Lme/jellysquid/mods/sodium/client/render/viewport/Viewport;FZI)V"),
         index = 0
     )
     private OcclusionCuller.Visitor voxy$bandCullVisitor(OcclusionCuller.Visitor original) {
-        if (!CenterLodRegion.isBandCullActive()) {
+        // Shader shadow passes walk the graph from the light's point of view; they must not touch the mask.
+        this.voxy$recording = !IrisUtil.irisShadowActive();
+        if (this.voxy$recording) {
+            this.voxy$traversal.clear();
+        }
+        final boolean band = CenterLodRegion.isBandCullActive();
+        if (!band && !this.voxy$recording) {
             return original;
         }
+        final var traversal = this.voxy$traversal;
+        final boolean recording = this.voxy$recording;
         // Embeddium's VisibleChunkCollector also queues rebuilds from visit(), so a wing section is still
         // passed through - only flagged invisible - which keeps it out of the render list but lets it build.
         return (section, visible) -> {
-            if (visible && CenterLodRegion.isSectionInWings(section.getChunkX() << 4, section.getChunkY() << 4, section.getChunkZ() << 4)) {
-                original.visit(section, false);//Drop wing section from the render list
-                return;
+            if (visible && band && CenterLodRegion.isSectionInWings(section.getChunkX() << 4, section.getChunkY() << 4, section.getChunkZ() << 4)) {
+                visible = false;//Drop wing section from the render list
+            }
+            if (visible && recording) {
+                traversal.add(SectionPos.asLong(section.getChunkX(), section.getChunkY(), section.getChunkZ()));
             }
             original.visit(section, visible);
         };
+    }
+
+    @Inject(method = "createTerrainRenderList", at = @At("TAIL"))
+    private void voxy$commitDrawnSections(Camera camera, Viewport viewport, int frame, boolean spectator, CallbackInfo ci) {
+        if (!this.voxy$recording) {
+            return;
+        }
+        this.voxy$recording = false;
+        var bounds = this.voxy$bounds();
+        var prev = this.voxy$drawn;
+        var now = this.voxy$traversal;
+        if (bounds != null && bounds != this.voxy$lastBounds) {
+            //A new (or reset) LOD renderer: rebuild its mask from scratch
+            this.voxy$lastBounds = bounds;
+            bounds.reset();
+            var it = now.iterator();
+            while (it.hasNext()) {
+                long pos = it.nextLong();
+                if (this.voxy$built.contains(pos)) bounds.addSection(pos);
+            }
+        } else if (bounds != null) {
+            var it = prev.iterator();
+            while (it.hasNext()) {
+                long pos = it.nextLong();
+                if (!now.contains(pos) && this.voxy$built.contains(pos)) {
+                    bounds.removeSectionImmediate(pos);//No longer drawn by Embeddium -> let the LOD show
+                }
+            }
+            it = now.iterator();
+            while (it.hasNext()) {
+                long pos = it.nextLong();
+                if (!prev.contains(pos) && this.voxy$built.contains(pos)) {
+                    bounds.addSection(pos);
+                }
+            }
+        }
+        this.voxy$drawn = now;
+        this.voxy$traversal = prev;
     }
 
     @Inject(method = "onChunkRemoved", at = @At("HEAD"))
@@ -162,7 +230,10 @@ public class MixinRenderSectionManager {
         }
         // Disposal means Sodium has stopped drawing this section, so clear the mask immediately
         // (the delayed path would leave a brief see-through gap before the LOD shows).
-        system.chunkBoundRenderer.removeSectionImmediate(SectionPos.asLong(x, y, z));
+        long pos = SectionPos.asLong(x, y, z);
+        this.voxy$built.remove(pos);
+        this.voxy$drawn.remove(pos);
+        system.chunkBoundRenderer.removeSectionImmediate(pos);
     }
 
     @Inject(method = "onChunkAdded", at = @At("HEAD"))
@@ -207,6 +278,11 @@ public class MixinRenderSectionManager {
         if (flags == 0)//Only process things with stuff
             return;
 
+        {//Track built sections even while no Voxy renderer exists, so a renderer created later gets a correct mask
+            long bpos = SectionPos.asLong(instance.getChunkX(), instance.getChunkY(), instance.getChunkZ());
+            if (wasBuilt) this.voxy$built.remove(bpos); else this.voxy$built.add(bpos);
+        }
+
         VoxyRenderSystem system = ((IGetVoxyRenderSystem)(this.world.levelRenderer)).getVoxyRenderSystem();
         if (system == null) {
             return;
@@ -244,11 +320,11 @@ public class MixinRenderSectionManager {
         }
         long pos = SectionPos.asLong(x,y,z);
         if (wasBuilt) {//Remove
-            //TODO: on chunk remove do ingest if is surrounded by built chunks (or when the tracker says is ok)
-
             system.chunkBoundRenderer.removeSection(pos);
         } else {//Add
-            system.chunkBoundRenderer.addSection(pos);
+            if (this.voxy$drawn.contains(pos)) {//Otherwise added once Embeddium actually draws it
+                system.chunkBoundRenderer.addSection(pos);
+            }
         }
     }
 }
