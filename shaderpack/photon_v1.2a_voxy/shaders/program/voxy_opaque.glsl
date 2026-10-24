@@ -1,11 +1,6 @@
 #include "/include/global.glsl"
 #include "/include/utility/encoding.glsl"
 
-// voxy.json is preprocessed all together; include guard must be removed so this file can be used
-// in voxy_translucent
-#undef SETTINGS_INCLUDED
-#undef INCLUDE_UTILITY_ENCODING
-
 layout (location = 0) out vec4 gbuffer_data_0;
 
 /*

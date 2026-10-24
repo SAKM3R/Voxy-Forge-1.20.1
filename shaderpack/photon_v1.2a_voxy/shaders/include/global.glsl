@@ -1,6 +1,7 @@
 // Enable half-precision floating point types
+// (not in Voxy's LOD programs: Voxy prepends its own code, so #extension directives would come too late)
 
-#ifdef USE_HALF_PRECISION_FP
+#if defined USE_HALF_PRECISION_FP && !defined VOXY_PROGRAM
 	#if defined MC_GL_AMD_gpu_shader_half_float 
 		#extension GL_AMD_gpu_shader_half_float : enable
 		#define HAS_F16

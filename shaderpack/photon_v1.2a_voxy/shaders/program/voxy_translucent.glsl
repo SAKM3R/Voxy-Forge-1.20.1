@@ -5,6 +5,14 @@
 	#undef SHADOW
 #endif
 
+#ifdef HANDHELD_LIGHTING
+	#undef HANDHELD_LIGHTING
+#endif
+
+#ifdef COLORED_LIGHTS
+	#undef COLORED_LIGHTS
+#endif
+
 vec3 ambient_color;
 vec3 light_color;
 
