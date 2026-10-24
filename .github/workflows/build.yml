@@ -70,6 +70,7 @@ jobs:
             grep "VOXY_SMOKE\|Voxy render system created\|Creating voxy iris" run/logs/latest.log || true
             if grep -q "Mixin apply failed" run/logs/latest.log; then echo "::error::A mixin failed to apply"; exit 1; fi
             grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Shader smoke test did not finish"; exit 1; }
+            grep -q "using pipeline 'IrisVoxyRenderPipeline'" run/logs/latest.log || { echo "::error::Voxy shader pipeline was not used"; exit 1; }
           fi
 
       # Logs for development: build.log and the smoke test output on the ci-out branch
