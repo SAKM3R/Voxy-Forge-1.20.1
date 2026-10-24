@@ -70,6 +70,12 @@ jobs:
             cp shaderpack/photon_v1.2a_voxy.preset.txt run/shaderpacks/photon_v1.2a_voxy.zip.txt
             PACK=photon_v1.2a_voxy.zip
           fi
+          # Comparison run (ci/photon-original): unmodified upstream Photon 1.2a, same preset
+          if [ -f ci/photon-original ]; then
+            git clone -q https://github.com/sixthsurge/photon.git /tmp/photon && git -C /tmp/photon archive 63d79d2 shaders LICENSE > /tmp/p.tar
+            mkdir -p /tmp/porig && tar -xf /tmp/p.tar -C /tmp/porig
+            (cd /tmp/porig && zip -qr $GITHUB_WORKSPACE/run/shaderpacks/photon_v1.2a_voxy.zip . -x 'shaders/world*/deferred4_a.csh')
+          fi
           echo "Using shader pack: $PACK" | tee -a smoke-shaders/packs.txt
           if [ -n "$PACK" ]; then
             printf 'enableShaders=true\nshaderPack=%s\n' "$PACK" > run/config/oculus.properties
@@ -81,7 +87,7 @@ jobs:
             if grep -q "Mixin apply failed" run/logs/latest.log; then echo "::error::A mixin failed to apply"; exit 1; fi
             grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Shader smoke test did not finish"; exit 1; }
             grep -n -i "error\|failed\|exception" run/logs/latest.log | grep -i "shader\|iris\|oculus\|voxy\|glsl" | head -40 || true
-            grep -q "using pipeline 'IrisVoxyRenderPipeline'" run/logs/latest.log || { echo "::error::Voxy shader pipeline was not used"; exit 1; }
+            [ -f ci/photon-original ] || grep -q "using pipeline 'IrisVoxyRenderPipeline'" run/logs/latest.log || { echo "::error::Voxy shader pipeline was not used"; exit 1; }
           fi
 
       # Logs for development: build.log and the smoke test output on the ci-out branch
