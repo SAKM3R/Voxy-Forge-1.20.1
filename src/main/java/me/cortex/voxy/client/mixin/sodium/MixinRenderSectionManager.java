@@ -60,26 +60,21 @@ public class MixinRenderSectionManager {
         this.bottomSectionY = ((net.minecraft.world.level.Level)this.world).getMinBuildHeight()>>4;
     }
 
-    // Render the OUTERMOST ~1-chunk ring of the vanilla render distance as Voxy LOD instead of vanilla.
-    // The outermost ring is the newest, actively-streaming border chunks, and their water rendered wrong
-    // right at the vanilla<->LOD boundary (weird colour without shaders, blowing out white with shaders).
-    // By shrinking Sodium's section-visibility search distance by one chunk, those border sections are
-    // never visited -> never built -> never drawn as vanilla, AND (because the LOD-occlusion bound is
-    // keyed on BUILT sections via voxy$updateOnUpload) they never mask the LOD. So Voxy LOD fills that
-    // ring cleanly, with no vanilla there to render wrong or fight the LOD. Only the visibility BFS is
-    // affected; chunk loading/ingest still happen at full distance.
+    // Publish Embeddium's exact section search distance to the LOD-occlusion circle (ChunkBoundRenderer),
+    // so the LOD mask ends exactly where Embeddium stops drawing vanilla sections.
+    //
+    // The NeoForge port also shrank this by one chunk so the outermost vanilla ring was drawn as LOD
+    // instead. On Forge 1.20.1 + Embeddium that ring was frequently missing from the LOD store (its chunks
+    // never become "ready" and their light is not applied yet when they arrive), which left chunk-sized
+    // holes at the vanilla/LOD seam - so vanilla keeps its full render distance here.
     @ModifyArg(
         method = "createTerrainRenderList",
         at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/render/chunk/occlusion/OcclusionCuller;findVisible(Lme/jellysquid/mods/sodium/client/render/chunk/occlusion/OcclusionCuller$Visitor;Lme/jellysquid/mods/sodium/client/render/viewport/Viewport;FZI)V"),
         index = 2
     )
-    private float voxy$cullOutermostVanillaRing(float searchDistance) {
-        float culled = Math.max(searchDistance - 16.0f, 16.0f);
-        // Publish the EXACT vanilla cull edge to the LOD-occlusion circle (ChunkBoundRenderer) so the
-        // two align perfectly. A fixed -16 on the circle under-shoots this because searchDistance carries
-        // a buffer beyond renderDistance*16 - that leftover sliver was the faint residual water bug.
-        ChunkBoundRenderer.VANILLA_CULL_DISTANCE = culled;
-        return culled;
+    private float voxy$publishVanillaCullDistance(float searchDistance) {
+        ChunkBoundRenderer.VANILLA_CULL_DISTANCE = searchDistance;
+        return searchDistance;
     }
 
     // Central-band LOD culling (the FPS win): before Sodium walks the visibility graph, compute the

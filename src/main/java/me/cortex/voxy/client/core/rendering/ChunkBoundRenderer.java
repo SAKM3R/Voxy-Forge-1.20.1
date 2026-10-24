@@ -178,7 +178,7 @@ public class ChunkBoundRenderer {
         // which left the faint residual water bug).
         final float renderDistance = VANILLA_CULL_DISTANCE >= 0.0f
                 ? VANILLA_CULL_DISTANCE
-                : Math.max(Minecraft.getInstance().options.getEffectiveRenderDistance()*16 - 16.0f, 16.0f);//In blocks
+                : Minecraft.getInstance().options.getEffectiveRenderDistance()*16.0f;//In blocks
 
         {//This is recomputed to be in chunk section space not worldsection
             int sx = (int)(viewport.cameraX);

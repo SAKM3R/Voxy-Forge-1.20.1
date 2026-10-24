@@ -37,8 +37,9 @@ bool shouldRender(ivec3 icorner) {
     // tight (origin..origin+16) made the occlusion cull LOD 1 block short of where Sodium still draws
     // vanilla, leaving a 1-block sliver of LOD over vanilla at the cull edge (the faint residual seam).
     // The -1 / +1 reproduces that margin so the occlusion edge lands on Sodium's render edge precisely.
-    ivec3 minCorner = icorner + buf - 1;      // INWARD by buf, then OUT 1 to match Sodium's margin
-    ivec3 maxCorner = icorner + 16 - buf + 1; // INWARD by buf, then OUT 1 to match Sodium's margin
+    // Embeddium (Sodium 0.5) measures the section box tight (origin..origin+16), without Sodium 0.8's 1-block margin.
+    ivec3 minCorner = icorner + buf;
+    ivec3 maxCorner = icorner + 16 - buf;
 
     vec3 corner = vec3(mix(mix(ivec3(0), minCorner, greaterThan(minCorner, ivec3(0))), maxCorner, lessThan(maxCorner, ivec3(0))))-negInnerSec.xyz;
     bool visible = (corner.x*corner.x + corner.z*corner.z) < (negInnerSec.w*negInnerSec.w);

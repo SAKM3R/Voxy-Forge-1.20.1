@@ -51,7 +51,7 @@ public class SmokeTest {
         }
         if (!(mc.screen instanceof TitleScreen || mc.screen instanceof AccessibilityOnboardingScreen)) return;
         started = true;
-        mc.options.renderDistance().set(4);
+        mc.options.renderDistance().set(6);
         mc.options.simulationDistance().set(5);
         mc.options.pauseOnLostFocus = false;
         mc.options.onboardAccessibility = false;
@@ -79,7 +79,17 @@ public class SmokeTest {
             mc.player.setPos(mc.player.getX(), mc.player.getY() + 25, mc.player.getZ());
             mc.player.setXRot(15);
         }
-        if (ticksInWorld == 1500) {
+        //Fly across the world so chunks stream in and out around the vanilla/LOD seam
+        if (ticksInWorld > 100 && ticksInWorld <= 600 && ticksInWorld % 5 == 0) {
+            mc.player.setPos(mc.player.getX() + 6, mc.player.getY(), mc.player.getZ());
+        }
+        if (ticksInWorld == 1150) {
+            mc.player.setYRot(90);//Look back (-X)
+        }
+        if (ticksInWorld == 1350) {
+            mc.player.setYRot(-90);//Look ahead (+X)
+        }
+        if (ticksInWorld == 1300 || ticksInWorld == 1500) {
             net.minecraft.client.Screenshot.grab(mc.gameDirectory, "voxy-smoke-" + ticksInWorld + ".png", mc.getMainRenderTarget(), msg -> LOG.info("VOXY_SMOKE screenshot: {}", msg.getString()));
         }
         if (ticksInWorld % 100 == 0) {
