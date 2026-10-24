@@ -49,6 +49,7 @@ jobs:
           cp run/logs/latest.log ci-out/ 2>/dev/null
           cp run/logs/debug.log ci-out/ 2>/dev/null
           cp -r run/crash-reports ci-out/ 2>/dev/null
+          cp run/screenshots/*.png ci-out/ 2>/dev/null
           true
 
       # Development aid: signatures of the Minecraft / Forge / Embeddium classes listed in
