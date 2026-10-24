@@ -8,7 +8,8 @@ import me.cortex.voxy.common.world.service.VoxelIngestService;
 import me.cortex.voxy.commonImpl.WorldIdentifier;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ChunkLevel;
-import net.minecraft.server.level.ChunkResult;
+import com.mojang.datafixers.util.Either;
+import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.TicketType;
@@ -59,7 +60,7 @@ public class DistantWorldGenerator {
     private final WorldIdentifier worldId;
     private final GeneratedChunkBitmap doneMap;
     //Chunks currently generating, keyed by ChunkPos.asLong. Each holds a TICKET at TICKET_LEVEL
-    private final Long2ObjectOpenHashMap<CompletableFuture<ChunkResult<ChunkAccess>>> inFlight = new Long2ObjectOpenHashMap<>();
+    private final Long2ObjectOpenHashMap<CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> inFlight = new Long2ObjectOpenHashMap<>();
     //Chunks that failed generation this session, so they arent immediately retried in a requeue loop
     private final LongOpenHashSet failed = new LongOpenHashSet();
     private final LongArrayFIFOQueue pending = new LongArrayFIFOQueue();
@@ -97,7 +98,7 @@ public class DistantWorldGenerator {
             try {
                 var result = future.getNow(null);
                 if (result != null) {
-                    chunk = result.orElse(null);
+                    chunk = result.left().orElse(null);
                 }
             } catch (Exception e) {
                 Logger.error("Distant generation future failed for chunk [" + cx + ", " + cz + "]", e);

@@ -389,7 +389,7 @@ public class Mapper {
                 // MC 1.21.1: CompoundTag.getCompound() returns empty CompoundTag if not found (not Optional)
                 var bsc = compound.getCompound("block_state");
                 var state = BlockState.CODEC.parse(NbtOps.INSTANCE, bsc);
-                if (state.isError()) {
+                if (state.error().isPresent()) {
                     Logger.info("Could not decode blockstate, attempting fixes, error: "+ state.error().get().message());
                     // The stored blockstate failed to parse - typically a modded block whose mod was
                     // updated/removed or whose registry changed since it was ingested. The DataFixerUpper
@@ -406,7 +406,7 @@ public class Mapper {
                         forceResave[0] |= true;
                         return new StateEntry(id, Blocks.AIR.defaultBlockState());
                     }
-                    if (state.isError()) {
+                    if (state.error().isPresent()) {
                         Logger.error("Could not decode blockstate setting to air. id:" + id + " error: " + state.error().get().message());
                         return new StateEntry(id, Blocks.AIR.defaultBlockState());
                     } else {

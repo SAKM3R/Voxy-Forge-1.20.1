@@ -4,7 +4,6 @@ import me.cortex.voxy.common.util.Bits;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import me.cortex.voxy.common.world.other.Mapper;
 import me.cortex.voxy.common.world.other.Mipper;
-import net.caffeinemc.mods.lithium.common.world.chunk.LithiumHashPalette;
 import net.minecraft.core.Holder;
 import net.minecraftforge.fml.ModList;
 import net.minecraft.util.SimpleBitStorage;
@@ -66,7 +65,6 @@ public class WorldConversionFactory {
             throw new RuntimeException("Failed to access Data.storage", e);
         }
     }
-    private static final boolean LITHIUM_INSTALLED = ModList.get().isLoaded("lithium");
 
     private static final class Cache {
         private final int[] biomeCache = new int[4*4*4];
@@ -86,8 +84,8 @@ public class WorldConversionFactory {
     //TODO: create a mapping for world/mapper -> local mapping
     private static final ThreadLocal<Cache> THREAD_LOCAL = ThreadLocal.withInitial(Cache::new);
 
-    private static boolean setupLithiumLocalPallet(Palette<BlockState> vp, Reference2IntOpenHashMap<BlockState> blockCache, Mapper mapper, int[] pc)  {
-        if (vp instanceof LithiumHashPalette<BlockState>) {
+    private static boolean setupGenericLocalPalette(Palette<BlockState> vp, Reference2IntOpenHashMap<BlockState> blockCache, Mapper mapper, int[] pc)  {
+        {
             for (int i = 0; i < vp.getSize(); i++) {
                 BlockState state = null;
                 int blockId = -1;
@@ -103,7 +101,6 @@ public class WorldConversionFactory {
             }
             return true;
         }
-        return false;
     }
     private static int setupLocalPalette(Palette<BlockState> vp, Reference2IntOpenHashMap<BlockState> blockCache, Mapper mapper, int[] pc) {
         int c = vp.getSize();
@@ -150,9 +147,9 @@ public class WorldConversionFactory {
             }
             pc[0] = blockId;
         } else {
-            if (!(LITHIUM_INSTALLED && setupLithiumLocalPallet(vp, blockCache, mapper, pc))) {
-                throw new IllegalStateException("Unknown palette type: " + vp);
-            }
+            //Any other palette (Canary/Radium's LithiumHashPalette, or one from another mod) is read through the
+            // generic Palette interface
+            setupGenericLocalPalette(vp, blockCache, mapper, pc);
         }
         return c;
     }

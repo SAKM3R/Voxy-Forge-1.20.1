@@ -164,3 +164,8 @@ net.minecraftforge.client.model.data.ModelData
 net.minecraftforge.client.extensions.IForgeBakedModel
 net.minecraftforge.fml.loading.LoadingModList
 net.minecraftforge.fml.loading.moddiscovery.ModFileInfo
+org.lwjgl.system.JNI
+org.lwjgl.system.APIUtil
+org.lwjgl.system.SharedLibrary
+net.minecraft.server.level.ChunkLevel
+net.minecraft.server.level.ChunkHolder$ChunkLoadingFailure

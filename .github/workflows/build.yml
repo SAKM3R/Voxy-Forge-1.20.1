@@ -58,7 +58,7 @@ jobs:
             done
           fi
           cp build/libs/*.jar ci-out/ 2>/dev/null || true
-          if [ -f ci/want-srg ]; then cp build/createSrgToMcp/output.srg ci-out/ 2>/dev/null || true; fi
+          if [ -f ci/want-srg ]; then for f in $(find build -maxdepth 3 -name "*.srg" -o -maxdepth 3 -name "*.tsrg"); do cp "$f" "ci-out/$(echo "$f" | tr / _)"; done; fi
 
       - name: Publish CI output
         if: always()
