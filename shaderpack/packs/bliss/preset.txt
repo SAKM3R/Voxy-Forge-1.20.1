@@ -1,0 +1,21 @@
+#Sun Oct 25 08:35:46 MSK 2026
+CLOUDS_SHADOWS=false
+CONTRAST=1.08
+CROSSTALK=0.2
+FinalB=1.013752
+FinalG=1.339646
+FinalR=1.585709
+LabSSS_Curve=0.1
+MIN_LIGHT_AMOUNT=1.2
+Max_Filter_Depth=0.1
+SATURATION=-0.06
+Sun_temp=5600
+USE_ACES_COLORSPACE_APPROXIMATION=true
+ambient_brightness=1.5
+ambient_colortype=1
+ambient_temp=8000
+shadowDistance=64.0
+shadowMapResolution=1024
+sunColorG=0.81
+sunColorR=0.0
+sun_illuminance=70000.0

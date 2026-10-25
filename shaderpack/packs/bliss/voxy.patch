@@ -1,0 +1,156 @@
+diff -ruN -U2 bliss/shaders/composite3.fsh bliss_voxy/shaders/composite3.fsh
+--- bliss/shaders/composite3.fsh	2023-07-12 18:52:22.000000000 +0300
++++ bliss_voxy/shaders/composite3.fsh	2026-10-25 08:53:28.967505938 +0300
+@@ -33,6 +33,9 @@
+ uniform float frameTimeCounter;
+ uniform int frameCounter;
+ uniform float far;
++#ifdef VOXY
++uniform int vxDhRenderDistance;
++#endif
+ uniform float near;
+ uniform mat4 gbufferModelViewInverse;
+ uniform mat4 gbufferModelView;
+@@ -245,7 +248,14 @@
+ 
+   #ifdef BorderFog
+   	vec3 sky = skyFromTex(np3,colortex4) / 150. * 5.0;
+-  	float fog = 1.0 - clamp(exp(-pow(length(fragpos / far),10.)*4.0)  ,0.0,1.0);
++    #ifdef VOXY
++      // With Voxy the terrain goes on past the render distance, so the border fog moves out to where the
++      // LODs end (their range, capped by the depth buffer's far plane)
++      float borderFar = min(float(vxDhRenderDistance), gbufferProjection[3][2] / (gbufferProjection[2][2] + 1.0));
++    #else
++      float borderFar = far;
++    #endif
++  	float fog = 1.0 - clamp(exp(-pow(length(fragpos / borderFar),10.)*4.0)  ,0.0,1.0);
+   	float heightFalloff = clamp( pow(abs(np3.y-1.01),5) ,0,1)	;
+ 
+     if(z < 1.0 && isEyeInWater == 0) color.rgb = mix(color.rgb, sky, fog * heightFalloff* lightleakfix);
+diff -ruN -U2 bliss/shaders/programs/voxy/voxy_opaque.glsl bliss_voxy/shaders/programs/voxy/voxy_opaque.glsl
+--- bliss/shaders/programs/voxy/voxy_opaque.glsl	1970-01-01 03:00:00.000000000 +0300
++++ bliss_voxy/shaders/programs/voxy/voxy_opaque.glsl	2026-10-25 08:53:15.001274262 +0300
+@@ -0,0 +1,75 @@
++// Voxy LOD terrain for Bliss: writes the same gbuffers as gbuffers_terrain (gbuffers_all_solid.fsh)
++// - colortex1 packed albedo/normal/lightmap, colortex7, colortex8 specular/SSS/emission,
++// colortex15 flat normal + vanilla AO - so the deferred passes light the LODs like normal terrain.
++// voxy_translucent.glsl reuses this for distant water/glass. The LOD depth is merged into the vanilla depth buffer (voxy.json), which is what those passes read.
++
++#include "/lib/settings.glsl"
++
++layout(location = 0) out vec4 voxyData1;
++layout(location = 1) out vec4 voxyData7;
++layout(location = 2) out vec4 voxyData8;
++layout(location = 3) out vec4 voxyData15;
++
++vec4 voxyEncode(vec3 n, vec2 lightmaps) {
++	n.xy = n.xy / dot(abs(n), vec3(1.0));
++	n.xy = n.z <= 0.0 ? (1.0 - abs(n.yx)) * sign(n.xy) : n.xy;
++	vec2 encn = clamp(n.xy * 0.5 + 0.5, -1.0, 1.0);
++	return vec4(encn, vec2(lightmaps.x, lightmaps.y));
++}
++
++float voxyEncodeVec2(vec2 a) {
++	const vec2 constant1 = vec2(1., 256.) / 65535.;
++	vec2 temp = floor(a * 255.);
++	return temp.x * constant1.x + temp.y * constant1.y;
++}
++float voxyEncodeVec2(float x, float y) { return voxyEncodeVec2(vec2(x, y)); }
++
++float voxyBlueNoise() {
++	return fract(texelFetch(noisetex, ivec2(gl_FragCoord.xy) % 512, 0).a + 1.0 / 1.6180339887 * frameCounter);
++}
++
++void voxy_emitFragment(VoxyFragmentParameters parameters) {
++	int id = int(parameters.customId);
++
++	uint axis = uint(parameters.face) >> 1u;
++	vec3 normal = axis == 0u ? gbufferModelView[1].xyz : (axis == 1u ? gbufferModelView[2].xyz : gbufferModelView[0].xyz);
++	if ((parameters.face & 1u) == 0u) normal = -normal;
++
++	vec4 Albedo = vec4(parameters.sampledColour.rgb * parameters.tinting.rgb, 1.0);
++	#ifdef WhiteWorld
++		Albedo.rgb = vec3(1.0);
++	#endif
++	Albedo.a = id == 10003 ? 0.55 : 1.0; // normalMat.a
++
++	float EMISSIVE = id == 10005 ? 0.5 : 0.0;
++	float SSSAMOUNT = 0.0;
++	if (id == 10001 || id == 10003 || id == 10004) SSSAMOUNT = 1.0;
++	if (id == 10006 || id == 200) SSSAMOUNT = 0.75;
++	#ifdef MISC_BLOCK_SSS
++		if (id == 10007 || id == 10008) SSSAMOUNT = 0.5;
++	#endif
++
++	vec4 spec = vec4(0.0); // no LabPBR textures on LODs
++	#ifdef VOXY_TRANSLUCENT
++		// Distant water/glass: Bliss shades its water in a forward pass that LODs cannot use, so it goes
++		// into the deferred gbuffers as a smooth dielectric surface (LabPBR smoothness / F0) instead
++		spec.r = 0.95;
++		spec.g = 0.02;
++		Albedo.rgb *= 0.5;
++	#endif
++	#if EMISSIVE_TYPE == 1 || EMISSIVE_TYPE == 2
++		spec.a = EMISSIVE;
++	#endif
++	#if SSS_TYPE == 1 || SSS_TYPE == 2
++		spec.b = SSSAMOUNT;
++	#endif
++
++	vec2 PackLightmaps = parameters.lightMap;
++	PackLightmaps = max(PackLightmaps * voxyBlueNoise() * 0.05 + PackLightmaps, 0.0);
++
++	vec4 data1 = clamp(voxyEncode(mat3(gbufferModelViewInverse) * normal, PackLightmaps), 0.0, 1.0);
++	voxyData1 = vec4(voxyEncodeVec2(Albedo.x, data1.x), voxyEncodeVec2(Albedo.y, data1.y), voxyEncodeVec2(Albedo.z, data1.z), voxyEncodeVec2(data1.w, Albedo.w));
++	voxyData7 = vec4(0.0);
++	voxyData8 = spec;
++	voxyData15 = vec4(normal * 0.5 + 0.5, 0.0);
++}
+diff -ruN -U2 bliss/shaders/voxy.json bliss_voxy/shaders/voxy.json
+--- bliss/shaders/voxy.json	1970-01-01 03:00:00.000000000 +0300
++++ bliss_voxy/shaders/voxy.json	2026-10-25 08:52:53.692916313 +0300
+@@ -0,0 +1,33 @@
++{
++    "unusedString": "
++        // Run through the Iris preprocessor, so the pack settings (TAA, TAA_UPSCALING) are visible here
++        #include "/lib/settings.glsl"
++        #include "/lib/res_params.glsl"
++    ",
++    "version": 1,
++    "excludeLodsFromVanillaDepth": false,
++    "opaqueDrawBuffers": [1, 7, 8, 15],
++    "translucentDrawBuffers": [1, 7, 8, 15],
++    "blending": {
++        -1: "off"
++    },
++#ifdef TAA
++    "taaOffset": "{
++        const vec2[8] offsets = vec2[8](vec2(1./8.,-3./8.), vec2(-1.,3.)/8., vec2(5.0,1.)/8., vec2(-3,-5.)/8., vec2(-5.,5.)/8., vec2(-7.,-1.)/8., vec2(3,7.)/8., vec2(7.,-7.)/8.);
++        return offsets[framemod8] * texelSize;
++    }",
++#endif
++#ifdef TAA_UPSCALING
++    "renderScale": [SCALE_FACTOR, SCALE_FACTOR],
++#endif
++    "uniforms": [
++        "gbufferModelView",
++        "gbufferModelViewInverse",
++        "frameCounter",
++        "framemod8",
++        "texelSize"
++    ],
++    "samplers": {
++        "noisetex": "sampler2D"
++    }
++}
+diff -ruN -U2 bliss/shaders/voxy_opaque.glsl bliss_voxy/shaders/voxy_opaque.glsl
+--- bliss/shaders/voxy_opaque.glsl	1970-01-01 03:00:00.000000000 +0300
++++ bliss_voxy/shaders/voxy_opaque.glsl	2026-10-25 08:52:53.693221305 +0300
+@@ -0,0 +1 @@
++#include "/programs/voxy/voxy_opaque.glsl"
+diff -ruN -U2 bliss/shaders/voxy_translucent.glsl bliss_voxy/shaders/voxy_translucent.glsl
+--- bliss/shaders/voxy_translucent.glsl	1970-01-01 03:00:00.000000000 +0300
++++ bliss_voxy/shaders/voxy_translucent.glsl	2026-10-25 08:53:15.003568487 +0300
+@@ -0,0 +1,2 @@
++#define VOXY_TRANSLUCENT
++#include "/programs/voxy/voxy_opaque.glsl"

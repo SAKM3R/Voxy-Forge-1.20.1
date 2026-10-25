@@ -38,9 +38,14 @@ jobs:
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq xvfb libgl1-mesa-dri > /dev/null
           export LIBGL_ALWAYS_SOFTWARE=1 MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460
-          timeout 1200 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest --console=plain > smoke.log 2>&1 || true
+          for attempt in 1 2; do
+            rm -rf run/logs run/screenshots run/crash-reports run/saves
+            timeout 1200 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest --console=plain > smoke.log 2>&1 || true
+            # Forge's early window sometimes times out on xvfb; that is the runner, not the mod
+            grep -q "Timed out trying to setup the Game Window" smoke.log || break
+          done
           mkdir -p smoke
-          cp smoke.log run/logs/latest.log run/screenshots/*.png smoke/ 2>/dev/null || true
+          cp smoke.log build.log run/logs/latest.log run/screenshots/*.png smoke/ 2>/dev/null || true
           cp -r run/crash-reports smoke/ 2>/dev/null || true
           grep "VOXY_SMOKE" run/logs/latest.log || true
           if grep -q "Mixin apply failed" run/logs/latest.log; then echo "::error::A mixin failed to apply"; exit 1; fi
@@ -48,60 +53,98 @@ jobs:
           grep -q "VOXY_SMOKE final .*renderSystem=true" run/logs/latest.log || { echo "::error::Voxy did not start"; exit 1; }
           grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Smoke test did not finish"; exit 1; }
 
-      # Same, with Oculus and a shader pack that supports Voxy (voxy.json)
+      - name: Upload jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar
+          path: build/libs/*.jar
+
+      - name: Upload smoke test output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: out-noshaders
+          path: smoke/
+          if-no-files-found: ignore
+
+  # The shader packs the modpack uses, each rebuilt with Voxy support (shaderpack/packs, ci/build-pack.sh)
+  # and run with the modpack's own preset
+  shaders:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: photon, pack: photon, preset: preset.txt }
+          - { name: photon-cinematic, pack: photon, preset: preset-cinematic.txt }
+          - { name: photon-ultra, pack: photon, preset: preset-ultra.txt }
+          - { name: photon-opt, pack: photon-opt, preset: preset.txt }
+          - { name: complementary, pack: complementary, preset: preset.txt }
+          - { name: complementary-opt, pack: complementary, preset: preset-opt.txt }
+          - { name: derivative, pack: derivative, preset: preset.txt }
+          - { name: bliss, pack: bliss, preset: preset.txt }
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: true
+
       - name: Shader smoke test
         run: |
+          chmod +x gradlew ci/build-pack.sh
+          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb libgl1-mesa-dri > /dev/null
           export LIBGL_ALWAYS_SOFTWARE=1 MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460
-          mkdir -p smoke-shaders run/shaderpacks run/config
-          rm -rf run/logs run/screenshots run/crash-reports run/saves
-          for p in complementary-reimagined complementary-unbound photon-shader solas-shader; do
-            url=$(curl -s "https://api.modrinth.com/v2/project/$p/version" | jq -r '[.[] | select(.loaders | index("iris"))][0].files[0].url')
-            [ "$url" = "null" ] || [ -z "$url" ] && continue
-            f="run/shaderpacks/$(basename "$url" | sed 's/%2B/+/g')"
-            curl -sL -o "$f" "$url"
-            echo "$p $(basename "$f"): $(unzip -l "$f" | grep -c 'voxy.json') voxy.json" | tee -a smoke-shaders/packs.txt
+          out=out-${{ matrix.name }}
+          mkdir -p $out run/shaderpacks run/config
+          ci/build-pack.sh ${{ matrix.pack }} run/shaderpacks/${{ matrix.pack }}_voxy.zip 2>&1 | tee $out/pack.txt
+          cp shaderpack/packs/${{ matrix.pack }}/${{ matrix.preset }} run/shaderpacks/${{ matrix.pack }}_voxy.zip.txt
+          printf 'enableShaders=true\nshaderPack=%s\n' "${{ matrix.pack }}_voxy.zip" > run/config/oculus.properties
+          for attempt in 1 2; do
+            rm -rf run/logs run/screenshots run/crash-reports run/saves run/patched_shaders
+            timeout 1500 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest -PwithOculus --console=plain > $out/smoke.log 2>&1 || true
+            grep -q "Timed out trying to setup the Game Window" $out/smoke.log || break
           done
-          PACK=$(for f in run/shaderpacks/*.zip; do unzip -l "$f" | grep -q 'voxy.json' && { basename "$f"; break; }; done)
-          # The repo's own Photon 1.2a build with Voxy support (shaderpack/), tested with the preset shipped next to it
-          if [ -d shaderpack/photon_v1.2a_voxy ]; then
-            # Mesa's llvmpipe allows only 32 KiB of compute shared memory and Photon's sky-SH compute pass
-            # uses 36 KiB (fine on real GPUs), so the CI copy leaves that one pass out
-            (cd shaderpack/photon_v1.2a_voxy && zip -qr ../../run/shaderpacks/photon_v1.2a_voxy.zip . -x 'shaders/world*/deferred4_a.csh')
-            cp shaderpack/photon_v1.2a_voxy.preset.txt run/shaderpacks/photon_v1.2a_voxy.zip.txt
-            [ -f ci/no-colored-lights ] && sed -i 's/^COLORED_LIGHTS=true/COLORED_LIGHTS=false/' run/shaderpacks/photon_v1.2a_voxy.zip.txt
-            PACK=photon_v1.2a_voxy.zip
-          fi
-          # Comparison run (ci/photon-original): unmodified upstream Photon 1.2a, same preset
-          if [ -f ci/photon-original ]; then
-            git clone -q https://github.com/sixthsurge/photon.git /tmp/photon && git -C /tmp/photon archive 63d79d2 shaders LICENSE > /tmp/p.tar
-            mkdir -p /tmp/porig && tar -xf /tmp/p.tar -C /tmp/porig
-            (cd /tmp/porig && zip -qr $GITHUB_WORKSPACE/run/shaderpacks/photon_v1.2a_voxy.zip . -x 'shaders/world*/deferred4_a.csh')
-          fi
-          echo "Using shader pack: $PACK" | tee -a smoke-shaders/packs.txt
-          if [ -n "$PACK" ]; then
-            printf 'enableShaders=true\nshaderPack=%s\n' "$PACK" > run/config/oculus.properties
-            timeout 1500 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest -PwithOculus --console=plain > smoke-shaders/smoke.log 2>&1 || true
-            cp run/logs/latest.log run/screenshots/*.png smoke-shaders/ 2>/dev/null || true
-            cp -r run/patched_shaders smoke-shaders/ 2>/dev/null || true
-            cp -r run/crash-reports smoke-shaders/ 2>/dev/null || true
-            grep "VOXY_SMOKE\|Voxy render system created\|Creating voxy iris" run/logs/latest.log || true
-            if grep -q "Mixin apply failed" run/logs/latest.log; then echo "::error::A mixin failed to apply"; exit 1; fi
-            grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Shader smoke test did not finish"; exit 1; }
-            grep -n -i "error\|failed\|exception" run/logs/latest.log | grep -i "shader\|iris\|oculus\|voxy\|glsl" | head -40 || true
-            [ -f ci/photon-original ] || grep -q "using pipeline 'IrisVoxyRenderPipeline'" run/logs/latest.log || { echo "::error::Voxy shader pipeline was not used"; exit 1; }
-          fi
+          cp run/logs/latest.log run/screenshots/*.png $out/ 2>/dev/null || true
+          cp -r run/crash-reports $out/ 2>/dev/null || true
+          grep "VOXY_SMOKE\|Voxy render system created\|Creating voxy iris\|could not be found\|Did not find all\|Failed to compile\|error:" run/logs/latest.log | head -80 || true
+          if grep -q "Mixin apply failed" run/logs/latest.log; then echo "::error::A mixin failed to apply"; exit 1; fi
+          grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Shader smoke test did not finish"; exit 1; }
+          grep -q "using pipeline 'IrisVoxyRenderPipeline'" run/logs/latest.log || { echo "::error::Voxy shader pipeline was not used"; exit 1; }
+
+      - name: Upload output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: out-${{ matrix.name }}
+          path: out-${{ matrix.name }}/
+          if-no-files-found: ignore
+
+  publish:
+    needs: [build, shaders]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
 
       # Logs for development: build.log and the smoke test output on the ci-out branch
       - name: Publish CI logs
-        if: always()
         run: |
           mkdir -p ci-out
-          cp build.log ci-out/ 2>/dev/null || true
-          cp -r smoke/. ci-out/ 2>/dev/null || true
-          mkdir -p ci-out/shaders && cp -r smoke-shaders/. ci-out/shaders/ 2>/dev/null || true
+          cp -r artifacts/out-noshaders/. ci-out/ 2>/dev/null || true
+          for d in artifacts/out-*; do n=${d#artifacts/out-}; [ "$n" = noshaders ] && continue; mkdir -p ci-out/shaders-$n; cp -r $d/. ci-out/shaders-$n/; done
           find ci-out -name '*.log' -size +20M -exec truncate -s 20M {} \;
           echo "${{ github.sha }}" > ci-out/commit
-          echo "${{ job.status }}" > ci-out/status
+          echo "build=${{ needs.build.result }} shaders=${{ needs.shaders.result }}" > ci-out/status
           cd ci-out
           git init -q -b ci-out
           git config user.name ci
@@ -110,21 +153,14 @@ jobs:
           git commit -qm "CI output for ${{ github.sha }}"
           git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ci-out
 
-      - name: Upload smoke test output
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: smoke-test
-          path: smoke/
-          if-no-files-found: ignore
-
       - name: Publish release
+        if: needs.build.result == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(grep '^mod_version' gradle.properties | cut -d= -f2 | tr -d ' ')
           TAG="v${VERSION}-forge-1.20.1"
-          JAR=$(ls build/libs/*.jar | grep -v -- '-slim' | head -1)
+          JAR=$(ls artifacts/jar/*.jar | grep -v -- '-slim' | head -1)
           gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
           gh release delete dev-build --yes --cleanup-tag 2>/dev/null || true
           gh release create "$TAG" "$JAR" --target "$GITHUB_SHA" --title "Voxy ${VERSION} for Forge 1.20.1 + Embeddium" \

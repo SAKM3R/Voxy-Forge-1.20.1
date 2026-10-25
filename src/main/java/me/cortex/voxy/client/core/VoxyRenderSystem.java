@@ -481,19 +481,26 @@ public class VoxyRenderSystem {
         return projection;
     }
 
-    //TODO: Make a reverse z buffer
-    private static Matrix4f computeProjectionMat(Matrix4fc base) {
+    // Near/far planes of the LOD projection (also handed to shader packs as vxNearPlane/vxFarPlane)
+    public static float getLodNearPlane() {
         //THis is a wild and insane problem to have
         // at short render distances the vanilla terrain doesnt end up covering the 16f near plane voxy uses
         // meaning that it explodes (due to near plane clipping).. _badly_ with the rastered culling being wrong in rare cases for the immediate
         // sections rendered after the vanilla render distance
         float nearVoxy = Minecraft.getInstance().gameRenderer.getRenderDistance()<=32.0f?8f:16f;
-        nearVoxy = VoxyClient.disableSodiumChunkRender()?0.1f:nearVoxy;
+        return VoxyClient.disableSodiumChunkRender()?0.1f:nearVoxy;
+    }
 
+    public static float getLodFarPlane() {
+        return 16*3000;
+    }
+
+    //TODO: Make a reverse z buffer
+    private static Matrix4f computeProjectionMat(Matrix4fc base) {
         return base.mulLocal(
                 makeProjectionMatrix(0.05f, Minecraft.getInstance().gameRenderer.getDepthFar()).invert(),
                 new Matrix4f()
-        ).mulLocal(makeProjectionMatrix(nearVoxy, 16*3000));
+        ).mulLocal(makeProjectionMatrix(getLodNearPlane(), getLodFarPlane()));
     }
 
     private boolean frexStillHasWork() {

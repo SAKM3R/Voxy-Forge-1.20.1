@@ -2,6 +2,7 @@ package me.cortex.voxy.client.iris;
 
 import me.cortex.voxy.client.config.VoxyConfig;
 import me.cortex.voxy.client.core.IGetVoxyRenderSystem;
+import me.cortex.voxy.client.core.VoxyRenderSystem;
 import net.irisshaders.iris.gl.uniform.UniformHolder;
 import net.minecraft.client.Minecraft;
 import org.joml.Matrix4f;
@@ -55,12 +56,17 @@ public class VoxyUniforms {
                 .uniformMatrix(PER_FRAME, "vxModelViewPrev", new PreviousMat(VoxyUniforms::getModelView))
                 .uniformMatrix(PER_FRAME, "vxProj", VoxyUniforms::getProjection)
                 .uniformMatrix(PER_FRAME, "vxProjInv", new Inverted(VoxyUniforms::getProjection))
-                .uniformMatrix(PER_FRAME, "vxProjPrev", new PreviousMat(VoxyUniforms::getProjection));
+                .uniformMatrix(PER_FRAME, "vxProjPrev", new PreviousMat(VoxyUniforms::getProjection))
+                // Distant Horizons style values, so a pack can hand the LODs to its DH code paths by aliasing
+                // dhRenderDistance/dhNearPlane/dhFarPlane to these (the DH names themselves belong to Oculus)
+                .uniform1i(PER_FRAME, "vxDhRenderDistance", ()-> VoxyConfig.CONFIG.sectionRenderDistance*32*16)//In blocks
+                .uniform1f(PER_FRAME, "vxNearPlane", VoxyRenderSystem::getLodNearPlane)
+                .uniform1f(PER_FRAME, "vxFarPlane", VoxyRenderSystem::getLodFarPlane);
 
         if (IrisShaderPatch.IMPERSONATE_DISTANT_HORIZONS) {
             uniforms
-                    .uniform1f(PER_FRAME, "dhNearPlane", ()->16)//Presently hardcoded in voxy
-                    .uniform1f(PER_FRAME, "dhFarPlane", ()->16*3000)//Presently hardcoded in voxy
+                    .uniform1f(PER_FRAME, "dhNearPlane", VoxyRenderSystem::getLodNearPlane)
+                    .uniform1f(PER_FRAME, "dhFarPlane", VoxyRenderSystem::getLodFarPlane)
 
                     .uniform1i(PER_FRAME, "dhRenderDistance", ()-> VoxyConfig.CONFIG.sectionRenderDistance*32*16)//In blocks
                     .uniformMatrix(PER_FRAME, "dhProjection", VoxyUniforms::getProjection)
