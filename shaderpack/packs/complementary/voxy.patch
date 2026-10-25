@@ -1,4 +1,4 @@
-diff -ruN -U2 compl/shaders/lib/common.glsl compl_voxy/shaders/lib/common.glsl
+diff -ruN compl/shaders/lib/common.glsl compl_voxy/shaders/lib/common.glsl
 --- compl/shaders/lib/common.glsl	2025-01-22 02:19:30.000000000 +0300
 +++ compl_voxy/shaders/lib/common.glsl	2026-10-25 08:46:40.578673031 +0300
 @@ -1,3 +1,16 @@
@@ -47,7 +47,7 @@ diff -ruN -U2 compl/shaders/lib/common.glsl compl_voxy/shaders/lib/common.glsl
  
      #if SHADOW_QUALITY == -1
        float timeAngle = worldTime / 24000.0;
-diff -ruN -U2 compl/shaders/lib/uniforms.glsl compl_voxy/shaders/lib/uniforms.glsl
+diff -ruN compl/shaders/lib/uniforms.glsl compl_voxy/shaders/lib/uniforms.glsl
 --- compl/shaders/lib/uniforms.glsl	2024-12-24 15:39:34.000000000 +0300
 +++ compl_voxy/shaders/lib/uniforms.glsl	2026-10-25 08:46:30.632005917 +0300
 @@ -114,7 +114,16 @@
@@ -68,9 +68,9 @@ diff -ruN -U2 compl/shaders/lib/uniforms.glsl compl_voxy/shaders/lib/uniforms.gl
      uniform int dhRenderDistance;
  
      uniform mat4 dhProjection;
-diff -ruN -U2 compl/shaders/program/voxy.json compl_voxy/shaders/program/voxy.json
+diff -ruN compl/shaders/program/voxy.json compl_voxy/shaders/program/voxy.json
 --- compl/shaders/program/voxy.json	1970-01-01 03:00:00.000000000 +0300
-+++ compl_voxy/shaders/program/voxy.json	2026-10-25 08:48:26.666395307 +0300
++++ compl_voxy/shaders/program/voxy.json	2026-10-25 09:04:02.402613215 +0300
 @@ -0,0 +1,61 @@
 +{
 +    "unusedString": "
@@ -114,9 +114,9 @@ diff -ruN -U2 compl/shaders/program/voxy.json compl_voxy/shaders/program/voxy.js
 +        "gbufferModelView", "gbufferModelViewInverse", "gbufferPreviousModelView", "gbufferPreviousProjection",
 +        "shadowModelView", "shadowModelViewInverse", "shadowProjection", "shadowProjectionInverse",
 +        "cameraPositionInt", "previousCameraPositionInt", "cameraPositionFract", "previousCameraPositionFract",
-+        "framemod8", "isEyeInCave", "inDry", "inRainy", "inSnowy", "velocity", "starter", "frameTimeSmooth",
++        "framemod8", "isEyeInCave", "inDry", "inRainy", "inSnowy", "starter", "frameTimeSmooth",
 +        "eyeBrightnessM", "eyeBrightnessM2", "rainFactor", "inBasaltDeltas", "inCrimsonForest",
-+        "inNetherWastes", "inSoulValley", "inWarpedForest", "inPaleGarden",
++        "inNetherWastes", "inSoulValley", "inWarpedForest", "fogStart", "fogEnd",
 +        "vxRenderDistance", "vxProj", "vxProjInv", "vxProjPrev"
 +    ],
 +    "samplers": {
@@ -133,10 +133,10 @@ diff -ruN -U2 compl/shaders/program/voxy.json compl_voxy/shaders/program/voxy.js
 +        "vxDepthTexTrans": "sampler2D"
 +    }
 +}
-diff -ruN -U2 compl/shaders/program/voxy_opaque.glsl compl_voxy/shaders/program/voxy_opaque.glsl
+diff -ruN compl/shaders/program/voxy_opaque.glsl compl_voxy/shaders/program/voxy_opaque.glsl
 --- compl/shaders/program/voxy_opaque.glsl	1970-01-01 03:00:00.000000000 +0300
-+++ compl_voxy/shaders/program/voxy_opaque.glsl	2026-10-25 08:47:17.932550888 +0300
-@@ -0,0 +1,192 @@
++++ compl_voxy/shaders/program/voxy_opaque.glsl	2026-10-25 09:04:02.401478576 +0300
+@@ -0,0 +1,197 @@
 +/////////////////////////////////////
 +// Complementary Shaders by EminGT //
 +/////////////////////////////////////
@@ -150,6 +150,11 @@ diff -ruN -U2 compl/shaders/program/voxy_opaque.glsl compl_voxy/shaders/program/
 +#define DH_TERRAIN
 +#define texture2DLod textureLod
 +#define texture2D texture
++
++// GLSL 1.30 built-ins the libraries use, which Voxy's core-profile programs do not have
++#define shadow2D(s, c) vec4(texture(s, c))
++struct VoxyFogParameters { float start; float end; float scale; };
++#define gl_Fog VoxyFogParameters(fogStart, fogEnd, 1.0 / max(fogEnd - fogStart, 0.001))
 +
 +//Common//
 +#include "/lib/common.glsl"
@@ -329,10 +334,10 @@ diff -ruN -U2 compl/shaders/program/voxy_opaque.glsl compl_voxy/shaders/program/
 +}
 +
 +#endif
-diff -ruN -U2 compl/shaders/program/voxy_translucent.glsl compl_voxy/shaders/program/voxy_translucent.glsl
+diff -ruN compl/shaders/program/voxy_translucent.glsl compl_voxy/shaders/program/voxy_translucent.glsl
 --- compl/shaders/program/voxy_translucent.glsl	1970-01-01 03:00:00.000000000 +0300
-+++ compl_voxy/shaders/program/voxy_translucent.glsl	2026-10-25 08:48:04.626588946 +0300
-@@ -0,0 +1,221 @@
++++ compl_voxy/shaders/program/voxy_translucent.glsl	2026-10-25 09:04:02.401887336 +0300
+@@ -0,0 +1,226 @@
 +/////////////////////////////////////
 +// Complementary Shaders by EminGT //
 +/////////////////////////////////////
@@ -344,6 +349,11 @@ diff -ruN -U2 compl/shaders/program/voxy_translucent.glsl compl_voxy/shaders/pro
 +#define DH_WATER
 +#define texture2DLod textureLod
 +#define texture2D texture
++
++// GLSL 1.30 built-ins the libraries use, which Voxy's core-profile programs do not have
++#define shadow2D(s, c) vec4(texture(s, c))
++struct VoxyFogParameters { float start; float end; float scale; };
++#define gl_Fog VoxyFogParameters(fogStart, fogEnd, 1.0 / max(fogEnd - fogStart, 0.001))
 +
 +//Common//
 +#include "/lib/common.glsl"
@@ -554,12 +564,12 @@ diff -ruN -U2 compl/shaders/program/voxy_translucent.glsl compl_voxy/shaders/pro
 +}
 +
 +#endif
-diff -ruN -U2 compl/shaders/world-1/voxy.json compl_voxy/shaders/world-1/voxy.json
+diff -ruN compl/shaders/world-1/voxy.json compl_voxy/shaders/world-1/voxy.json
 --- compl/shaders/world-1/voxy.json	1970-01-01 03:00:00.000000000 +0300
 +++ compl_voxy/shaders/world-1/voxy.json	2026-10-25 08:48:26.666650805 +0300
 @@ -0,0 +1 @@
 +#include "/program/voxy.json"
-diff -ruN -U2 compl/shaders/world-1/voxy_opaque.glsl compl_voxy/shaders/world-1/voxy_opaque.glsl
+diff -ruN compl/shaders/world-1/voxy_opaque.glsl compl_voxy/shaders/world-1/voxy_opaque.glsl
 --- compl/shaders/world-1/voxy_opaque.glsl	1970-01-01 03:00:00.000000000 +0300
 +++ compl_voxy/shaders/world-1/voxy_opaque.glsl	2026-10-25 08:48:26.666650805 +0300
 @@ -0,0 +1,4 @@
@@ -567,7 +577,7 @@ diff -ruN -U2 compl/shaders/world-1/voxy_opaque.glsl compl_voxy/shaders/world-1/
 +#define NETHER
 +
 +#include "/program/voxy_opaque.glsl"
-diff -ruN -U2 compl/shaders/world-1/voxy_translucent.glsl compl_voxy/shaders/world-1/voxy_translucent.glsl
+diff -ruN compl/shaders/world-1/voxy_translucent.glsl compl_voxy/shaders/world-1/voxy_translucent.glsl
 --- compl/shaders/world-1/voxy_translucent.glsl	1970-01-01 03:00:00.000000000 +0300
 +++ compl_voxy/shaders/world-1/voxy_translucent.glsl	2026-10-25 08:48:26.666650805 +0300
 @@ -0,0 +1,4 @@
@@ -575,12 +585,12 @@ diff -ruN -U2 compl/shaders/world-1/voxy_translucent.glsl compl_voxy/shaders/wor
 +#define NETHER
 +
 +#include "/program/voxy_translucent.glsl"
-diff -ruN -U2 compl/shaders/world0/voxy.json compl_voxy/shaders/world0/voxy.json
+diff -ruN compl/shaders/world0/voxy.json compl_voxy/shaders/world0/voxy.json
 --- compl/shaders/world0/voxy.json	1970-01-01 03:00:00.000000000 +0300
 +++ compl_voxy/shaders/world0/voxy.json	2026-10-25 08:48:26.666650805 +0300
 @@ -0,0 +1 @@
 +#include "/program/voxy.json"
-diff -ruN -U2 compl/shaders/world0/voxy_opaque.glsl compl_voxy/shaders/world0/voxy_opaque.glsl
+diff -ruN compl/shaders/world0/voxy_opaque.glsl compl_voxy/shaders/world0/voxy_opaque.glsl
 --- compl/shaders/world0/voxy_opaque.glsl	1970-01-01 03:00:00.000000000 +0300
 +++ compl_voxy/shaders/world0/voxy_opaque.glsl	2026-10-25 08:48:26.666650805 +0300
 @@ -0,0 +1,4 @@
@@ -588,7 +598,7 @@ diff -ruN -U2 compl/shaders/world0/voxy_opaque.glsl compl_voxy/shaders/world0/vo
 +#define OVERWORLD
 +
 +#include "/program/voxy_opaque.glsl"
-diff -ruN -U2 compl/shaders/world0/voxy_translucent.glsl compl_voxy/shaders/world0/voxy_translucent.glsl
+diff -ruN compl/shaders/world0/voxy_translucent.glsl compl_voxy/shaders/world0/voxy_translucent.glsl
 --- compl/shaders/world0/voxy_translucent.glsl	1970-01-01 03:00:00.000000000 +0300
 +++ compl_voxy/shaders/world0/voxy_translucent.glsl	2026-10-25 08:48:26.666650805 +0300
 @@ -0,0 +1,4 @@
@@ -596,12 +606,12 @@ diff -ruN -U2 compl/shaders/world0/voxy_translucent.glsl compl_voxy/shaders/worl
 +#define OVERWORLD
 +
 +#include "/program/voxy_translucent.glsl"
-diff -ruN -U2 compl/shaders/world1/voxy.json compl_voxy/shaders/world1/voxy.json
+diff -ruN compl/shaders/world1/voxy.json compl_voxy/shaders/world1/voxy.json
 --- compl/shaders/world1/voxy.json	1970-01-01 03:00:00.000000000 +0300
 +++ compl_voxy/shaders/world1/voxy.json	2026-10-25 08:48:26.666650805 +0300
 @@ -0,0 +1 @@
 +#include "/program/voxy.json"
-diff -ruN -U2 compl/shaders/world1/voxy_opaque.glsl compl_voxy/shaders/world1/voxy_opaque.glsl
+diff -ruN compl/shaders/world1/voxy_opaque.glsl compl_voxy/shaders/world1/voxy_opaque.glsl
 --- compl/shaders/world1/voxy_opaque.glsl	1970-01-01 03:00:00.000000000 +0300
 +++ compl_voxy/shaders/world1/voxy_opaque.glsl	2026-10-25 08:48:26.666650805 +0300
 @@ -0,0 +1,4 @@
@@ -609,7 +619,7 @@ diff -ruN -U2 compl/shaders/world1/voxy_opaque.glsl compl_voxy/shaders/world1/vo
 +#define END
 +
 +#include "/program/voxy_opaque.glsl"
-diff -ruN -U2 compl/shaders/world1/voxy_translucent.glsl compl_voxy/shaders/world1/voxy_translucent.glsl
+diff -ruN compl/shaders/world1/voxy_translucent.glsl compl_voxy/shaders/world1/voxy_translucent.glsl
 --- compl/shaders/world1/voxy_translucent.glsl	1970-01-01 03:00:00.000000000 +0300
 +++ compl_voxy/shaders/world1/voxy_translucent.glsl	2026-10-25 08:48:26.666650805 +0300
 @@ -0,0 +1,4 @@

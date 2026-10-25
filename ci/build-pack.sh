@@ -20,6 +20,17 @@ case "$kind" in
       curl -sL -o "$work.zip" "$url"
       echo "$arg  $work.zip" | sha1sum -c -
       (cd "$work" && unzip -q "$work.zip")
+    elif [[ "$fallback" == modrinth-search:* ]]; then
+      # The exact file is not on Modrinth: take the release with that version number from a project found by name
+      spec=${fallback#modrinth-search:}; query=${spec%%@*}; ver=${spec#*@}
+      for slug in $(curl -s -G "https://api.modrinth.com/v2/search" --data-urlencode "query=$query" --data-urlencode 'facets=[["project_type:shader"]]' | jq -r '.hits[].slug'); do
+        url=$(curl -s "https://api.modrinth.com/v2/project/$slug/version" | jq -r --arg v "$ver" '[.[] | select((.version_number|contains($v)) or (.name|contains($v)))][0].files[0].url // empty')
+        echo "[$id] Modrinth project $slug: ${url:-no $ver}"
+        [ -n "$url" ] && break
+      done
+      [ -n "$url" ] || { echo "[$id] $query $ver not found on Modrinth"; exit 2; }
+      curl -sL -o "$work.zip" "$url"; sha1sum "$work.zip"
+      (cd "$work" && unzip -q "$work.zip")
     elif [[ "$fallback" == github:* ]]; then
       spec=${fallback#github:}; repo=${spec%@*}; rev=${spec#*@}; crlf=; [[ "$rev" == *:crlf ]] && { crlf=1; rev=${rev%:crlf}; }
       echo "[$id] original from GitHub $repo@$rev"
@@ -30,6 +41,8 @@ case "$kind" in
     fi ;;
 esac
 if [ -f "$dir/voxy.patch" ]; then (cd "$work" && patch -s -p1 --binary < "$OLDPWD/$dir/voxy.patch"); fi
+# Optional sed expression over the pack's Voxy programs (CI diagnostics)
+if [ -n "$DIAG" ]; then find "$work" -path '*voxy*' -name '*.glsl' -exec sed -i "$DIAG" {} +; grep -rn "PackLightmaps = \|sampledColour.rgb" "$work" | grep -i voxy | head; fi
 # Mesa's llvmpipe allows only 32 KiB of compute shared memory; Photon's sky-SH compute pass uses 36 KiB
 # (fine on real GPUs), so CI builds leave that one pass out
 rm -f "$work"/shaders/world*/deferred4_a.csh

@@ -83,6 +83,10 @@ jobs:
           - { name: complementary-opt, pack: complementary, preset: preset-opt.txt }
           - { name: derivative, pack: derivative, preset: preset.txt }
           - { name: bliss, pack: bliss, preset: preset.txt }
+          # diagnostics for the LOD colours under shaders (temporary)
+          - { name: bliss-noblocklight, pack: bliss, preset: preset.txt, diag: "s/vec2 PackLightmaps = parameters.lightMap;/vec2 PackLightmaps = vec2(0.0, parameters.lightMap.y);/" }
+          - { name: bliss-swaplight, pack: bliss, preset: preset.txt, diag: "s/vec2 PackLightmaps = parameters.lightMap;/vec2 PackLightmaps = parameters.lightMap.yx;/" }
+          - { name: bliss-notint, pack: bliss, preset: preset.txt, diag: "s/parameters.sampledColour.rgb \\* parameters.tinting.rgb/parameters.sampledColour.rgb/" }
     steps:
       - uses: actions/checkout@v4
 
@@ -102,7 +106,7 @@ jobs:
           export LIBGL_ALWAYS_SOFTWARE=1 MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460
           out=out-${{ matrix.name }}
           mkdir -p $out run/shaderpacks run/config
-          ci/build-pack.sh ${{ matrix.pack }} run/shaderpacks/${{ matrix.pack }}_voxy.zip 2>&1 | tee $out/pack.txt
+          DIAG='${{ matrix.diag }}' ci/build-pack.sh ${{ matrix.pack }} run/shaderpacks/${{ matrix.pack }}_voxy.zip 2>&1 | tee $out/pack.txt
           cp shaderpack/packs/${{ matrix.pack }}/${{ matrix.preset }} run/shaderpacks/${{ matrix.pack }}_voxy.zip.txt
           printf 'enableShaders=true\nshaderPack=%s\n' "${{ matrix.pack }}_voxy.zip" > run/config/oculus.properties
           for attempt in 1 2; do
@@ -116,6 +120,7 @@ jobs:
           if grep -q "Mixin apply failed" run/logs/latest.log; then echo "::error::A mixin failed to apply"; exit 1; fi
           grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Shader smoke test did not finish"; exit 1; }
           grep -q "using pipeline 'IrisVoxyRenderPipeline'" run/logs/latest.log || { echo "::error::Voxy shader pipeline was not used"; exit 1; }
+          if grep -q "Failed to compile shader patch" run/logs/latest.log; then echo "::error::The pack's Voxy shader did not compile"; exit 1; fi
 
       - name: Upload output
         if: always()
