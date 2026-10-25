@@ -1,4 +1,4 @@
-diff -ruN -U2 deriv/shaders/lib/Head/Uniforms.inc deriv_voxy/shaders/lib/Head/Uniforms.inc
+diff -ruN deriv/shaders/lib/Head/Uniforms.inc deriv_voxy/shaders/lib/Head/Uniforms.inc
 --- deriv/shaders/lib/Head/Uniforms.inc	2024-04-03 22:50:18.000000000 +0300
 +++ deriv_voxy/shaders/lib/Head/Uniforms.inc	2026-10-25 08:50:08.507925116 +0300
 @@ -1,3 +1,4 @@
@@ -11,7 +11,7 @@ diff -ruN -U2 deriv/shaders/lib/Head/Uniforms.inc deriv_voxy/shaders/lib/Head/Un
      uniform mat4 dhPreviousProjection;
  #endif
 +#endif
-diff -ruN -U2 deriv/shaders/lib/Head/VoxyDH.inc deriv_voxy/shaders/lib/Head/VoxyDH.inc
+diff -ruN deriv/shaders/lib/Head/VoxyDH.inc deriv_voxy/shaders/lib/Head/VoxyDH.inc
 --- deriv/shaders/lib/Head/VoxyDH.inc	1970-01-01 03:00:00.000000000 +0300
 +++ deriv_voxy/shaders/lib/Head/VoxyDH.inc	2026-10-25 08:50:08.469934446 +0300
 @@ -0,0 +1,15 @@
@@ -30,7 +30,7 @@ diff -ruN -U2 deriv/shaders/lib/Head/VoxyDH.inc deriv_voxy/shaders/lib/Head/Voxy
 +	#define dhDepthTex0 vxDepthTexTrans
 +	#define dhDepthTex1 vxDepthTexOpaque
 +#endif
-diff -ruN -U2 deriv/shaders/program/DH/Terrain.frag deriv_voxy/shaders/program/DH/Terrain.frag
+diff -ruN deriv/shaders/program/DH/Terrain.frag deriv_voxy/shaders/program/DH/Terrain.frag
 --- deriv/shaders/program/DH/Terrain.frag	2024-04-03 22:56:06.000000000 +0300
 +++ deriv_voxy/shaders/program/DH/Terrain.frag	2026-10-25 08:50:44.414857548 +0300
 @@ -8,6 +8,14 @@
@@ -78,7 +78,7 @@ diff -ruN -U2 deriv/shaders/program/DH/Terrain.frag deriv_voxy/shaders/program/D
  
  	vec3 albedo = tint;
  
-diff -ruN -U2 deriv/shaders/program/DH/Water.frag deriv_voxy/shaders/program/DH/Water.frag
+diff -ruN deriv/shaders/program/DH/Water.frag deriv_voxy/shaders/program/DH/Water.frag
 --- deriv/shaders/program/DH/Water.frag	2024-04-04 11:20:36.000000000 +0300
 +++ deriv_voxy/shaders/program/DH/Water.frag	2026-10-25 08:50:44.415257099 +0300
 @@ -9,6 +9,15 @@
@@ -131,10 +131,10 @@ diff -ruN -U2 deriv/shaders/program/DH/Water.frag deriv_voxy/shaders/program/DH/
  
  	if (texelFetch(depthtex0, ivec2(gl_FragCoord.xy), 0).x < 1.0) { discard; return; }
  
-diff -ruN -U2 deriv/shaders/program/Voxy/voxy.json deriv_voxy/shaders/program/Voxy/voxy.json
+diff -ruN deriv/shaders/program/Voxy/voxy.json deriv_voxy/shaders/program/Voxy/voxy.json
 --- deriv/shaders/program/Voxy/voxy.json	1970-01-01 03:00:00.000000000 +0300
-+++ deriv_voxy/shaders/program/Voxy/voxy.json	2026-10-25 08:51:01.365979668 +0300
-@@ -0,0 +1,85 @@
++++ deriv_voxy/shaders/program/Voxy/voxy.json	2026-10-25 09:47:56.972090040 +0300
+@@ -0,0 +1,80 @@
 +{
 +    "unusedString": "
 +        // Run through the Iris preprocessor, so the pack settings (TAA_ENABLED) are visible here
@@ -205,22 +205,17 @@ diff -ruN -U2 deriv/shaders/program/Voxy/voxy.json deriv_voxy/shaders/program/Vo
 +    ],
 +    "samplers": {
 +        "noisetex": "sampler2D",
-+        "colortex0": "sampler2D",
-+        "colortex1": "sampler2D",
-+        "colortex2": "sampler2D",
-+        "colortex3": "sampler2D",
 +        "colortex4": "sampler2D",
 +        "colortex5": "sampler2D",
 +        "colortex6": "sampler2D",
 +        "colortex7": "sampler2D",
 +        "depthtex0": "sampler2D",
 +        "depthtex1": "sampler2D",
-+        "depthtex2": "sampler2D",
 +        "vxDepthTexTrans": "sampler2D",
 +        "vxDepthTexOpaque": "sampler2D"
 +    }
 +}
-diff -ruN -U2 deriv/shaders/world-1/composite.fsh deriv_voxy/shaders/world-1/composite.fsh
+diff -ruN deriv/shaders/world-1/composite.fsh deriv_voxy/shaders/world-1/composite.fsh
 --- deriv/shaders/world-1/composite.fsh	2024-04-03 22:51:08.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite.fsh	2026-10-25 08:50:08.502324026 +0300
 @@ -1,4 +1,5 @@
@@ -229,7 +224,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite.fsh deriv_voxy/shaders/world-1/com
  
  out vec3 sceneData;
  
-diff -ruN -U2 deriv/shaders/world-1/composite.vsh deriv_voxy/shaders/world-1/composite.vsh
+diff -ruN deriv/shaders/world-1/composite.vsh deriv_voxy/shaders/world-1/composite.vsh
 --- deriv/shaders/world-1/composite.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite.vsh	2026-10-25 08:50:08.502575546 +0300
 @@ -1,4 +1,5 @@
@@ -238,7 +233,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite.vsh deriv_voxy/shaders/world-1/com
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world-1/composite1.fsh deriv_voxy/shaders/world-1/composite1.fsh
+diff -ruN deriv/shaders/world-1/composite1.fsh deriv_voxy/shaders/world-1/composite1.fsh
 --- deriv/shaders/world-1/composite1.fsh	2024-04-04 15:56:48.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite1.fsh	2026-10-25 08:50:08.500622008 +0300
 @@ -1,4 +1,5 @@
@@ -247,7 +242,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite1.fsh deriv_voxy/shaders/world-1/co
  
  
  #define IS_NETHER
-diff -ruN -U2 deriv/shaders/world-1/composite1.vsh deriv_voxy/shaders/world-1/composite1.vsh
+diff -ruN deriv/shaders/world-1/composite1.vsh deriv_voxy/shaders/world-1/composite1.vsh
 --- deriv/shaders/world-1/composite1.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite1.vsh	2026-10-25 08:50:08.500030534 +0300
 @@ -1,4 +1,5 @@
@@ -256,7 +251,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite1.vsh deriv_voxy/shaders/world-1/co
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world-1/composite10.fsh deriv_voxy/shaders/world-1/composite10.fsh
+diff -ruN deriv/shaders/world-1/composite10.fsh deriv_voxy/shaders/world-1/composite10.fsh
 --- deriv/shaders/world-1/composite10.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite10.fsh	2026-10-25 08:50:08.499044716 +0300
 @@ -1,3 +1,4 @@
@@ -264,7 +259,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite10.fsh deriv_voxy/shaders/world-1/c
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/DownSample.glsl"
-diff -ruN -U2 deriv/shaders/world-1/composite10.vsh deriv_voxy/shaders/world-1/composite10.vsh
+diff -ruN deriv/shaders/world-1/composite10.vsh deriv_voxy/shaders/world-1/composite10.vsh
 --- deriv/shaders/world-1/composite10.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite10.vsh	2026-10-25 08:50:08.501525887 +0300
 @@ -1,4 +1,5 @@
@@ -273,7 +268,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite10.vsh deriv_voxy/shaders/world-1/c
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world-1/composite12.fsh deriv_voxy/shaders/world-1/composite12.fsh
+diff -ruN deriv/shaders/world-1/composite12.fsh deriv_voxy/shaders/world-1/composite12.fsh
 --- deriv/shaders/world-1/composite12.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite12.fsh	2026-10-25 08:50:08.500950079 +0300
 @@ -1,3 +1,4 @@
@@ -281,7 +276,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite12.fsh deriv_voxy/shaders/world-1/c
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/BlurH.glsl"
-diff -ruN -U2 deriv/shaders/world-1/composite12.vsh deriv_voxy/shaders/world-1/composite12.vsh
+diff -ruN deriv/shaders/world-1/composite12.vsh deriv_voxy/shaders/world-1/composite12.vsh
 --- deriv/shaders/world-1/composite12.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite12.vsh	2026-10-25 08:50:08.501342942 +0300
 @@ -1,4 +1,5 @@
@@ -290,7 +285,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite12.vsh deriv_voxy/shaders/world-1/c
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * vec2(1.0, 2.0) - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world-1/composite13.fsh deriv_voxy/shaders/world-1/composite13.fsh
+diff -ruN deriv/shaders/world-1/composite13.fsh deriv_voxy/shaders/world-1/composite13.fsh
 --- deriv/shaders/world-1/composite13.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite13.fsh	2026-10-25 08:50:08.500264150 +0300
 @@ -1,3 +1,4 @@
@@ -298,7 +293,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite13.fsh deriv_voxy/shaders/world-1/c
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/BlurV.glsl"
-diff -ruN -U2 deriv/shaders/world-1/composite13.vsh deriv_voxy/shaders/world-1/composite13.vsh
+diff -ruN deriv/shaders/world-1/composite13.vsh deriv_voxy/shaders/world-1/composite13.vsh
 --- deriv/shaders/world-1/composite13.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite13.vsh	2026-10-25 08:50:08.498653110 +0300
 @@ -1,4 +1,5 @@
@@ -307,7 +302,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite13.vsh deriv_voxy/shaders/world-1/c
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * vec2(1.0, 2.0) - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world-1/composite14.fsh deriv_voxy/shaders/world-1/composite14.fsh
+diff -ruN deriv/shaders/world-1/composite14.fsh deriv_voxy/shaders/world-1/composite14.fsh
 --- deriv/shaders/world-1/composite14.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite14.fsh	2026-10-25 08:50:08.500706154 +0300
 @@ -1,3 +1,4 @@
@@ -315,7 +310,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite14.fsh deriv_voxy/shaders/world-1/c
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/MotionBlur.glsl"
-diff -ruN -U2 deriv/shaders/world-1/composite14.vsh deriv_voxy/shaders/world-1/composite14.vsh
+diff -ruN deriv/shaders/world-1/composite14.vsh deriv_voxy/shaders/world-1/composite14.vsh
 --- deriv/shaders/world-1/composite14.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite14.vsh	2026-10-25 08:50:08.501401653 +0300
 @@ -1,4 +1,5 @@
@@ -324,7 +319,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite14.vsh deriv_voxy/shaders/world-1/c
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world-1/composite15.fsh deriv_voxy/shaders/world-1/composite15.fsh
+diff -ruN deriv/shaders/world-1/composite15.fsh deriv_voxy/shaders/world-1/composite15.fsh
 --- deriv/shaders/world-1/composite15.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite15.fsh	2026-10-25 08:50:08.500189055 +0300
 @@ -1,4 +1,5 @@
@@ -333,7 +328,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite15.fsh deriv_voxy/shaders/world-1/c
  
  #define IS_NETHER
  
-diff -ruN -U2 deriv/shaders/world-1/composite15.vsh deriv_voxy/shaders/world-1/composite15.vsh
+diff -ruN deriv/shaders/world-1/composite15.vsh deriv_voxy/shaders/world-1/composite15.vsh
 --- deriv/shaders/world-1/composite15.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite15.vsh	2026-10-25 08:50:08.500889797 +0300
 @@ -1,4 +1,5 @@
@@ -342,7 +337,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite15.vsh deriv_voxy/shaders/world-1/c
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world-1/composite2.fsh deriv_voxy/shaders/world-1/composite2.fsh
+diff -ruN deriv/shaders/world-1/composite2.fsh deriv_voxy/shaders/world-1/composite2.fsh
 --- deriv/shaders/world-1/composite2.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite2.fsh	2026-10-25 08:50:08.501031282 +0300
 @@ -1,3 +1,4 @@
@@ -350,7 +345,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite2.fsh deriv_voxy/shaders/world-1/co
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/DoF.glsl"
-diff -ruN -U2 deriv/shaders/world-1/composite2.vsh deriv_voxy/shaders/world-1/composite2.vsh
+diff -ruN deriv/shaders/world-1/composite2.vsh deriv_voxy/shaders/world-1/composite2.vsh
 --- deriv/shaders/world-1/composite2.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite2.vsh	2026-10-25 08:50:08.500829153 +0300
 @@ -1,4 +1,5 @@
@@ -359,7 +354,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite2.vsh deriv_voxy/shaders/world-1/co
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world-1/composite3.fsh deriv_voxy/shaders/world-1/composite3.fsh
+diff -ruN deriv/shaders/world-1/composite3.fsh deriv_voxy/shaders/world-1/composite3.fsh
 --- deriv/shaders/world-1/composite3.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite3.fsh	2026-10-25 08:50:08.499166653 +0300
 @@ -1,3 +1,4 @@
@@ -367,7 +362,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite3.fsh deriv_voxy/shaders/world-1/co
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/Temporal.frag"
-diff -ruN -U2 deriv/shaders/world-1/composite3.vsh deriv_voxy/shaders/world-1/composite3.vsh
+diff -ruN deriv/shaders/world-1/composite3.vsh deriv_voxy/shaders/world-1/composite3.vsh
 --- deriv/shaders/world-1/composite3.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite3.vsh	2026-10-25 08:50:08.501762780 +0300
 @@ -1,4 +1,5 @@
@@ -376,7 +371,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite3.vsh deriv_voxy/shaders/world-1/co
  
  #define IS_NETHER
  
-diff -ruN -U2 deriv/shaders/world-1/composite4.fsh deriv_voxy/shaders/world-1/composite4.fsh
+diff -ruN deriv/shaders/world-1/composite4.fsh deriv_voxy/shaders/world-1/composite4.fsh
 --- deriv/shaders/world-1/composite4.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite4.fsh	2026-10-25 08:50:08.502535149 +0300
 @@ -1,3 +1,4 @@
@@ -384,7 +379,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite4.fsh deriv_voxy/shaders/world-1/co
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/DownSample0.glsl"
-diff -ruN -U2 deriv/shaders/world-1/composite4.vsh deriv_voxy/shaders/world-1/composite4.vsh
+diff -ruN deriv/shaders/world-1/composite4.vsh deriv_voxy/shaders/world-1/composite4.vsh
 --- deriv/shaders/world-1/composite4.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/composite4.vsh	2026-10-25 08:50:08.499950603 +0300
 @@ -1,4 +1,5 @@
@@ -393,7 +388,7 @@ diff -ruN -U2 deriv/shaders/world-1/composite4.vsh deriv_voxy/shaders/world-1/co
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world-1/deferred2.fsh deriv_voxy/shaders/world-1/deferred2.fsh
+diff -ruN deriv/shaders/world-1/deferred2.fsh deriv_voxy/shaders/world-1/deferred2.fsh
 --- deriv/shaders/world-1/deferred2.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/deferred2.fsh	2026-10-25 08:50:08.501940264 +0300
 @@ -1,4 +1,5 @@
@@ -402,7 +397,7 @@ diff -ruN -U2 deriv/shaders/world-1/deferred2.fsh deriv_voxy/shaders/world-1/def
  
  #define IS_NETHER
  
-diff -ruN -U2 deriv/shaders/world-1/deferred2.vsh deriv_voxy/shaders/world-1/deferred2.vsh
+diff -ruN deriv/shaders/world-1/deferred2.vsh deriv_voxy/shaders/world-1/deferred2.vsh
 --- deriv/shaders/world-1/deferred2.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/deferred2.vsh	2026-10-25 08:50:08.499345655 +0300
 @@ -1,4 +1,5 @@
@@ -411,7 +406,7 @@ diff -ruN -U2 deriv/shaders/world-1/deferred2.vsh deriv_voxy/shaders/world-1/def
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world-1/deferred3.fsh deriv_voxy/shaders/world-1/deferred3.fsh
+diff -ruN deriv/shaders/world-1/deferred3.fsh deriv_voxy/shaders/world-1/deferred3.fsh
 --- deriv/shaders/world-1/deferred3.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/deferred3.fsh	2026-10-25 08:50:08.498850580 +0300
 @@ -1,3 +1,4 @@
@@ -419,7 +414,7 @@ diff -ruN -U2 deriv/shaders/world-1/deferred3.fsh deriv_voxy/shaders/world-1/def
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/SpatialFilter.frag"
-diff -ruN -U2 deriv/shaders/world-1/deferred3.vsh deriv_voxy/shaders/world-1/deferred3.vsh
+diff -ruN deriv/shaders/world-1/deferred3.vsh deriv_voxy/shaders/world-1/deferred3.vsh
 --- deriv/shaders/world-1/deferred3.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/deferred3.vsh	2026-10-25 08:50:08.499286577 +0300
 @@ -1,4 +1,5 @@
@@ -428,7 +423,7 @@ diff -ruN -U2 deriv/shaders/world-1/deferred3.vsh deriv_voxy/shaders/world-1/def
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world-1/deferred4.csh deriv_voxy/shaders/world-1/deferred4.csh
+diff -ruN deriv/shaders/world-1/deferred4.csh deriv_voxy/shaders/world-1/deferred4.csh
 --- deriv/shaders/world-1/deferred4.csh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/deferred4.csh	2026-10-25 08:50:08.500123144 +0300
 @@ -1,3 +1,4 @@
@@ -436,7 +431,7 @@ diff -ruN -U2 deriv/shaders/world-1/deferred4.csh deriv_voxy/shaders/world-1/def
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/SpatialFilter.comp"
-diff -ruN -U2 deriv/shaders/world-1/deferred5.fsh deriv_voxy/shaders/world-1/deferred5.fsh
+diff -ruN deriv/shaders/world-1/deferred5.fsh deriv_voxy/shaders/world-1/deferred5.fsh
 --- deriv/shaders/world-1/deferred5.fsh	2024-04-04 11:22:18.000000000 +0300
 +++ deriv_voxy/shaders/world-1/deferred5.fsh	2026-10-25 08:50:08.498911877 +0300
 @@ -1,4 +1,5 @@
@@ -445,7 +440,7 @@ diff -ruN -U2 deriv/shaders/world-1/deferred5.fsh deriv_voxy/shaders/world-1/def
  
  
  #define IS_NETHER
-diff -ruN -U2 deriv/shaders/world-1/deferred5.vsh deriv_voxy/shaders/world-1/deferred5.vsh
+diff -ruN deriv/shaders/world-1/deferred5.vsh deriv_voxy/shaders/world-1/deferred5.vsh
 --- deriv/shaders/world-1/deferred5.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/deferred5.vsh	2026-10-25 08:50:08.500071424 +0300
 @@ -1,4 +1,5 @@
@@ -454,7 +449,7 @@ diff -ruN -U2 deriv/shaders/world-1/deferred5.vsh deriv_voxy/shaders/world-1/def
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world-1/deferred6.fsh deriv_voxy/shaders/world-1/deferred6.fsh
+diff -ruN deriv/shaders/world-1/deferred6.fsh deriv_voxy/shaders/world-1/deferred6.fsh
 --- deriv/shaders/world-1/deferred6.fsh	2024-04-04 11:22:18.000000000 +0300
 +++ deriv_voxy/shaders/world-1/deferred6.fsh	2026-10-25 08:50:08.499406130 +0300
 @@ -1,4 +1,5 @@
@@ -463,7 +458,7 @@ diff -ruN -U2 deriv/shaders/world-1/deferred6.fsh deriv_voxy/shaders/world-1/def
  
  #define IS_NETHER
  
-diff -ruN -U2 deriv/shaders/world-1/deferred6.vsh deriv_voxy/shaders/world-1/deferred6.vsh
+diff -ruN deriv/shaders/world-1/deferred6.vsh deriv_voxy/shaders/world-1/deferred6.vsh
 --- deriv/shaders/world-1/deferred6.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/deferred6.vsh	2026-10-25 08:50:08.502443401 +0300
 @@ -1,4 +1,5 @@
@@ -472,7 +467,7 @@ diff -ruN -U2 deriv/shaders/world-1/deferred6.vsh deriv_voxy/shaders/world-1/def
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world-1/deferred7.fsh deriv_voxy/shaders/world-1/deferred7.fsh
+diff -ruN deriv/shaders/world-1/deferred7.fsh deriv_voxy/shaders/world-1/deferred7.fsh
 --- deriv/shaders/world-1/deferred7.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/deferred7.fsh	2026-10-25 08:50:08.501821104 +0300
 @@ -1,3 +1,4 @@
@@ -480,7 +475,7 @@ diff -ruN -U2 deriv/shaders/world-1/deferred7.fsh deriv_voxy/shaders/world-1/def
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/ReflectionFilter.frag"
-diff -ruN -U2 deriv/shaders/world-1/deferred7.vsh deriv_voxy/shaders/world-1/deferred7.vsh
+diff -ruN deriv/shaders/world-1/deferred7.vsh deriv_voxy/shaders/world-1/deferred7.vsh
 --- deriv/shaders/world-1/deferred7.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/deferred7.vsh	2026-10-25 08:50:08.499590189 +0300
 @@ -1,4 +1,5 @@
@@ -489,7 +484,7 @@ diff -ruN -U2 deriv/shaders/world-1/deferred7.vsh deriv_voxy/shaders/world-1/def
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world-1/deferred8.csh deriv_voxy/shaders/world-1/deferred8.csh
+diff -ruN deriv/shaders/world-1/deferred8.csh deriv_voxy/shaders/world-1/deferred8.csh
 --- deriv/shaders/world-1/deferred8.csh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/deferred8.csh	2026-10-25 08:50:08.501643900 +0300
 @@ -1,3 +1,4 @@
@@ -497,7 +492,7 @@ diff -ruN -U2 deriv/shaders/world-1/deferred8.csh deriv_voxy/shaders/world-1/def
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/ReflectionFilter.comp"
-diff -ruN -U2 deriv/shaders/world-1/dh_terrain.fsh deriv_voxy/shaders/world-1/dh_terrain.fsh
+diff -ruN deriv/shaders/world-1/dh_terrain.fsh deriv_voxy/shaders/world-1/dh_terrain.fsh
 --- deriv/shaders/world-1/dh_terrain.fsh	2024-04-03 22:51:08.000000000 +0300
 +++ deriv_voxy/shaders/world-1/dh_terrain.fsh	2026-10-25 08:50:08.499107334 +0300
 @@ -1,3 +1,4 @@
@@ -505,7 +500,7 @@ diff -ruN -U2 deriv/shaders/world-1/dh_terrain.fsh deriv_voxy/shaders/world-1/dh
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/DH/Terrain.frag"
-diff -ruN -U2 deriv/shaders/world-1/dh_terrain.vsh deriv_voxy/shaders/world-1/dh_terrain.vsh
+diff -ruN deriv/shaders/world-1/dh_terrain.vsh deriv_voxy/shaders/world-1/dh_terrain.vsh
 --- deriv/shaders/world-1/dh_terrain.vsh	2024-04-03 22:51:08.000000000 +0300
 +++ deriv_voxy/shaders/world-1/dh_terrain.vsh	2026-10-25 08:50:08.498782922 +0300
 @@ -1,3 +1,4 @@
@@ -513,7 +508,7 @@ diff -ruN -U2 deriv/shaders/world-1/dh_terrain.vsh deriv_voxy/shaders/world-1/dh
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/DH/Terrain.vert"
-diff -ruN -U2 deriv/shaders/world-1/dh_water.fsh deriv_voxy/shaders/world-1/dh_water.fsh
+diff -ruN deriv/shaders/world-1/dh_water.fsh deriv_voxy/shaders/world-1/dh_water.fsh
 --- deriv/shaders/world-1/dh_water.fsh	2024-04-03 22:51:08.000000000 +0300
 +++ deriv_voxy/shaders/world-1/dh_water.fsh	2026-10-25 08:50:08.501282926 +0300
 @@ -1,3 +1,4 @@
@@ -521,7 +516,7 @@ diff -ruN -U2 deriv/shaders/world-1/dh_water.fsh deriv_voxy/shaders/world-1/dh_w
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/DH/Water.frag"
-diff -ruN -U2 deriv/shaders/world-1/dh_water.vsh deriv_voxy/shaders/world-1/dh_water.vsh
+diff -ruN deriv/shaders/world-1/dh_water.vsh deriv_voxy/shaders/world-1/dh_water.vsh
 --- deriv/shaders/world-1/dh_water.vsh	2024-04-03 22:51:08.000000000 +0300
 +++ deriv_voxy/shaders/world-1/dh_water.vsh	2026-10-25 08:50:08.498715697 +0300
 @@ -1,3 +1,4 @@
@@ -529,7 +524,7 @@ diff -ruN -U2 deriv/shaders/world-1/dh_water.vsh deriv_voxy/shaders/world-1/dh_w
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/DH/Water.vert"
-diff -ruN -U2 deriv/shaders/world-1/final.fsh deriv_voxy/shaders/world-1/final.fsh
+diff -ruN deriv/shaders/world-1/final.fsh deriv_voxy/shaders/world-1/final.fsh
 --- deriv/shaders/world-1/final.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/final.fsh	2026-10-25 08:50:08.501880465 +0300
 @@ -1,3 +1,4 @@
@@ -537,7 +532,7 @@ diff -ruN -U2 deriv/shaders/world-1/final.fsh deriv_voxy/shaders/world-1/final.f
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/Final.glsl"
-diff -ruN -U2 deriv/shaders/world-1/final.vsh deriv_voxy/shaders/world-1/final.vsh
+diff -ruN deriv/shaders/world-1/final.vsh deriv_voxy/shaders/world-1/final.vsh
 --- deriv/shaders/world-1/final.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/final.vsh	2026-10-25 08:50:08.499825735 +0300
 @@ -1,4 +1,5 @@
@@ -546,7 +541,7 @@ diff -ruN -U2 deriv/shaders/world-1/final.vsh deriv_voxy/shaders/world-1/final.v
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_armor_glint.fsh deriv_voxy/shaders/world-1/gbuffers_armor_glint.fsh
+diff -ruN deriv/shaders/world-1/gbuffers_armor_glint.fsh deriv_voxy/shaders/world-1/gbuffers_armor_glint.fsh
 --- deriv/shaders/world-1/gbuffers_armor_glint.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_armor_glint.fsh	2026-10-25 08:50:08.500769358 +0300
 @@ -1,3 +1,4 @@
@@ -554,7 +549,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_armor_glint.fsh deriv_voxy/shaders/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/ArmorGlint.frag"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_armor_glint.vsh deriv_voxy/shaders/world-1/gbuffers_armor_glint.vsh
+diff -ruN deriv/shaders/world-1/gbuffers_armor_glint.vsh deriv_voxy/shaders/world-1/gbuffers_armor_glint.vsh
 --- deriv/shaders/world-1/gbuffers_armor_glint.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_armor_glint.vsh	2026-10-25 08:50:08.502383264 +0300
 @@ -1,3 +1,4 @@
@@ -562,7 +557,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_armor_glint.vsh deriv_voxy/shaders/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/ArmorGlint.vert"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_basic.fsh deriv_voxy/shaders/world-1/gbuffers_basic.fsh
+diff -ruN deriv/shaders/world-1/gbuffers_basic.fsh deriv_voxy/shaders/world-1/gbuffers_basic.fsh
 --- deriv/shaders/world-1/gbuffers_basic.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_basic.fsh	2026-10-25 08:50:08.501103033 +0300
 @@ -1,3 +1,4 @@
@@ -570,7 +565,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_basic.fsh deriv_voxy/shaders/world-
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Basic.frag"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_basic.vsh deriv_voxy/shaders/world-1/gbuffers_basic.vsh
+diff -ruN deriv/shaders/world-1/gbuffers_basic.vsh deriv_voxy/shaders/world-1/gbuffers_basic.vsh
 --- deriv/shaders/world-1/gbuffers_basic.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_basic.vsh	2026-10-25 08:50:08.498971309 +0300
 @@ -1,3 +1,4 @@
@@ -578,7 +573,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_basic.vsh deriv_voxy/shaders/world-
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Basic.vert"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_beaconbeam.fsh deriv_voxy/shaders/world-1/gbuffers_beaconbeam.fsh
+diff -ruN deriv/shaders/world-1/gbuffers_beaconbeam.fsh deriv_voxy/shaders/world-1/gbuffers_beaconbeam.fsh
 --- deriv/shaders/world-1/gbuffers_beaconbeam.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_beaconbeam.fsh	2026-10-25 08:50:08.502078946 +0300
 @@ -1,3 +1,4 @@
@@ -586,7 +581,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_beaconbeam.fsh deriv_voxy/shaders/w
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Beaconbeam.frag"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_beaconbeam.vsh deriv_voxy/shaders/world-1/gbuffers_beaconbeam.vsh
+diff -ruN deriv/shaders/world-1/gbuffers_beaconbeam.vsh deriv_voxy/shaders/world-1/gbuffers_beaconbeam.vsh
 --- deriv/shaders/world-1/gbuffers_beaconbeam.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_beaconbeam.vsh	2026-10-25 08:50:08.499707544 +0300
 @@ -1,3 +1,4 @@
@@ -594,7 +589,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_beaconbeam.vsh deriv_voxy/shaders/w
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Beaconbeam.vert"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_block.fsh deriv_voxy/shaders/world-1/gbuffers_block.fsh
+diff -ruN deriv/shaders/world-1/gbuffers_block.fsh deriv_voxy/shaders/world-1/gbuffers_block.fsh
 --- deriv/shaders/world-1/gbuffers_block.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_block.fsh	2026-10-25 08:50:08.499227617 +0300
 @@ -1,3 +1,4 @@
@@ -602,7 +597,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_block.fsh deriv_voxy/shaders/world-
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Block.frag"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_block.vsh deriv_voxy/shaders/world-1/gbuffers_block.vsh
+diff -ruN deriv/shaders/world-1/gbuffers_block.vsh deriv_voxy/shaders/world-1/gbuffers_block.vsh
 --- deriv/shaders/world-1/gbuffers_block.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_block.vsh	2026-10-25 08:50:08.502202586 +0300
 @@ -1,3 +1,4 @@
@@ -610,7 +605,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_block.vsh deriv_voxy/shaders/world-
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Block.vert"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_damagedblock.fsh deriv_voxy/shaders/world-1/gbuffers_damagedblock.fsh
+diff -ruN deriv/shaders/world-1/gbuffers_damagedblock.fsh deriv_voxy/shaders/world-1/gbuffers_damagedblock.fsh
 --- deriv/shaders/world-1/gbuffers_damagedblock.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_damagedblock.fsh	2026-10-25 08:50:08.501703524 +0300
 @@ -1,3 +1,4 @@
@@ -618,7 +613,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_damagedblock.fsh deriv_voxy/shaders
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Damagedblock.frag"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_damagedblock.vsh deriv_voxy/shaders/world-1/gbuffers_damagedblock.vsh
+diff -ruN deriv/shaders/world-1/gbuffers_damagedblock.vsh deriv_voxy/shaders/world-1/gbuffers_damagedblock.vsh
 --- deriv/shaders/world-1/gbuffers_damagedblock.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_damagedblock.vsh	2026-10-25 08:50:08.501467184 +0300
 @@ -1,3 +1,4 @@
@@ -626,7 +621,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_damagedblock.vsh deriv_voxy/shaders
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Damagedblock.vert"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_entities.fsh deriv_voxy/shaders/world-1/gbuffers_entities.fsh
+diff -ruN deriv/shaders/world-1/gbuffers_entities.fsh deriv_voxy/shaders/world-1/gbuffers_entities.fsh
 --- deriv/shaders/world-1/gbuffers_entities.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_entities.fsh	2026-10-25 08:50:08.502143204 +0300
 @@ -1,3 +1,4 @@
@@ -634,7 +629,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_entities.fsh deriv_voxy/shaders/wor
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Entities.frag"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_entities.vsh deriv_voxy/shaders/world-1/gbuffers_entities.vsh
+diff -ruN deriv/shaders/world-1/gbuffers_entities.vsh deriv_voxy/shaders/world-1/gbuffers_entities.vsh
 --- deriv/shaders/world-1/gbuffers_entities.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_entities.vsh	2026-10-25 08:50:08.500348838 +0300
 @@ -1,3 +1,4 @@
@@ -642,7 +637,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_entities.vsh deriv_voxy/shaders/wor
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Entities.vert"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_hand.fsh deriv_voxy/shaders/world-1/gbuffers_hand.fsh
+diff -ruN deriv/shaders/world-1/gbuffers_hand.fsh deriv_voxy/shaders/world-1/gbuffers_hand.fsh
 --- deriv/shaders/world-1/gbuffers_hand.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_hand.fsh	2026-10-25 08:50:08.502019382 +0300
 @@ -1,3 +1,4 @@
@@ -650,7 +645,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_hand.fsh deriv_voxy/shaders/world-1
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Hand.frag"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_hand.vsh deriv_voxy/shaders/world-1/gbuffers_hand.vsh
+diff -ruN deriv/shaders/world-1/gbuffers_hand.vsh deriv_voxy/shaders/world-1/gbuffers_hand.vsh
 --- deriv/shaders/world-1/gbuffers_hand.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_hand.vsh	2026-10-25 08:50:08.502262042 +0300
 @@ -1,3 +1,4 @@
@@ -658,7 +653,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_hand.vsh deriv_voxy/shaders/world-1
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Hand.vert"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_hand_water.fsh deriv_voxy/shaders/world-1/gbuffers_hand_water.fsh
+diff -ruN deriv/shaders/world-1/gbuffers_hand_water.fsh deriv_voxy/shaders/world-1/gbuffers_hand_water.fsh
 --- deriv/shaders/world-1/gbuffers_hand_water.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_hand_water.fsh	2026-10-25 08:50:08.499531297 +0300
 @@ -1,3 +1,4 @@
@@ -666,7 +661,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_hand_water.fsh deriv_voxy/shaders/w
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/HandWater.frag"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_hand_water.vsh deriv_voxy/shaders/world-1/gbuffers_hand_water.vsh
+diff -ruN deriv/shaders/world-1/gbuffers_hand_water.vsh deriv_voxy/shaders/world-1/gbuffers_hand_water.vsh
 --- deriv/shaders/world-1/gbuffers_hand_water.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_hand_water.vsh	2026-10-25 08:50:08.499649197 +0300
 @@ -1,3 +1,4 @@
@@ -674,7 +669,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_hand_water.vsh deriv_voxy/shaders/w
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/HandWater.vert"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_spidereyes.fsh deriv_voxy/shaders/world-1/gbuffers_spidereyes.fsh
+diff -ruN deriv/shaders/world-1/gbuffers_spidereyes.fsh deriv_voxy/shaders/world-1/gbuffers_spidereyes.fsh
 --- deriv/shaders/world-1/gbuffers_spidereyes.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_spidereyes.fsh	2026-10-25 08:50:08.499471369 +0300
 @@ -1,3 +1,4 @@
@@ -682,7 +677,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_spidereyes.fsh deriv_voxy/shaders/w
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Spidereyes.frag"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_spidereyes.vsh deriv_voxy/shaders/world-1/gbuffers_spidereyes.vsh
+diff -ruN deriv/shaders/world-1/gbuffers_spidereyes.vsh deriv_voxy/shaders/world-1/gbuffers_spidereyes.vsh
 --- deriv/shaders/world-1/gbuffers_spidereyes.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_spidereyes.vsh	2026-10-25 08:50:08.501584836 +0300
 @@ -1,3 +1,4 @@
@@ -690,7 +685,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_spidereyes.vsh deriv_voxy/shaders/w
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Spidereyes.vert"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_terrain.fsh deriv_voxy/shaders/world-1/gbuffers_terrain.fsh
+diff -ruN deriv/shaders/world-1/gbuffers_terrain.fsh deriv_voxy/shaders/world-1/gbuffers_terrain.fsh
 --- deriv/shaders/world-1/gbuffers_terrain.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_terrain.fsh	2026-10-25 08:50:08.501223765 +0300
 @@ -1,3 +1,4 @@
@@ -698,7 +693,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_terrain.fsh deriv_voxy/shaders/worl
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Terrain.frag"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_terrain.vsh deriv_voxy/shaders/world-1/gbuffers_terrain.vsh
+diff -ruN deriv/shaders/world-1/gbuffers_terrain.vsh deriv_voxy/shaders/world-1/gbuffers_terrain.vsh
 --- deriv/shaders/world-1/gbuffers_terrain.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_terrain.vsh	2026-10-25 08:50:08.501164274 +0300
 @@ -1,3 +1,4 @@
@@ -706,7 +701,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_terrain.vsh deriv_voxy/shaders/worl
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Terrain.vert"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_textured.fsh deriv_voxy/shaders/world-1/gbuffers_textured.fsh
+diff -ruN deriv/shaders/world-1/gbuffers_textured.fsh deriv_voxy/shaders/world-1/gbuffers_textured.fsh
 --- deriv/shaders/world-1/gbuffers_textured.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_textured.fsh	2026-10-25 08:50:08.500536083 +0300
 @@ -1,3 +1,4 @@
@@ -714,7 +709,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_textured.fsh deriv_voxy/shaders/wor
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Textured.frag"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_textured.vsh deriv_voxy/shaders/world-1/gbuffers_textured.vsh
+diff -ruN deriv/shaders/world-1/gbuffers_textured.vsh deriv_voxy/shaders/world-1/gbuffers_textured.vsh
 --- deriv/shaders/world-1/gbuffers_textured.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_textured.vsh	2026-10-25 08:50:08.500436333 +0300
 @@ -1,3 +1,4 @@
@@ -722,7 +717,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_textured.vsh deriv_voxy/shaders/wor
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Textured.vert"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_water.fsh deriv_voxy/shaders/world-1/gbuffers_water.fsh
+diff -ruN deriv/shaders/world-1/gbuffers_water.fsh deriv_voxy/shaders/world-1/gbuffers_water.fsh
 --- deriv/shaders/world-1/gbuffers_water.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_water.fsh	2026-10-25 08:50:08.499767413 +0300
 @@ -1,3 +1,4 @@
@@ -730,7 +725,7 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_water.fsh deriv_voxy/shaders/world-
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Water.frag"
-diff -ruN -U2 deriv/shaders/world-1/gbuffers_water.vsh deriv_voxy/shaders/world-1/gbuffers_water.vsh
+diff -ruN deriv/shaders/world-1/gbuffers_water.vsh deriv_voxy/shaders/world-1/gbuffers_water.vsh
 --- deriv/shaders/world-1/gbuffers_water.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world-1/gbuffers_water.vsh	2026-10-25 08:50:08.499884612 +0300
 @@ -1,3 +1,4 @@
@@ -738,28 +733,44 @@ diff -ruN -U2 deriv/shaders/world-1/gbuffers_water.vsh deriv_voxy/shaders/world-
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Water.vert"
-diff -ruN -U2 deriv/shaders/world-1/voxy.json deriv_voxy/shaders/world-1/voxy.json
+diff -ruN deriv/shaders/world-1/voxy.json deriv_voxy/shaders/world-1/voxy.json
 --- deriv/shaders/world-1/voxy.json	1970-01-01 03:00:00.000000000 +0300
 +++ deriv_voxy/shaders/world-1/voxy.json	2026-10-25 08:51:10.360564705 +0300
 @@ -0,0 +1 @@
 +#include "/program/Voxy/voxy.json"
-diff -ruN -U2 deriv/shaders/world-1/voxy_opaque.glsl deriv_voxy/shaders/world-1/voxy_opaque.glsl
+diff -ruN deriv/shaders/world-1/voxy_opaque.glsl deriv_voxy/shaders/world-1/voxy_opaque.glsl
 --- deriv/shaders/world-1/voxy_opaque.glsl	1970-01-01 03:00:00.000000000 +0300
-+++ deriv_voxy/shaders/world-1/voxy_opaque.glsl	2026-10-25 08:51:22.548433135 +0300
-@@ -0,0 +1,4 @@
++++ deriv_voxy/shaders/world-1/voxy_opaque.glsl	2026-10-25 09:48:08.082159052 +0300
+@@ -0,0 +1,12 @@
 +#include "/lib/Head/VoxyDH.inc"
 +#define VOXY_PATCH
++
++// Iris does not hand these to Voxy (they are the gbuffer targets); the pack only names them in helpers
++// the LOD programs never call, so plain declarations are enough to compile
++uniform sampler2D colortex0;
++uniform sampler2D colortex1;
++uniform sampler2D colortex2;
++uniform sampler2D colortex3;
++uniform sampler2D depthtex2;
 +
 +#include "/program/DH/Terrain.frag"
-diff -ruN -U2 deriv/shaders/world-1/voxy_translucent.glsl deriv_voxy/shaders/world-1/voxy_translucent.glsl
+diff -ruN deriv/shaders/world-1/voxy_translucent.glsl deriv_voxy/shaders/world-1/voxy_translucent.glsl
 --- deriv/shaders/world-1/voxy_translucent.glsl	1970-01-01 03:00:00.000000000 +0300
-+++ deriv_voxy/shaders/world-1/voxy_translucent.glsl	2026-10-25 08:51:22.548545134 +0300
-@@ -0,0 +1,4 @@
++++ deriv_voxy/shaders/world-1/voxy_translucent.glsl	2026-10-25 09:48:08.096931642 +0300
+@@ -0,0 +1,12 @@
 +#include "/lib/Head/VoxyDH.inc"
 +#define VOXY_PATCH
 +
++// Iris does not hand these to Voxy (they are the gbuffer targets); the pack only names them in helpers
++// the LOD programs never call, so plain declarations are enough to compile
++uniform sampler2D colortex0;
++uniform sampler2D colortex1;
++uniform sampler2D colortex2;
++uniform sampler2D colortex3;
++uniform sampler2D depthtex2;
++
 +#include "/program/DH/Water.frag"
-diff -ruN -U2 deriv/shaders/world0/composite.fsh deriv_voxy/shaders/world0/composite.fsh
+diff -ruN deriv/shaders/world0/composite.fsh deriv_voxy/shaders/world0/composite.fsh
 --- deriv/shaders/world0/composite.fsh	2024-04-04 15:58:40.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite.fsh	2026-10-25 08:50:08.507090216 +0300
 @@ -1,4 +1,5 @@
@@ -768,7 +779,7 @@ diff -ruN -U2 deriv/shaders/world0/composite.fsh deriv_voxy/shaders/world0/compo
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/composite.vsh deriv_voxy/shaders/world0/composite.vsh
+diff -ruN deriv/shaders/world0/composite.vsh deriv_voxy/shaders/world0/composite.vsh
 --- deriv/shaders/world0/composite.vsh	2024-04-03 22:50:18.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite.vsh	2026-10-25 08:50:08.507814639 +0300
 @@ -1,4 +1,5 @@
@@ -777,7 +788,7 @@ diff -ruN -U2 deriv/shaders/world0/composite.vsh deriv_voxy/shaders/world0/compo
  
  
  flat out vec3 directIlluminance;
-diff -ruN -U2 deriv/shaders/world0/composite1.fsh deriv_voxy/shaders/world0/composite1.fsh
+diff -ruN deriv/shaders/world0/composite1.fsh deriv_voxy/shaders/world0/composite1.fsh
 --- deriv/shaders/world0/composite1.fsh	2024-04-04 16:30:46.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite1.fsh	2026-10-25 08:50:08.504930882 +0300
 @@ -1,4 +1,5 @@
@@ -786,7 +797,7 @@ diff -ruN -U2 deriv/shaders/world0/composite1.fsh deriv_voxy/shaders/world0/comp
  
  
  #define IS_OVERWORLD
-diff -ruN -U2 deriv/shaders/world0/composite1.vsh deriv_voxy/shaders/world0/composite1.vsh
+diff -ruN deriv/shaders/world0/composite1.vsh deriv_voxy/shaders/world0/composite1.vsh
 --- deriv/shaders/world0/composite1.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite1.vsh	2026-10-25 08:50:08.504325104 +0300
 @@ -1,4 +1,5 @@
@@ -795,7 +806,7 @@ diff -ruN -U2 deriv/shaders/world0/composite1.vsh deriv_voxy/shaders/world0/comp
  
  
  out vec2 screenCoord;
-diff -ruN -U2 deriv/shaders/world0/composite10.fsh deriv_voxy/shaders/world0/composite10.fsh
+diff -ruN deriv/shaders/world0/composite10.fsh deriv_voxy/shaders/world0/composite10.fsh
 --- deriv/shaders/world0/composite10.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite10.fsh	2026-10-25 08:50:08.503144640 +0300
 @@ -1,3 +1,4 @@
@@ -803,7 +814,7 @@ diff -ruN -U2 deriv/shaders/world0/composite10.fsh deriv_voxy/shaders/world0/com
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/DownSample.glsl"
-diff -ruN -U2 deriv/shaders/world0/composite10.vsh deriv_voxy/shaders/world0/composite10.vsh
+diff -ruN deriv/shaders/world0/composite10.vsh deriv_voxy/shaders/world0/composite10.vsh
 --- deriv/shaders/world0/composite10.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite10.vsh	2026-10-25 08:50:08.506062488 +0300
 @@ -1,4 +1,5 @@
@@ -812,7 +823,7 @@ diff -ruN -U2 deriv/shaders/world0/composite10.vsh deriv_voxy/shaders/world0/com
  
  //out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world0/composite12.fsh deriv_voxy/shaders/world0/composite12.fsh
+diff -ruN deriv/shaders/world0/composite12.fsh deriv_voxy/shaders/world0/composite12.fsh
 --- deriv/shaders/world0/composite12.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite12.fsh	2026-10-25 08:50:08.505263768 +0300
 @@ -1,3 +1,4 @@
@@ -820,7 +831,7 @@ diff -ruN -U2 deriv/shaders/world0/composite12.fsh deriv_voxy/shaders/world0/com
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/BlurH.glsl"
-diff -ruN -U2 deriv/shaders/world0/composite12.vsh deriv_voxy/shaders/world0/composite12.vsh
+diff -ruN deriv/shaders/world0/composite12.vsh deriv_voxy/shaders/world0/composite12.vsh
 --- deriv/shaders/world0/composite12.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite12.vsh	2026-10-25 08:50:08.505827695 +0300
 @@ -1,4 +1,5 @@
@@ -829,7 +840,7 @@ diff -ruN -U2 deriv/shaders/world0/composite12.vsh deriv_voxy/shaders/world0/com
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * vec2(1.0, 2.0) - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world0/composite13.fsh deriv_voxy/shaders/world0/composite13.fsh
+diff -ruN deriv/shaders/world0/composite13.fsh deriv_voxy/shaders/world0/composite13.fsh
 --- deriv/shaders/world0/composite13.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite13.fsh	2026-10-25 08:50:08.504663487 +0300
 @@ -1,3 +1,4 @@
@@ -837,7 +848,7 @@ diff -ruN -U2 deriv/shaders/world0/composite13.fsh deriv_voxy/shaders/world0/com
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/BlurV.glsl"
-diff -ruN -U2 deriv/shaders/world0/composite13.vsh deriv_voxy/shaders/world0/composite13.vsh
+diff -ruN deriv/shaders/world0/composite13.vsh deriv_voxy/shaders/world0/composite13.vsh
 --- deriv/shaders/world0/composite13.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite13.vsh	2026-10-25 08:50:08.502654960 +0300
 @@ -1,4 +1,5 @@
@@ -846,7 +857,7 @@ diff -ruN -U2 deriv/shaders/world0/composite13.vsh deriv_voxy/shaders/world0/com
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * vec2(1.0, 2.0) - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world0/composite14.fsh deriv_voxy/shaders/world0/composite14.fsh
+diff -ruN deriv/shaders/world0/composite14.fsh deriv_voxy/shaders/world0/composite14.fsh
 --- deriv/shaders/world0/composite14.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite14.fsh	2026-10-25 08:50:08.505012586 +0300
 @@ -1,3 +1,4 @@
@@ -854,7 +865,7 @@ diff -ruN -U2 deriv/shaders/world0/composite14.fsh deriv_voxy/shaders/world0/com
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/MotionBlur.glsl"
-diff -ruN -U2 deriv/shaders/world0/composite14.vsh deriv_voxy/shaders/world0/composite14.vsh
+diff -ruN deriv/shaders/world0/composite14.vsh deriv_voxy/shaders/world0/composite14.vsh
 --- deriv/shaders/world0/composite14.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite14.vsh	2026-10-25 08:50:08.505908825 +0300
 @@ -1,4 +1,5 @@
@@ -863,7 +874,7 @@ diff -ruN -U2 deriv/shaders/world0/composite14.vsh deriv_voxy/shaders/world0/com
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world0/composite15.fsh deriv_voxy/shaders/world0/composite15.fsh
+diff -ruN deriv/shaders/world0/composite15.fsh deriv_voxy/shaders/world0/composite15.fsh
 --- deriv/shaders/world0/composite15.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite15.fsh	2026-10-25 08:50:08.504597283 +0300
 @@ -1,4 +1,5 @@
@@ -872,7 +883,7 @@ diff -ruN -U2 deriv/shaders/world0/composite15.fsh deriv_voxy/shaders/world0/com
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/composite15.vsh deriv_voxy/shaders/world0/composite15.vsh
+diff -ruN deriv/shaders/world0/composite15.vsh deriv_voxy/shaders/world0/composite15.vsh
 --- deriv/shaders/world0/composite15.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite15.vsh	2026-10-25 08:50:08.505204949 +0300
 @@ -1,4 +1,5 @@
@@ -881,7 +892,7 @@ diff -ruN -U2 deriv/shaders/world0/composite15.vsh deriv_voxy/shaders/world0/com
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world0/composite2.fsh deriv_voxy/shaders/world0/composite2.fsh
+diff -ruN deriv/shaders/world0/composite2.fsh deriv_voxy/shaders/world0/composite2.fsh
 --- deriv/shaders/world0/composite2.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite2.fsh	2026-10-25 08:50:08.505322853 +0300
 @@ -1,3 +1,4 @@
@@ -889,7 +900,7 @@ diff -ruN -U2 deriv/shaders/world0/composite2.fsh deriv_voxy/shaders/world0/comp
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/DoF.glsl"
-diff -ruN -U2 deriv/shaders/world0/composite2.vsh deriv_voxy/shaders/world0/composite2.vsh
+diff -ruN deriv/shaders/world0/composite2.vsh deriv_voxy/shaders/world0/composite2.vsh
 --- deriv/shaders/world0/composite2.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite2.vsh	2026-10-25 08:50:08.505145021 +0300
 @@ -1,4 +1,5 @@
@@ -898,7 +909,7 @@ diff -ruN -U2 deriv/shaders/world0/composite2.vsh deriv_voxy/shaders/world0/comp
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world0/composite3.fsh deriv_voxy/shaders/world0/composite3.fsh
+diff -ruN deriv/shaders/world0/composite3.fsh deriv_voxy/shaders/world0/composite3.fsh
 --- deriv/shaders/world0/composite3.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite3.fsh	2026-10-25 08:50:08.503213069 +0300
 @@ -1,3 +1,4 @@
@@ -906,7 +917,7 @@ diff -ruN -U2 deriv/shaders/world0/composite3.fsh deriv_voxy/shaders/world0/comp
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/Temporal.frag"
-diff -ruN -U2 deriv/shaders/world0/composite3.vsh deriv_voxy/shaders/world0/composite3.vsh
+diff -ruN deriv/shaders/world0/composite3.vsh deriv_voxy/shaders/world0/composite3.vsh
 --- deriv/shaders/world0/composite3.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite3.vsh	2026-10-25 08:50:08.506339507 +0300
 @@ -1,4 +1,5 @@
@@ -915,7 +926,7 @@ diff -ruN -U2 deriv/shaders/world0/composite3.vsh deriv_voxy/shaders/world0/comp
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/composite4.fsh deriv_voxy/shaders/world0/composite4.fsh
+diff -ruN deriv/shaders/world0/composite4.fsh deriv_voxy/shaders/world0/composite4.fsh
 --- deriv/shaders/world0/composite4.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite4.fsh	2026-10-25 08:50:08.507730823 +0300
 @@ -1,3 +1,4 @@
@@ -923,7 +934,7 @@ diff -ruN -U2 deriv/shaders/world0/composite4.fsh deriv_voxy/shaders/world0/comp
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/DownSample0.glsl"
-diff -ruN -U2 deriv/shaders/world0/composite4.vsh deriv_voxy/shaders/world0/composite4.vsh
+diff -ruN deriv/shaders/world0/composite4.vsh deriv_voxy/shaders/world0/composite4.vsh
 --- deriv/shaders/world0/composite4.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/composite4.vsh	2026-10-25 08:50:08.504258030 +0300
 @@ -1,4 +1,5 @@
@@ -932,7 +943,7 @@ diff -ruN -U2 deriv/shaders/world0/composite4.vsh deriv_voxy/shaders/world0/comp
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world0/deferred.fsh deriv_voxy/shaders/world0/deferred.fsh
+diff -ruN deriv/shaders/world0/deferred.fsh deriv_voxy/shaders/world0/deferred.fsh
 --- deriv/shaders/world0/deferred.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred.fsh	2026-10-25 08:50:08.506897201 +0300
 @@ -1,3 +1,4 @@
@@ -940,7 +951,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred.fsh deriv_voxy/shaders/world0/deferr
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Deferred0.glsl"
-diff -ruN -U2 deriv/shaders/world0/deferred.vsh deriv_voxy/shaders/world0/deferred.vsh
+diff -ruN deriv/shaders/world0/deferred.vsh deriv_voxy/shaders/world0/deferred.vsh
 --- deriv/shaders/world0/deferred.vsh	2024-04-03 22:50:18.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred.vsh	2026-10-25 08:50:08.504868876 +0300
 @@ -1,4 +1,5 @@
@@ -949,7 +960,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred.vsh deriv_voxy/shaders/world0/deferr
  
  //out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world0/deferred1.fsh deriv_voxy/shaders/world0/deferred1.fsh
+diff -ruN deriv/shaders/world0/deferred1.fsh deriv_voxy/shaders/world0/deferred1.fsh
 --- deriv/shaders/world0/deferred1.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred1.fsh	2026-10-25 08:50:08.507558012 +0300
 @@ -1,3 +1,4 @@
@@ -957,7 +968,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred1.fsh deriv_voxy/shaders/world0/defer
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Deferred1.glsl"
-diff -ruN -U2 deriv/shaders/world0/deferred1.vsh deriv_voxy/shaders/world0/deferred1.vsh
+diff -ruN deriv/shaders/world0/deferred1.vsh deriv_voxy/shaders/world0/deferred1.vsh
 --- deriv/shaders/world0/deferred1.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred1.vsh	2026-10-25 08:50:08.504017082 +0300
 @@ -1,4 +1,5 @@
@@ -966,7 +977,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred1.vsh deriv_voxy/shaders/world0/defer
  
  //out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world0/deferred2.fsh deriv_voxy/shaders/world0/deferred2.fsh
+diff -ruN deriv/shaders/world0/deferred2.fsh deriv_voxy/shaders/world0/deferred2.fsh
 --- deriv/shaders/world0/deferred2.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred2.fsh	2026-10-25 08:50:08.506575740 +0300
 @@ -1,4 +1,5 @@
@@ -975,7 +986,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred2.fsh deriv_voxy/shaders/world0/defer
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/deferred2.vsh deriv_voxy/shaders/world0/deferred2.vsh
+diff -ruN deriv/shaders/world0/deferred2.vsh deriv_voxy/shaders/world0/deferred2.vsh
 --- deriv/shaders/world0/deferred2.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred2.vsh	2026-10-25 08:50:08.503465482 +0300
 @@ -1,4 +1,5 @@
@@ -984,7 +995,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred2.vsh deriv_voxy/shaders/world0/defer
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world0/deferred3.fsh deriv_voxy/shaders/world0/deferred3.fsh
+diff -ruN deriv/shaders/world0/deferred3.fsh deriv_voxy/shaders/world0/deferred3.fsh
 --- deriv/shaders/world0/deferred3.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred3.fsh	2026-10-25 08:50:08.502835958 +0300
 @@ -1,3 +1,4 @@
@@ -992,7 +1003,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred3.fsh deriv_voxy/shaders/world0/defer
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/SpatialFilter.frag"
-diff -ruN -U2 deriv/shaders/world0/deferred3.vsh deriv_voxy/shaders/world0/deferred3.vsh
+diff -ruN deriv/shaders/world0/deferred3.vsh deriv_voxy/shaders/world0/deferred3.vsh
 --- deriv/shaders/world0/deferred3.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred3.vsh	2026-10-25 08:50:08.503405198 +0300
 @@ -1,4 +1,5 @@
@@ -1001,7 +1012,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred3.vsh deriv_voxy/shaders/world0/defer
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world0/deferred4.csh deriv_voxy/shaders/world0/deferred4.csh
+diff -ruN deriv/shaders/world0/deferred4.csh deriv_voxy/shaders/world0/deferred4.csh
 --- deriv/shaders/world0/deferred4.csh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred4.csh	2026-10-25 08:50:08.504517827 +0300
 @@ -1,3 +1,4 @@
@@ -1009,7 +1020,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred4.csh deriv_voxy/shaders/world0/defer
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/SpatialFilter.comp"
-diff -ruN -U2 deriv/shaders/world0/deferred5.fsh deriv_voxy/shaders/world0/deferred5.fsh
+diff -ruN deriv/shaders/world0/deferred5.fsh deriv_voxy/shaders/world0/deferred5.fsh
 --- deriv/shaders/world0/deferred5.fsh	2024-04-04 21:17:00.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred5.fsh	2026-10-25 08:50:08.503001149 +0300
 @@ -1,4 +1,5 @@
@@ -1018,7 +1029,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred5.fsh deriv_voxy/shaders/world0/defer
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/deferred5.vsh deriv_voxy/shaders/world0/deferred5.vsh
+diff -ruN deriv/shaders/world0/deferred5.vsh deriv_voxy/shaders/world0/deferred5.vsh
 --- deriv/shaders/world0/deferred5.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred5.vsh	2026-10-25 08:50:08.504385364 +0300
 @@ -1,4 +1,5 @@
@@ -1027,7 +1038,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred5.vsh deriv_voxy/shaders/world0/defer
  
  
  #include "/lib/Head/Common.inc"
-diff -ruN -U2 deriv/shaders/world0/deferred6.fsh deriv_voxy/shaders/world0/deferred6.fsh
+diff -ruN deriv/shaders/world0/deferred6.fsh deriv_voxy/shaders/world0/deferred6.fsh
 --- deriv/shaders/world0/deferred6.fsh	2024-04-04 11:22:18.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred6.fsh	2026-10-25 08:50:08.503526144 +0300
 @@ -1,4 +1,5 @@
@@ -1036,7 +1047,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred6.fsh deriv_voxy/shaders/world0/defer
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/deferred6.vsh deriv_voxy/shaders/world0/deferred6.vsh
+diff -ruN deriv/shaders/world0/deferred6.vsh deriv_voxy/shaders/world0/deferred6.vsh
 --- deriv/shaders/world0/deferred6.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred6.vsh	2026-10-25 08:50:08.507467521 +0300
 @@ -1,4 +1,5 @@
@@ -1045,7 +1056,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred6.vsh deriv_voxy/shaders/world0/defer
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world0/deferred7.fsh deriv_voxy/shaders/world0/deferred7.fsh
+diff -ruN deriv/shaders/world0/deferred7.fsh deriv_voxy/shaders/world0/deferred7.fsh
 --- deriv/shaders/world0/deferred7.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred7.fsh	2026-10-25 08:50:08.506402418 +0300
 @@ -1,3 +1,4 @@
@@ -1053,7 +1064,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred7.fsh deriv_voxy/shaders/world0/defer
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/ReflectionFilter.frag"
-diff -ruN -U2 deriv/shaders/world0/deferred7.vsh deriv_voxy/shaders/world0/deferred7.vsh
+diff -ruN deriv/shaders/world0/deferred7.vsh deriv_voxy/shaders/world0/deferred7.vsh
 --- deriv/shaders/world0/deferred7.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred7.vsh	2026-10-25 08:50:08.503771462 +0300
 @@ -1,4 +1,5 @@
@@ -1062,7 +1073,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred7.vsh deriv_voxy/shaders/world0/defer
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world0/deferred8.csh deriv_voxy/shaders/world0/deferred8.csh
+diff -ruN deriv/shaders/world0/deferred8.csh deriv_voxy/shaders/world0/deferred8.csh
 --- deriv/shaders/world0/deferred8.csh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/deferred8.csh	2026-10-25 08:50:08.506189368 +0300
 @@ -1,3 +1,4 @@
@@ -1070,7 +1081,7 @@ diff -ruN -U2 deriv/shaders/world0/deferred8.csh deriv_voxy/shaders/world0/defer
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/ReflectionFilter.comp"
-diff -ruN -U2 deriv/shaders/world0/dh_shadow.fsh deriv_voxy/shaders/world0/dh_shadow.fsh
+diff -ruN deriv/shaders/world0/dh_shadow.fsh deriv_voxy/shaders/world0/dh_shadow.fsh
 --- deriv/shaders/world0/dh_shadow.fsh	2024-04-03 22:51:08.000000000 +0300
 +++ deriv_voxy/shaders/world0/dh_shadow.fsh	2026-10-25 08:50:08.502894958 +0300
 @@ -1,3 +1,4 @@
@@ -1078,7 +1089,7 @@ diff -ruN -U2 deriv/shaders/world0/dh_shadow.fsh deriv_voxy/shaders/world0/dh_sh
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/DH/Shadow.frag"
-diff -ruN -U2 deriv/shaders/world0/dh_shadow.vsh deriv_voxy/shaders/world0/dh_shadow.vsh
+diff -ruN deriv/shaders/world0/dh_shadow.vsh deriv_voxy/shaders/world0/dh_shadow.vsh
 --- deriv/shaders/world0/dh_shadow.vsh	2024-04-03 22:51:08.000000000 +0300
 +++ deriv_voxy/shaders/world0/dh_shadow.vsh	2026-10-25 08:50:08.504198625 +0300
 @@ -1,3 +1,4 @@
@@ -1086,7 +1097,7 @@ diff -ruN -U2 deriv/shaders/world0/dh_shadow.vsh deriv_voxy/shaders/world0/dh_sh
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/DH/Shadow.vert"
-diff -ruN -U2 deriv/shaders/world0/dh_terrain.fsh deriv_voxy/shaders/world0/dh_terrain.fsh
+diff -ruN deriv/shaders/world0/dh_terrain.fsh deriv_voxy/shaders/world0/dh_terrain.fsh
 --- deriv/shaders/world0/dh_terrain.fsh	2024-04-03 22:51:08.000000000 +0300
 +++ deriv_voxy/shaders/world0/dh_terrain.fsh	2026-10-25 08:50:08.503188120 +0300
 @@ -1,4 +1,5 @@
@@ -1095,7 +1106,7 @@ diff -ruN -U2 deriv/shaders/world0/dh_terrain.fsh deriv_voxy/shaders/world0/dh_t
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/dh_terrain.vsh deriv_voxy/shaders/world0/dh_terrain.vsh
+diff -ruN deriv/shaders/world0/dh_terrain.vsh deriv_voxy/shaders/world0/dh_terrain.vsh
 --- deriv/shaders/world0/dh_terrain.vsh	2024-04-03 22:51:08.000000000 +0300
 +++ deriv_voxy/shaders/world0/dh_terrain.vsh	2026-10-25 08:50:08.502776214 +0300
 @@ -1,3 +1,4 @@
@@ -1103,7 +1114,7 @@ diff -ruN -U2 deriv/shaders/world0/dh_terrain.vsh deriv_voxy/shaders/world0/dh_t
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/DH/Terrain.vert"
-diff -ruN -U2 deriv/shaders/world0/dh_water.fsh deriv_voxy/shaders/world0/dh_water.fsh
+diff -ruN deriv/shaders/world0/dh_water.fsh deriv_voxy/shaders/world0/dh_water.fsh
 --- deriv/shaders/world0/dh_water.fsh	2024-04-03 22:51:08.000000000 +0300
 +++ deriv_voxy/shaders/world0/dh_water.fsh	2026-10-25 08:50:08.505752500 +0300
 @@ -1,4 +1,5 @@
@@ -1112,7 +1123,7 @@ diff -ruN -U2 deriv/shaders/world0/dh_water.fsh deriv_voxy/shaders/world0/dh_wat
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/dh_water.vsh deriv_voxy/shaders/world0/dh_water.vsh
+diff -ruN deriv/shaders/world0/dh_water.vsh deriv_voxy/shaders/world0/dh_water.vsh
 --- deriv/shaders/world0/dh_water.vsh	2024-04-03 22:51:08.000000000 +0300
 +++ deriv_voxy/shaders/world0/dh_water.vsh	2026-10-25 08:50:08.502715614 +0300
 @@ -1,3 +1,4 @@
@@ -1120,7 +1131,7 @@ diff -ruN -U2 deriv/shaders/world0/dh_water.vsh deriv_voxy/shaders/world0/dh_wat
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/DH/Water.vert"
-diff -ruN -U2 deriv/shaders/world0/final.fsh deriv_voxy/shaders/world0/final.fsh
+diff -ruN deriv/shaders/world0/final.fsh deriv_voxy/shaders/world0/final.fsh
 --- deriv/shaders/world0/final.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/final.fsh	2026-10-25 08:50:08.506465169 +0300
 @@ -1,3 +1,4 @@
@@ -1128,7 +1139,7 @@ diff -ruN -U2 deriv/shaders/world0/final.fsh deriv_voxy/shaders/world0/final.fsh
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/Final.glsl"
-diff -ruN -U2 deriv/shaders/world0/final.vsh deriv_voxy/shaders/world0/final.vsh
+diff -ruN deriv/shaders/world0/final.vsh deriv_voxy/shaders/world0/final.vsh
 --- deriv/shaders/world0/final.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/final.vsh	2026-10-25 08:50:08.504076959 +0300
 @@ -1,4 +1,5 @@
@@ -1137,7 +1148,7 @@ diff -ruN -U2 deriv/shaders/world0/final.vsh deriv_voxy/shaders/world0/final.vsh
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world0/gbuffers_armor_glint.fsh deriv_voxy/shaders/world0/gbuffers_armor_glint.fsh
+diff -ruN deriv/shaders/world0/gbuffers_armor_glint.fsh deriv_voxy/shaders/world0/gbuffers_armor_glint.fsh
 --- deriv/shaders/world0/gbuffers_armor_glint.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_armor_glint.fsh	2026-10-25 08:50:08.505079711 +0300
 @@ -1,3 +1,4 @@
@@ -1145,7 +1156,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_armor_glint.fsh deriv_voxy/shaders/w
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/ArmorGlint.frag"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_armor_glint.vsh deriv_voxy/shaders/world0/gbuffers_armor_glint.vsh
+diff -ruN deriv/shaders/world0/gbuffers_armor_glint.vsh deriv_voxy/shaders/world0/gbuffers_armor_glint.vsh
 --- deriv/shaders/world0/gbuffers_armor_glint.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_armor_glint.vsh	2026-10-25 08:50:08.507172571 +0300
 @@ -1,3 +1,4 @@
@@ -1153,7 +1164,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_armor_glint.vsh deriv_voxy/shaders/w
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/ArmorGlint.vert"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_basic.fsh deriv_voxy/shaders/world0/gbuffers_basic.fsh
+diff -ruN deriv/shaders/world0/gbuffers_basic.fsh deriv_voxy/shaders/world0/gbuffers_basic.fsh
 --- deriv/shaders/world0/gbuffers_basic.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_basic.fsh	2026-10-25 08:50:08.505381674 +0300
 @@ -1,3 +1,4 @@
@@ -1161,7 +1172,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_basic.fsh deriv_voxy/shaders/world0/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Basic.frag"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_basic.vsh deriv_voxy/shaders/world0/gbuffers_basic.vsh
+diff -ruN deriv/shaders/world0/gbuffers_basic.vsh deriv_voxy/shaders/world0/gbuffers_basic.vsh
 --- deriv/shaders/world0/gbuffers_basic.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_basic.vsh	2026-10-25 08:50:08.503058627 +0300
 @@ -1,3 +1,4 @@
@@ -1169,7 +1180,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_basic.vsh deriv_voxy/shaders/world0/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Basic.vert"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_beaconbeam.fsh deriv_voxy/shaders/world0/gbuffers_beaconbeam.fsh
+diff -ruN deriv/shaders/world0/gbuffers_beaconbeam.fsh deriv_voxy/shaders/world0/gbuffers_beaconbeam.fsh
 --- deriv/shaders/world0/gbuffers_beaconbeam.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_beaconbeam.fsh	2026-10-25 08:50:08.506694419 +0300
 @@ -1,3 +1,4 @@
@@ -1177,7 +1188,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_beaconbeam.fsh deriv_voxy/shaders/wo
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Beaconbeam.frag"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_beaconbeam.vsh deriv_voxy/shaders/world0/gbuffers_beaconbeam.vsh
+diff -ruN deriv/shaders/world0/gbuffers_beaconbeam.vsh deriv_voxy/shaders/world0/gbuffers_beaconbeam.vsh
 --- deriv/shaders/world0/gbuffers_beaconbeam.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_beaconbeam.vsh	2026-10-25 08:50:08.503890178 +0300
 @@ -1,3 +1,4 @@
@@ -1185,7 +1196,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_beaconbeam.vsh deriv_voxy/shaders/wo
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Beaconbeam.vert"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_block.fsh deriv_voxy/shaders/world0/gbuffers_block.fsh
+diff -ruN deriv/shaders/world0/gbuffers_block.fsh deriv_voxy/shaders/world0/gbuffers_block.fsh
 --- deriv/shaders/world0/gbuffers_block.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_block.fsh	2026-10-25 08:50:08.503285123 +0300
 @@ -1,4 +1,5 @@
@@ -1194,7 +1205,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_block.fsh deriv_voxy/shaders/world0/
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/gbuffers_block.vsh deriv_voxy/shaders/world0/gbuffers_block.vsh
+diff -ruN deriv/shaders/world0/gbuffers_block.vsh deriv_voxy/shaders/world0/gbuffers_block.vsh
 --- deriv/shaders/world0/gbuffers_block.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_block.vsh	2026-10-25 08:50:08.506817503 +0300
 @@ -1,3 +1,4 @@
@@ -1202,7 +1213,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_block.vsh deriv_voxy/shaders/world0/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Block.vert"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_damagedblock.fsh deriv_voxy/shaders/world0/gbuffers_damagedblock.fsh
+diff -ruN deriv/shaders/world0/gbuffers_damagedblock.fsh deriv_voxy/shaders/world0/gbuffers_damagedblock.fsh
 --- deriv/shaders/world0/gbuffers_damagedblock.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_damagedblock.fsh	2026-10-25 08:50:08.506260767 +0300
 @@ -1,3 +1,4 @@
@@ -1210,7 +1221,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_damagedblock.fsh deriv_voxy/shaders/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Damagedblock.frag"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_damagedblock.vsh deriv_voxy/shaders/world0/gbuffers_damagedblock.vsh
+diff -ruN deriv/shaders/world0/gbuffers_damagedblock.vsh deriv_voxy/shaders/world0/gbuffers_damagedblock.vsh
 --- deriv/shaders/world0/gbuffers_damagedblock.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_damagedblock.vsh	2026-10-25 08:50:08.505972038 +0300
 @@ -1,3 +1,4 @@
@@ -1218,7 +1229,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_damagedblock.vsh deriv_voxy/shaders/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Damagedblock.vert"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_entities.fsh deriv_voxy/shaders/world0/gbuffers_entities.fsh
+diff -ruN deriv/shaders/world0/gbuffers_entities.fsh deriv_voxy/shaders/world0/gbuffers_entities.fsh
 --- deriv/shaders/world0/gbuffers_entities.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_entities.fsh	2026-10-25 08:50:08.506747207 +0300
 @@ -1,4 +1,5 @@
@@ -1227,7 +1238,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_entities.fsh deriv_voxy/shaders/worl
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/gbuffers_entities.vsh deriv_voxy/shaders/world0/gbuffers_entities.vsh
+diff -ruN deriv/shaders/world0/gbuffers_entities.vsh deriv_voxy/shaders/world0/gbuffers_entities.vsh
 --- deriv/shaders/world0/gbuffers_entities.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_entities.vsh	2026-10-25 08:50:08.504707218 +0300
 @@ -1,3 +1,4 @@
@@ -1235,7 +1246,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_entities.vsh deriv_voxy/shaders/worl
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Entities.vert"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_hand.fsh deriv_voxy/shaders/world0/gbuffers_hand.fsh
+diff -ruN deriv/shaders/world0/gbuffers_hand.fsh deriv_voxy/shaders/world0/gbuffers_hand.fsh
 --- deriv/shaders/world0/gbuffers_hand.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_hand.fsh	2026-10-25 08:50:08.506641118 +0300
 @@ -1,4 +1,5 @@
@@ -1244,7 +1255,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_hand.fsh deriv_voxy/shaders/world0/g
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/gbuffers_hand.vsh deriv_voxy/shaders/world0/gbuffers_hand.vsh
+diff -ruN deriv/shaders/world0/gbuffers_hand.vsh deriv_voxy/shaders/world0/gbuffers_hand.vsh
 --- deriv/shaders/world0/gbuffers_hand.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_hand.vsh	2026-10-25 08:50:08.506996439 +0300
 @@ -1,3 +1,4 @@
@@ -1252,7 +1263,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_hand.vsh deriv_voxy/shaders/world0/g
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Hand.vert"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_hand_water.fsh deriv_voxy/shaders/world0/gbuffers_hand_water.fsh
+diff -ruN deriv/shaders/world0/gbuffers_hand_water.fsh deriv_voxy/shaders/world0/gbuffers_hand_water.fsh
 --- deriv/shaders/world0/gbuffers_hand_water.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_hand_water.fsh	2026-10-25 08:50:08.503650731 +0300
 @@ -1,4 +1,5 @@
@@ -1261,7 +1272,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_hand_water.fsh deriv_voxy/shaders/wo
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/gbuffers_hand_water.vsh deriv_voxy/shaders/world0/gbuffers_hand_water.vsh
+diff -ruN deriv/shaders/world0/gbuffers_hand_water.vsh deriv_voxy/shaders/world0/gbuffers_hand_water.vsh
 --- deriv/shaders/world0/gbuffers_hand_water.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_hand_water.vsh	2026-10-25 08:50:08.503830368 +0300
 @@ -1,3 +1,4 @@
@@ -1269,7 +1280,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_hand_water.vsh deriv_voxy/shaders/wo
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/HandWater.vert"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_skybasic.fsh deriv_voxy/shaders/world0/gbuffers_skybasic.fsh
+diff -ruN deriv/shaders/world0/gbuffers_skybasic.fsh deriv_voxy/shaders/world0/gbuffers_skybasic.fsh
 --- deriv/shaders/world0/gbuffers_skybasic.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_skybasic.fsh	2026-10-25 08:50:08.507381958 +0300
 @@ -1,4 +1,5 @@
@@ -1278,7 +1289,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_skybasic.fsh deriv_voxy/shaders/worl
  
  void main() {
      discard;
-diff -ruN -U2 deriv/shaders/world0/gbuffers_skybasic.vsh deriv_voxy/shaders/world0/gbuffers_skybasic.vsh
+diff -ruN deriv/shaders/world0/gbuffers_skybasic.vsh deriv_voxy/shaders/world0/gbuffers_skybasic.vsh
 --- deriv/shaders/world0/gbuffers_skybasic.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_skybasic.vsh	2026-10-25 08:50:08.505441180 +0300
 @@ -1,4 +1,5 @@
@@ -1287,7 +1298,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_skybasic.vsh deriv_voxy/shaders/worl
  
  void main() {
      gl_Position = vec4(-1.0);
-diff -ruN -U2 deriv/shaders/world0/gbuffers_skytextured.fsh deriv_voxy/shaders/world0/gbuffers_skytextured.fsh
+diff -ruN deriv/shaders/world0/gbuffers_skytextured.fsh deriv_voxy/shaders/world0/gbuffers_skytextured.fsh
 --- deriv/shaders/world0/gbuffers_skytextured.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_skytextured.fsh	2026-10-25 08:50:08.503711305 +0300
 @@ -1,4 +1,5 @@
@@ -1296,7 +1307,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_skytextured.fsh deriv_voxy/shaders/w
  
  
  out vec3 albedoData;
-diff -ruN -U2 deriv/shaders/world0/gbuffers_skytextured.vsh deriv_voxy/shaders/world0/gbuffers_skytextured.vsh
+diff -ruN deriv/shaders/world0/gbuffers_skytextured.vsh deriv_voxy/shaders/world0/gbuffers_skytextured.vsh
 --- deriv/shaders/world0/gbuffers_skytextured.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_skytextured.vsh	2026-10-25 08:50:08.505578114 +0300
 @@ -1,4 +1,5 @@
@@ -1305,7 +1316,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_skytextured.vsh deriv_voxy/shaders/w
  
  uniform vec2 taaOffset;
  
-diff -ruN -U2 deriv/shaders/world0/gbuffers_spidereyes.fsh deriv_voxy/shaders/world0/gbuffers_spidereyes.fsh
+diff -ruN deriv/shaders/world0/gbuffers_spidereyes.fsh deriv_voxy/shaders/world0/gbuffers_spidereyes.fsh
 --- deriv/shaders/world0/gbuffers_spidereyes.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_spidereyes.fsh	2026-10-25 08:50:08.503591270 +0300
 @@ -1,4 +1,5 @@
@@ -1314,7 +1325,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_spidereyes.fsh deriv_voxy/shaders/wo
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/gbuffers_spidereyes.vsh deriv_voxy/shaders/world0/gbuffers_spidereyes.vsh
+diff -ruN deriv/shaders/world0/gbuffers_spidereyes.vsh deriv_voxy/shaders/world0/gbuffers_spidereyes.vsh
 --- deriv/shaders/world0/gbuffers_spidereyes.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_spidereyes.vsh	2026-10-25 08:50:08.506128481 +0300
 @@ -1,3 +1,4 @@
@@ -1322,7 +1333,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_spidereyes.vsh deriv_voxy/shaders/wo
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Spidereyes.vert"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_terrain.fsh deriv_voxy/shaders/world0/gbuffers_terrain.fsh
+diff -ruN deriv/shaders/world0/gbuffers_terrain.fsh deriv_voxy/shaders/world0/gbuffers_terrain.fsh
 --- deriv/shaders/world0/gbuffers_terrain.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_terrain.fsh	2026-10-25 08:50:08.505671929 +0300
 @@ -1,4 +1,5 @@
@@ -1331,7 +1342,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_terrain.fsh deriv_voxy/shaders/world
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/gbuffers_terrain.vsh deriv_voxy/shaders/world0/gbuffers_terrain.vsh
+diff -ruN deriv/shaders/world0/gbuffers_terrain.vsh deriv_voxy/shaders/world0/gbuffers_terrain.vsh
 --- deriv/shaders/world0/gbuffers_terrain.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_terrain.vsh	2026-10-25 08:50:08.505515065 +0300
 @@ -1,3 +1,4 @@
@@ -1339,7 +1350,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_terrain.vsh deriv_voxy/shaders/world
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Terrain.vert"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_textured.fsh deriv_voxy/shaders/world0/gbuffers_textured.fsh
+diff -ruN deriv/shaders/world0/gbuffers_textured.fsh deriv_voxy/shaders/world0/gbuffers_textured.fsh
 --- deriv/shaders/world0/gbuffers_textured.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_textured.fsh	2026-10-25 08:50:08.504789443 +0300
 @@ -1,3 +1,4 @@
@@ -1347,7 +1358,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_textured.fsh deriv_voxy/shaders/worl
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Textured.frag"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_textured.vsh deriv_voxy/shaders/world0/gbuffers_textured.vsh
+diff -ruN deriv/shaders/world0/gbuffers_textured.vsh deriv_voxy/shaders/world0/gbuffers_textured.vsh
 --- deriv/shaders/world0/gbuffers_textured.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_textured.vsh	2026-10-25 08:50:08.504730396 +0300
 @@ -1,3 +1,4 @@
@@ -1355,7 +1366,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_textured.vsh deriv_voxy/shaders/worl
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Textured.vert"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_water.fsh deriv_voxy/shaders/world0/gbuffers_water.fsh
+diff -ruN deriv/shaders/world0/gbuffers_water.fsh deriv_voxy/shaders/world0/gbuffers_water.fsh
 --- deriv/shaders/world0/gbuffers_water.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_water.fsh	2026-10-25 08:50:08.503949142 +0300
 @@ -1,4 +1,5 @@
@@ -1364,7 +1375,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_water.fsh deriv_voxy/shaders/world0/
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world0/gbuffers_water.vsh deriv_voxy/shaders/world0/gbuffers_water.vsh
+diff -ruN deriv/shaders/world0/gbuffers_water.vsh deriv_voxy/shaders/world0/gbuffers_water.vsh
 --- deriv/shaders/world0/gbuffers_water.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_water.vsh	2026-10-25 08:50:08.504139507 +0300
 @@ -1,3 +1,4 @@
@@ -1372,7 +1383,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_water.vsh deriv_voxy/shaders/world0/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Water.vert"
-diff -ruN -U2 deriv/shaders/world0/gbuffers_weather.fsh deriv_voxy/shaders/world0/gbuffers_weather.fsh
+diff -ruN deriv/shaders/world0/gbuffers_weather.fsh deriv_voxy/shaders/world0/gbuffers_weather.fsh
 --- deriv/shaders/world0/gbuffers_weather.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_weather.fsh	2026-10-25 08:50:08.504445087 +0300
 @@ -1,4 +1,5 @@
@@ -1381,7 +1392,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_weather.fsh deriv_voxy/shaders/world
  
  out vec3 albedoData;
  
-diff -ruN -U2 deriv/shaders/world0/gbuffers_weather.vsh deriv_voxy/shaders/world0/gbuffers_weather.vsh
+diff -ruN deriv/shaders/world0/gbuffers_weather.vsh deriv_voxy/shaders/world0/gbuffers_weather.vsh
 --- deriv/shaders/world0/gbuffers_weather.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/gbuffers_weather.vsh	2026-10-25 08:50:08.507646511 +0300
 @@ -1,4 +1,5 @@
@@ -1390,7 +1401,7 @@ diff -ruN -U2 deriv/shaders/world0/gbuffers_weather.vsh deriv_voxy/shaders/world
  
  out float tint;
  out vec2 texcoord;
-diff -ruN -U2 deriv/shaders/world0/shadow.fsh deriv_voxy/shaders/world0/shadow.fsh
+diff -ruN deriv/shaders/world0/shadow.fsh deriv_voxy/shaders/world0/shadow.fsh
 --- deriv/shaders/world0/shadow.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/shadow.fsh	2026-10-25 08:50:08.507252194 +0300
 @@ -1,3 +1,4 @@
@@ -1398,7 +1409,7 @@ diff -ruN -U2 deriv/shaders/world0/shadow.fsh deriv_voxy/shaders/world0/shadow.f
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Shadow/Shadow.frag"
-diff -ruN -U2 deriv/shaders/world0/shadow.vsh deriv_voxy/shaders/world0/shadow.vsh
+diff -ruN deriv/shaders/world0/shadow.vsh deriv_voxy/shaders/world0/shadow.vsh
 --- deriv/shaders/world0/shadow.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world0/shadow.vsh	2026-10-25 08:50:08.503345585 +0300
 @@ -1,3 +1,4 @@
@@ -1406,30 +1417,46 @@ diff -ruN -U2 deriv/shaders/world0/shadow.vsh deriv_voxy/shaders/world0/shadow.v
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Shadow/Shadow.vert"
-diff -ruN -U2 deriv/shaders/world0/voxy.json deriv_voxy/shaders/world0/voxy.json
+diff -ruN deriv/shaders/world0/voxy.json deriv_voxy/shaders/world0/voxy.json
 --- deriv/shaders/world0/voxy.json	1970-01-01 03:00:00.000000000 +0300
 +++ deriv_voxy/shaders/world0/voxy.json	2026-10-25 08:51:10.360419815 +0300
 @@ -0,0 +1 @@
 +#include "/program/Voxy/voxy.json"
-diff -ruN -U2 deriv/shaders/world0/voxy_opaque.glsl deriv_voxy/shaders/world0/voxy_opaque.glsl
+diff -ruN deriv/shaders/world0/voxy_opaque.glsl deriv_voxy/shaders/world0/voxy_opaque.glsl
 --- deriv/shaders/world0/voxy_opaque.glsl	1970-01-01 03:00:00.000000000 +0300
-+++ deriv_voxy/shaders/world0/voxy_opaque.glsl	2026-10-25 08:51:10.360419815 +0300
-@@ -0,0 +1,5 @@
++++ deriv_voxy/shaders/world0/voxy_opaque.glsl	2026-10-25 09:48:08.044690865 +0300
+@@ -0,0 +1,13 @@
 +#include "/lib/Head/VoxyDH.inc"
 +#define VOXY_PATCH
++
++// Iris does not hand these to Voxy (they are the gbuffer targets); the pack only names them in helpers
++// the LOD programs never call, so plain declarations are enough to compile
++uniform sampler2D colortex0;
++uniform sampler2D colortex1;
++uniform sampler2D colortex2;
++uniform sampler2D colortex3;
++uniform sampler2D depthtex2;
 +#define IS_OVERWORLD
 +
 +#include "/program/DH/Terrain.frag"
-diff -ruN -U2 deriv/shaders/world0/voxy_translucent.glsl deriv_voxy/shaders/world0/voxy_translucent.glsl
+diff -ruN deriv/shaders/world0/voxy_translucent.glsl deriv_voxy/shaders/world0/voxy_translucent.glsl
 --- deriv/shaders/world0/voxy_translucent.glsl	1970-01-01 03:00:00.000000000 +0300
-+++ deriv_voxy/shaders/world0/voxy_translucent.glsl	2026-10-25 08:51:10.360419815 +0300
-@@ -0,0 +1,5 @@
++++ deriv_voxy/shaders/world0/voxy_translucent.glsl	2026-10-25 09:48:08.062390724 +0300
+@@ -0,0 +1,13 @@
 +#include "/lib/Head/VoxyDH.inc"
 +#define VOXY_PATCH
++
++// Iris does not hand these to Voxy (they are the gbuffer targets); the pack only names them in helpers
++// the LOD programs never call, so plain declarations are enough to compile
++uniform sampler2D colortex0;
++uniform sampler2D colortex1;
++uniform sampler2D colortex2;
++uniform sampler2D colortex3;
++uniform sampler2D depthtex2;
 +#define IS_OVERWORLD
 +
 +#include "/program/DH/Water.frag"
-diff -ruN -U2 deriv/shaders/world1/composite.fsh deriv_voxy/shaders/world1/composite.fsh
+diff -ruN deriv/shaders/world1/composite.fsh deriv_voxy/shaders/world1/composite.fsh
 --- deriv/shaders/world1/composite.fsh	2024-04-03 22:51:08.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite.fsh	2026-10-25 08:50:08.498261439 +0300
 @@ -1,4 +1,5 @@
@@ -1438,7 +1465,7 @@ diff -ruN -U2 deriv/shaders/world1/composite.fsh deriv_voxy/shaders/world1/compo
  
  #define IS_END
  
-diff -ruN -U2 deriv/shaders/world1/composite.vsh deriv_voxy/shaders/world1/composite.vsh
+diff -ruN deriv/shaders/world1/composite.vsh deriv_voxy/shaders/world1/composite.vsh
 --- deriv/shaders/world1/composite.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite.vsh	2026-10-25 08:50:08.498606820 +0300
 @@ -1,4 +1,5 @@
@@ -1447,7 +1474,7 @@ diff -ruN -U2 deriv/shaders/world1/composite.vsh deriv_voxy/shaders/world1/compo
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world1/composite1.fsh deriv_voxy/shaders/world1/composite1.fsh
+diff -ruN deriv/shaders/world1/composite1.fsh deriv_voxy/shaders/world1/composite1.fsh
 --- deriv/shaders/world1/composite1.fsh	2024-04-04 15:57:00.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite1.fsh	2026-10-25 08:50:08.496724373 +0300
 @@ -1,4 +1,5 @@
@@ -1456,7 +1483,7 @@ diff -ruN -U2 deriv/shaders/world1/composite1.fsh deriv_voxy/shaders/world1/comp
  
  
  #include "/lib/Head/Common.inc"
-diff -ruN -U2 deriv/shaders/world1/composite1.vsh deriv_voxy/shaders/world1/composite1.vsh
+diff -ruN deriv/shaders/world1/composite1.vsh deriv_voxy/shaders/world1/composite1.vsh
 --- deriv/shaders/world1/composite1.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite1.vsh	2026-10-25 08:50:08.496199420 +0300
 @@ -1,4 +1,5 @@
@@ -1465,7 +1492,7 @@ diff -ruN -U2 deriv/shaders/world1/composite1.vsh deriv_voxy/shaders/world1/comp
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world1/composite10.fsh deriv_voxy/shaders/world1/composite10.fsh
+diff -ruN deriv/shaders/world1/composite10.fsh deriv_voxy/shaders/world1/composite10.fsh
 --- deriv/shaders/world1/composite10.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite10.fsh	2026-10-25 08:50:08.495131614 +0300
 @@ -1,3 +1,4 @@
@@ -1473,7 +1500,7 @@ diff -ruN -U2 deriv/shaders/world1/composite10.fsh deriv_voxy/shaders/world1/com
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/DownSample.glsl"
-diff -ruN -U2 deriv/shaders/world1/composite10.vsh deriv_voxy/shaders/world1/composite10.vsh
+diff -ruN deriv/shaders/world1/composite10.vsh deriv_voxy/shaders/world1/composite10.vsh
 --- deriv/shaders/world1/composite10.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite10.vsh	2026-10-25 08:50:08.497523802 +0300
 @@ -1,4 +1,5 @@
@@ -1482,7 +1509,7 @@ diff -ruN -U2 deriv/shaders/world1/composite10.vsh deriv_voxy/shaders/world1/com
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world1/composite12.fsh deriv_voxy/shaders/world1/composite12.fsh
+diff -ruN deriv/shaders/world1/composite12.fsh deriv_voxy/shaders/world1/composite12.fsh
 --- deriv/shaders/world1/composite12.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite12.fsh	2026-10-25 08:50:08.497051140 +0300
 @@ -1,3 +1,4 @@
@@ -1490,7 +1517,7 @@ diff -ruN -U2 deriv/shaders/world1/composite12.fsh deriv_voxy/shaders/world1/com
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/BlurH.glsl"
-diff -ruN -U2 deriv/shaders/world1/composite12.vsh deriv_voxy/shaders/world1/composite12.vsh
+diff -ruN deriv/shaders/world1/composite12.vsh deriv_voxy/shaders/world1/composite12.vsh
 --- deriv/shaders/world1/composite12.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite12.vsh	2026-10-25 08:50:08.497369586 +0300
 @@ -1,4 +1,5 @@
@@ -1499,7 +1526,7 @@ diff -ruN -U2 deriv/shaders/world1/composite12.vsh deriv_voxy/shaders/world1/com
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * vec2(1.0, 2.0) - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world1/composite13.fsh deriv_voxy/shaders/world1/composite13.fsh
+diff -ruN deriv/shaders/world1/composite13.fsh deriv_voxy/shaders/world1/composite13.fsh
 --- deriv/shaders/world1/composite13.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite13.fsh	2026-10-25 08:50:08.496439198 +0300
 @@ -1,3 +1,4 @@
@@ -1507,7 +1534,7 @@ diff -ruN -U2 deriv/shaders/world1/composite13.fsh deriv_voxy/shaders/world1/com
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/BlurV.glsl"
-diff -ruN -U2 deriv/shaders/world1/composite13.vsh deriv_voxy/shaders/world1/composite13.vsh
+diff -ruN deriv/shaders/world1/composite13.vsh deriv_voxy/shaders/world1/composite13.vsh
 --- deriv/shaders/world1/composite13.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite13.vsh	2026-10-25 08:50:08.494757851 +0300
 @@ -1,4 +1,5 @@
@@ -1516,7 +1543,7 @@ diff -ruN -U2 deriv/shaders/world1/composite13.vsh deriv_voxy/shaders/world1/com
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * vec2(1.0, 2.0) - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world1/composite14.fsh deriv_voxy/shaders/world1/composite14.fsh
+diff -ruN deriv/shaders/world1/composite14.fsh deriv_voxy/shaders/world1/composite14.fsh
 --- deriv/shaders/world1/composite14.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite14.fsh	2026-10-25 08:50:08.496811094 +0300
 @@ -1,3 +1,4 @@
@@ -1524,7 +1551,7 @@ diff -ruN -U2 deriv/shaders/world1/composite14.fsh deriv_voxy/shaders/world1/com
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/MotionBlur.glsl"
-diff -ruN -U2 deriv/shaders/world1/composite14.vsh deriv_voxy/shaders/world1/composite14.vsh
+diff -ruN deriv/shaders/world1/composite14.vsh deriv_voxy/shaders/world1/composite14.vsh
 --- deriv/shaders/world1/composite14.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite14.vsh	2026-10-25 08:50:08.497420390 +0300
 @@ -1,4 +1,5 @@
@@ -1533,7 +1560,7 @@ diff -ruN -U2 deriv/shaders/world1/composite14.vsh deriv_voxy/shaders/world1/com
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world1/composite15.fsh deriv_voxy/shaders/world1/composite15.fsh
+diff -ruN deriv/shaders/world1/composite15.fsh deriv_voxy/shaders/world1/composite15.fsh
 --- deriv/shaders/world1/composite15.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite15.fsh	2026-10-25 08:50:08.496379167 +0300
 @@ -1,4 +1,5 @@
@@ -1542,7 +1569,7 @@ diff -ruN -U2 deriv/shaders/world1/composite15.fsh deriv_voxy/shaders/world1/com
  
  #define IS_END
  
-diff -ruN -U2 deriv/shaders/world1/composite15.vsh deriv_voxy/shaders/world1/composite15.vsh
+diff -ruN deriv/shaders/world1/composite15.vsh deriv_voxy/shaders/world1/composite15.vsh
 --- deriv/shaders/world1/composite15.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite15.vsh	2026-10-25 08:50:08.496971990 +0300
 @@ -1,4 +1,5 @@
@@ -1551,7 +1578,7 @@ diff -ruN -U2 deriv/shaders/world1/composite15.vsh deriv_voxy/shaders/world1/com
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world1/composite2.fsh deriv_voxy/shaders/world1/composite2.fsh
+diff -ruN deriv/shaders/world1/composite2.fsh deriv_voxy/shaders/world1/composite2.fsh
 --- deriv/shaders/world1/composite2.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite2.fsh	2026-10-25 08:50:08.497108226 +0300
 @@ -1,3 +1,4 @@
@@ -1559,7 +1586,7 @@ diff -ruN -U2 deriv/shaders/world1/composite2.fsh deriv_voxy/shaders/world1/comp
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/DoF.glsl"
-diff -ruN -U2 deriv/shaders/world1/composite2.vsh deriv_voxy/shaders/world1/composite2.vsh
+diff -ruN deriv/shaders/world1/composite2.vsh deriv_voxy/shaders/world1/composite2.vsh
 --- deriv/shaders/world1/composite2.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite2.vsh	2026-10-25 08:50:08.496919625 +0300
 @@ -1,4 +1,5 @@
@@ -1568,7 +1595,7 @@ diff -ruN -U2 deriv/shaders/world1/composite2.vsh deriv_voxy/shaders/world1/comp
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world1/composite3.fsh deriv_voxy/shaders/world1/composite3.fsh
+diff -ruN deriv/shaders/world1/composite3.fsh deriv_voxy/shaders/world1/composite3.fsh
 --- deriv/shaders/world1/composite3.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite3.fsh	2026-10-25 08:50:08.495194770 +0300
 @@ -1,3 +1,4 @@
@@ -1576,7 +1603,7 @@ diff -ruN -U2 deriv/shaders/world1/composite3.fsh deriv_voxy/shaders/world1/comp
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/Temporal.frag"
-diff -ruN -U2 deriv/shaders/world1/composite3.vsh deriv_voxy/shaders/world1/composite3.vsh
+diff -ruN deriv/shaders/world1/composite3.vsh deriv_voxy/shaders/world1/composite3.vsh
 --- deriv/shaders/world1/composite3.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite3.vsh	2026-10-25 08:50:08.497733808 +0300
 @@ -1,4 +1,5 @@
@@ -1585,7 +1612,7 @@ diff -ruN -U2 deriv/shaders/world1/composite3.vsh deriv_voxy/shaders/world1/comp
  
  #define IS_END
  
-diff -ruN -U2 deriv/shaders/world1/composite4.fsh deriv_voxy/shaders/world1/composite4.fsh
+diff -ruN deriv/shaders/world1/composite4.fsh deriv_voxy/shaders/world1/composite4.fsh
 --- deriv/shaders/world1/composite4.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite4.fsh	2026-10-25 08:50:08.498559922 +0300
 @@ -1,3 +1,4 @@
@@ -1593,7 +1620,7 @@ diff -ruN -U2 deriv/shaders/world1/composite4.fsh deriv_voxy/shaders/world1/comp
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/DownSample0.glsl"
-diff -ruN -U2 deriv/shaders/world1/composite4.vsh deriv_voxy/shaders/world1/composite4.vsh
+diff -ruN deriv/shaders/world1/composite4.vsh deriv_voxy/shaders/world1/composite4.vsh
 --- deriv/shaders/world1/composite4.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/composite4.vsh	2026-10-25 08:50:08.496138445 +0300
 @@ -1,4 +1,5 @@
@@ -1602,7 +1629,7 @@ diff -ruN -U2 deriv/shaders/world1/composite4.vsh deriv_voxy/shaders/world1/comp
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world1/deferred2.fsh deriv_voxy/shaders/world1/deferred2.fsh
+diff -ruN deriv/shaders/world1/deferred2.fsh deriv_voxy/shaders/world1/deferred2.fsh
 --- deriv/shaders/world1/deferred2.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/deferred2.fsh	2026-10-25 08:50:08.497888432 +0300
 @@ -1,3 +1,4 @@
@@ -1610,7 +1637,7 @@ diff -ruN -U2 deriv/shaders/world1/deferred2.fsh deriv_voxy/shaders/world1/defer
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Deferred2.glsl"
-diff -ruN -U2 deriv/shaders/world1/deferred2.vsh deriv_voxy/shaders/world1/deferred2.vsh
+diff -ruN deriv/shaders/world1/deferred2.vsh deriv_voxy/shaders/world1/deferred2.vsh
 --- deriv/shaders/world1/deferred2.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/deferred2.vsh	2026-10-25 08:50:08.495438119 +0300
 @@ -1,4 +1,5 @@
@@ -1619,7 +1646,7 @@ diff -ruN -U2 deriv/shaders/world1/deferred2.vsh deriv_voxy/shaders/world1/defer
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world1/deferred3.fsh deriv_voxy/shaders/world1/deferred3.fsh
+diff -ruN deriv/shaders/world1/deferred3.fsh deriv_voxy/shaders/world1/deferred3.fsh
 --- deriv/shaders/world1/deferred3.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/deferred3.fsh	2026-10-25 08:50:08.494847731 +0300
 @@ -1,3 +1,4 @@
@@ -1627,7 +1654,7 @@ diff -ruN -U2 deriv/shaders/world1/deferred3.fsh deriv_voxy/shaders/world1/defer
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/SpatialFilter.frag"
-diff -ruN -U2 deriv/shaders/world1/deferred3.vsh deriv_voxy/shaders/world1/deferred3.vsh
+diff -ruN deriv/shaders/world1/deferred3.vsh deriv_voxy/shaders/world1/deferred3.vsh
 --- deriv/shaders/world1/deferred3.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/deferred3.vsh	2026-10-25 08:50:08.495376740 +0300
 @@ -1,4 +1,5 @@
@@ -1636,7 +1663,7 @@ diff -ruN -U2 deriv/shaders/world1/deferred3.vsh deriv_voxy/shaders/world1/defer
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world1/deferred4.csh deriv_voxy/shaders/world1/deferred4.csh
+diff -ruN deriv/shaders/world1/deferred4.csh deriv_voxy/shaders/world1/deferred4.csh
 --- deriv/shaders/world1/deferred4.csh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/deferred4.csh	2026-10-25 08:50:08.496319338 +0300
 @@ -1,3 +1,4 @@
@@ -1644,7 +1671,7 @@ diff -ruN -U2 deriv/shaders/world1/deferred4.csh deriv_voxy/shaders/world1/defer
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/SpatialFilter.comp"
-diff -ruN -U2 deriv/shaders/world1/deferred5.fsh deriv_voxy/shaders/world1/deferred5.fsh
+diff -ruN deriv/shaders/world1/deferred5.fsh deriv_voxy/shaders/world1/deferred5.fsh
 --- deriv/shaders/world1/deferred5.fsh	2024-04-04 11:22:18.000000000 +0300
 +++ deriv_voxy/shaders/world1/deferred5.fsh	2026-10-25 08:50:08.494932502 +0300
 @@ -1,4 +1,5 @@
@@ -1653,7 +1680,7 @@ diff -ruN -U2 deriv/shaders/world1/deferred5.fsh deriv_voxy/shaders/world1/defer
  
  
  #define IS_END
-diff -ruN -U2 deriv/shaders/world1/deferred5.vsh deriv_voxy/shaders/world1/deferred5.vsh
+diff -ruN deriv/shaders/world1/deferred5.vsh deriv_voxy/shaders/world1/deferred5.vsh
 --- deriv/shaders/world1/deferred5.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/deferred5.vsh	2026-10-25 08:50:08.496259536 +0300
 @@ -1,4 +1,5 @@
@@ -1662,7 +1689,7 @@ diff -ruN -U2 deriv/shaders/world1/deferred5.vsh deriv_voxy/shaders/world1/defer
  
  out vec2 screenCoord;
  
-diff -ruN -U2 deriv/shaders/world1/deferred6.fsh deriv_voxy/shaders/world1/deferred6.fsh
+diff -ruN deriv/shaders/world1/deferred6.fsh deriv_voxy/shaders/world1/deferred6.fsh
 --- deriv/shaders/world1/deferred6.fsh	2024-04-04 11:22:18.000000000 +0300
 +++ deriv_voxy/shaders/world1/deferred6.fsh	2026-10-25 08:50:08.495501786 +0300
 @@ -1,4 +1,5 @@
@@ -1671,7 +1698,7 @@ diff -ruN -U2 deriv/shaders/world1/deferred6.fsh deriv_voxy/shaders/world1/defer
  
  // /*
  // const bool colortex4MipmapEnabled = true;
-diff -ruN -U2 deriv/shaders/world1/deferred6.vsh deriv_voxy/shaders/world1/deferred6.vsh
+diff -ruN deriv/shaders/world1/deferred6.vsh deriv_voxy/shaders/world1/deferred6.vsh
 --- deriv/shaders/world1/deferred6.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/deferred6.vsh	2026-10-25 08:50:08.498442365 +0300
 @@ -1,4 +1,5 @@
@@ -1680,7 +1707,7 @@ diff -ruN -U2 deriv/shaders/world1/deferred6.vsh deriv_voxy/shaders/world1/defer
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world1/deferred7.fsh deriv_voxy/shaders/world1/deferred7.fsh
+diff -ruN deriv/shaders/world1/deferred7.fsh deriv_voxy/shaders/world1/deferred7.fsh
 --- deriv/shaders/world1/deferred7.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/deferred7.fsh	2026-10-25 08:50:08.497784932 +0300
 @@ -1,3 +1,4 @@
@@ -1688,7 +1715,7 @@ diff -ruN -U2 deriv/shaders/world1/deferred7.fsh deriv_voxy/shaders/world1/defer
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/ReflectionFilter.frag"
-diff -ruN -U2 deriv/shaders/world1/deferred7.vsh deriv_voxy/shaders/world1/deferred7.vsh
+diff -ruN deriv/shaders/world1/deferred7.vsh deriv_voxy/shaders/world1/deferred7.vsh
 --- deriv/shaders/world1/deferred7.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/deferred7.vsh	2026-10-25 08:50:08.495754640 +0300
 @@ -1,4 +1,5 @@
@@ -1697,7 +1724,7 @@ diff -ruN -U2 deriv/shaders/world1/deferred7.vsh deriv_voxy/shaders/world1/defer
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world1/deferred8.csh deriv_voxy/shaders/world1/deferred8.csh
+diff -ruN deriv/shaders/world1/deferred8.csh deriv_voxy/shaders/world1/deferred8.csh
 --- deriv/shaders/world1/deferred8.csh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/deferred8.csh	2026-10-25 08:50:08.497631133 +0300
 @@ -1,3 +1,4 @@
@@ -1705,7 +1732,7 @@ diff -ruN -U2 deriv/shaders/world1/deferred8.csh deriv_voxy/shaders/world1/defer
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/ReflectionFilter.comp"
-diff -ruN -U2 deriv/shaders/world1/final.fsh deriv_voxy/shaders/world1/final.fsh
+diff -ruN deriv/shaders/world1/final.fsh deriv_voxy/shaders/world1/final.fsh
 --- deriv/shaders/world1/final.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/final.fsh	2026-10-25 08:50:08.497836572 +0300
 @@ -1,3 +1,4 @@
@@ -1713,7 +1740,7 @@ diff -ruN -U2 deriv/shaders/world1/final.fsh deriv_voxy/shaders/world1/final.fsh
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Post/Final.glsl"
-diff -ruN -U2 deriv/shaders/world1/final.vsh deriv_voxy/shaders/world1/final.vsh
+diff -ruN deriv/shaders/world1/final.vsh deriv_voxy/shaders/world1/final.vsh
 --- deriv/shaders/world1/final.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/final.vsh	2026-10-25 08:50:08.496014594 +0300
 @@ -1,4 +1,5 @@
@@ -1722,7 +1749,7 @@ diff -ruN -U2 deriv/shaders/world1/final.vsh deriv_voxy/shaders/world1/final.vsh
  
  void main() {
  	gl_Position = vec4(gl_Vertex.xy * 2.0 - 1.0, 0.0, 1.0);
-diff -ruN -U2 deriv/shaders/world1/gbuffers_armor_glint.fsh deriv_voxy/shaders/world1/gbuffers_armor_glint.fsh
+diff -ruN deriv/shaders/world1/gbuffers_armor_glint.fsh deriv_voxy/shaders/world1/gbuffers_armor_glint.fsh
 --- deriv/shaders/world1/gbuffers_armor_glint.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_armor_glint.fsh	2026-10-25 08:50:08.496867161 +0300
 @@ -1,3 +1,4 @@
@@ -1730,7 +1757,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_armor_glint.fsh deriv_voxy/shaders/w
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/ArmorGlint.frag"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_armor_glint.vsh deriv_voxy/shaders/world1/gbuffers_armor_glint.vsh
+diff -ruN deriv/shaders/world1/gbuffers_armor_glint.vsh deriv_voxy/shaders/world1/gbuffers_armor_glint.vsh
 --- deriv/shaders/world1/gbuffers_armor_glint.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_armor_glint.vsh	2026-10-25 08:50:08.498322200 +0300
 @@ -1,3 +1,4 @@
@@ -1738,7 +1765,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_armor_glint.vsh deriv_voxy/shaders/w
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/ArmorGlint.vert"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_basic.fsh deriv_voxy/shaders/world1/gbuffers_basic.fsh
+diff -ruN deriv/shaders/world1/gbuffers_basic.fsh deriv_voxy/shaders/world1/gbuffers_basic.fsh
 --- deriv/shaders/world1/gbuffers_basic.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_basic.fsh	2026-10-25 08:50:08.497161351 +0300
 @@ -1,3 +1,4 @@
@@ -1746,7 +1773,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_basic.fsh deriv_voxy/shaders/world1/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Basic.frag"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_basic.vsh deriv_voxy/shaders/world1/gbuffers_basic.vsh
+diff -ruN deriv/shaders/world1/gbuffers_basic.vsh deriv_voxy/shaders/world1/gbuffers_basic.vsh
 --- deriv/shaders/world1/gbuffers_basic.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_basic.vsh	2026-10-25 08:50:08.495051864 +0300
 @@ -1,3 +1,4 @@
@@ -1754,7 +1781,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_basic.vsh deriv_voxy/shaders/world1/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Basic.vert"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_beaconbeam.fsh deriv_voxy/shaders/world1/gbuffers_beaconbeam.fsh
+diff -ruN deriv/shaders/world1/gbuffers_beaconbeam.fsh deriv_voxy/shaders/world1/gbuffers_beaconbeam.fsh
 --- deriv/shaders/world1/gbuffers_beaconbeam.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_beaconbeam.fsh	2026-10-25 08:50:08.498013805 +0300
 @@ -1,3 +1,4 @@
@@ -1762,7 +1789,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_beaconbeam.fsh deriv_voxy/shaders/wo
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Beaconbeam.frag"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_beaconbeam.vsh deriv_voxy/shaders/world1/gbuffers_beaconbeam.vsh
+diff -ruN deriv/shaders/world1/gbuffers_beaconbeam.vsh deriv_voxy/shaders/world1/gbuffers_beaconbeam.vsh
 --- deriv/shaders/world1/gbuffers_beaconbeam.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_beaconbeam.vsh	2026-10-25 08:50:08.495881368 +0300
 @@ -1,3 +1,4 @@
@@ -1770,7 +1797,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_beaconbeam.vsh deriv_voxy/shaders/wo
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Beaconbeam.vert"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_block.fsh deriv_voxy/shaders/world1/gbuffers_block.fsh
+diff -ruN deriv/shaders/world1/gbuffers_block.fsh deriv_voxy/shaders/world1/gbuffers_block.fsh
 --- deriv/shaders/world1/gbuffers_block.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_block.fsh	2026-10-25 08:50:08.495256097 +0300
 @@ -1,3 +1,4 @@
@@ -1778,7 +1805,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_block.fsh deriv_voxy/shaders/world1/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Block.frag"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_block.vsh deriv_voxy/shaders/world1/gbuffers_block.vsh
+diff -ruN deriv/shaders/world1/gbuffers_block.vsh deriv_voxy/shaders/world1/gbuffers_block.vsh
 --- deriv/shaders/world1/gbuffers_block.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_block.vsh	2026-10-25 08:50:08.498129647 +0300
 @@ -1,3 +1,4 @@
@@ -1786,7 +1813,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_block.vsh deriv_voxy/shaders/world1/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Block.vert"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_damagedblock.fsh deriv_voxy/shaders/world1/gbuffers_damagedblock.fsh
+diff -ruN deriv/shaders/world1/gbuffers_damagedblock.fsh deriv_voxy/shaders/world1/gbuffers_damagedblock.fsh
 --- deriv/shaders/world1/gbuffers_damagedblock.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_damagedblock.fsh	2026-10-25 08:50:08.497682958 +0300
 @@ -1,3 +1,4 @@
@@ -1794,7 +1821,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_damagedblock.fsh deriv_voxy/shaders/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Damagedblock.frag"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_damagedblock.vsh deriv_voxy/shaders/world1/gbuffers_damagedblock.vsh
+diff -ruN deriv/shaders/world1/gbuffers_damagedblock.vsh deriv_voxy/shaders/world1/gbuffers_damagedblock.vsh
 --- deriv/shaders/world1/gbuffers_damagedblock.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_damagedblock.vsh	2026-10-25 08:50:08.497472295 +0300
 @@ -1,3 +1,4 @@
@@ -1802,7 +1829,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_damagedblock.vsh deriv_voxy/shaders/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Damagedblock.vert"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_entities.fsh deriv_voxy/shaders/world1/gbuffers_entities.fsh
+diff -ruN deriv/shaders/world1/gbuffers_entities.fsh deriv_voxy/shaders/world1/gbuffers_entities.fsh
 --- deriv/shaders/world1/gbuffers_entities.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_entities.fsh	2026-10-25 08:50:08.498065754 +0300
 @@ -1,3 +1,4 @@
@@ -1810,7 +1837,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_entities.fsh deriv_voxy/shaders/worl
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Entities.frag"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_entities.vsh deriv_voxy/shaders/world1/gbuffers_entities.vsh
+diff -ruN deriv/shaders/world1/gbuffers_entities.vsh deriv_voxy/shaders/world1/gbuffers_entities.vsh
 --- deriv/shaders/world1/gbuffers_entities.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_entities.vsh	2026-10-25 08:50:08.496511719 +0300
 @@ -1,3 +1,4 @@
@@ -1818,7 +1845,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_entities.vsh deriv_voxy/shaders/worl
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Entities.vert"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_hand.fsh deriv_voxy/shaders/world1/gbuffers_hand.fsh
+diff -ruN deriv/shaders/world1/gbuffers_hand.fsh deriv_voxy/shaders/world1/gbuffers_hand.fsh
 --- deriv/shaders/world1/gbuffers_hand.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_hand.fsh	2026-10-25 08:50:08.497940116 +0300
 @@ -1,3 +1,4 @@
@@ -1826,7 +1853,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_hand.fsh deriv_voxy/shaders/world1/g
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Hand.frag"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_hand.vsh deriv_voxy/shaders/world1/gbuffers_hand.vsh
+diff -ruN deriv/shaders/world1/gbuffers_hand.vsh deriv_voxy/shaders/world1/gbuffers_hand.vsh
 --- deriv/shaders/world1/gbuffers_hand.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_hand.vsh	2026-10-25 08:50:08.498198874 +0300
 @@ -1,3 +1,4 @@
@@ -1834,7 +1861,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_hand.vsh deriv_voxy/shaders/world1/g
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Hand.vert"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_hand_water.fsh deriv_voxy/shaders/world1/gbuffers_hand_water.fsh
+diff -ruN deriv/shaders/world1/gbuffers_hand_water.fsh deriv_voxy/shaders/world1/gbuffers_hand_water.fsh
 --- deriv/shaders/world1/gbuffers_hand_water.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_hand_water.fsh	2026-10-25 08:50:08.495632823 +0300
 @@ -1,4 +1,5 @@
@@ -1843,7 +1870,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_hand_water.fsh deriv_voxy/shaders/wo
  
  #define IS_END
  
-diff -ruN -U2 deriv/shaders/world1/gbuffers_hand_water.vsh deriv_voxy/shaders/world1/gbuffers_hand_water.vsh
+diff -ruN deriv/shaders/world1/gbuffers_hand_water.vsh deriv_voxy/shaders/world1/gbuffers_hand_water.vsh
 --- deriv/shaders/world1/gbuffers_hand_water.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_hand_water.vsh	2026-10-25 08:50:08.495814398 +0300
 @@ -1,3 +1,4 @@
@@ -1851,7 +1878,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_hand_water.vsh deriv_voxy/shaders/wo
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/HandWater.vert"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_skytextured.fsh deriv_voxy/shaders/world1/gbuffers_skytextured.fsh
+diff -ruN deriv/shaders/world1/gbuffers_skytextured.fsh deriv_voxy/shaders/world1/gbuffers_skytextured.fsh
 --- deriv/shaders/world1/gbuffers_skytextured.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_skytextured.fsh	2026-10-25 08:50:08.495693817 +0300
 @@ -1,4 +1,5 @@
@@ -1860,7 +1887,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_skytextured.fsh deriv_voxy/shaders/w
  
  void main() {
  	discard;
-diff -ruN -U2 deriv/shaders/world1/gbuffers_skytextured.vsh deriv_voxy/shaders/world1/gbuffers_skytextured.vsh
+diff -ruN deriv/shaders/world1/gbuffers_skytextured.vsh deriv_voxy/shaders/world1/gbuffers_skytextured.vsh
 --- deriv/shaders/world1/gbuffers_skytextured.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_skytextured.vsh	2026-10-25 08:50:08.497266757 +0300
 @@ -1,4 +1,5 @@
@@ -1869,7 +1896,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_skytextured.vsh deriv_voxy/shaders/w
  
  void main() {
      gl_Position = vec4(-1.0);
-diff -ruN -U2 deriv/shaders/world1/gbuffers_spidereyes.fsh deriv_voxy/shaders/world1/gbuffers_spidereyes.fsh
+diff -ruN deriv/shaders/world1/gbuffers_spidereyes.fsh deriv_voxy/shaders/world1/gbuffers_spidereyes.fsh
 --- deriv/shaders/world1/gbuffers_spidereyes.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_spidereyes.fsh	2026-10-25 08:50:08.495569220 +0300
 @@ -1,3 +1,4 @@
@@ -1877,7 +1904,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_spidereyes.fsh deriv_voxy/shaders/wo
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Spidereyes.frag"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_spidereyes.vsh deriv_voxy/shaders/world1/gbuffers_spidereyes.vsh
+diff -ruN deriv/shaders/world1/gbuffers_spidereyes.vsh deriv_voxy/shaders/world1/gbuffers_spidereyes.vsh
 --- deriv/shaders/world1/gbuffers_spidereyes.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_spidereyes.vsh	2026-10-25 08:50:08.497576640 +0300
 @@ -1,3 +1,4 @@
@@ -1885,7 +1912,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_spidereyes.vsh deriv_voxy/shaders/wo
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Spidereyes.vert"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_terrain.fsh deriv_voxy/shaders/world1/gbuffers_terrain.fsh
+diff -ruN deriv/shaders/world1/gbuffers_terrain.fsh deriv_voxy/shaders/world1/gbuffers_terrain.fsh
 --- deriv/shaders/world1/gbuffers_terrain.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_terrain.fsh	2026-10-25 08:50:08.497317644 +0300
 @@ -1,4 +1,5 @@
@@ -1894,7 +1921,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_terrain.fsh deriv_voxy/shaders/world
  
  #define IS_OVERWORLD
  
-diff -ruN -U2 deriv/shaders/world1/gbuffers_terrain.vsh deriv_voxy/shaders/world1/gbuffers_terrain.vsh
+diff -ruN deriv/shaders/world1/gbuffers_terrain.vsh deriv_voxy/shaders/world1/gbuffers_terrain.vsh
 --- deriv/shaders/world1/gbuffers_terrain.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_terrain.vsh	2026-10-25 08:50:08.497213717 +0300
 @@ -1,3 +1,4 @@
@@ -1902,7 +1929,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_terrain.vsh deriv_voxy/shaders/world
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Terrain.vert"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_textured.fsh deriv_voxy/shaders/world1/gbuffers_textured.fsh
+diff -ruN deriv/shaders/world1/gbuffers_textured.fsh deriv_voxy/shaders/world1/gbuffers_textured.fsh
 --- deriv/shaders/world1/gbuffers_textured.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_textured.fsh	2026-10-25 08:50:08.496666836 +0300
 @@ -1,3 +1,4 @@
@@ -1910,7 +1937,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_textured.fsh deriv_voxy/shaders/worl
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Textured.frag"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_textured.vsh deriv_voxy/shaders/world1/gbuffers_textured.vsh
+diff -ruN deriv/shaders/world1/gbuffers_textured.vsh deriv_voxy/shaders/world1/gbuffers_textured.vsh
 --- deriv/shaders/world1/gbuffers_textured.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_textured.vsh	2026-10-25 08:50:08.496569061 +0300
 @@ -1,3 +1,4 @@
@@ -1918,7 +1945,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_textured.vsh deriv_voxy/shaders/worl
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Textured.vert"
-diff -ruN -U2 deriv/shaders/world1/gbuffers_water.fsh deriv_voxy/shaders/world1/gbuffers_water.fsh
+diff -ruN deriv/shaders/world1/gbuffers_water.fsh deriv_voxy/shaders/world1/gbuffers_water.fsh
 --- deriv/shaders/world1/gbuffers_water.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_water.fsh	2026-10-25 08:50:08.495941465 +0300
 @@ -1,4 +1,5 @@
@@ -1927,7 +1954,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_water.fsh deriv_voxy/shaders/world1/
  
  #define IS_END
  
-diff -ruN -U2 deriv/shaders/world1/gbuffers_water.vsh deriv_voxy/shaders/world1/gbuffers_water.vsh
+diff -ruN deriv/shaders/world1/gbuffers_water.vsh deriv_voxy/shaders/world1/gbuffers_water.vsh
 --- deriv/shaders/world1/gbuffers_water.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/gbuffers_water.vsh	2026-10-25 08:50:08.496075154 +0300
 @@ -1,3 +1,4 @@
@@ -1935,7 +1962,7 @@ diff -ruN -U2 deriv/shaders/world1/gbuffers_water.vsh deriv_voxy/shaders/world1/
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Gbuffers/Water.vert"
-diff -ruN -U2 deriv/shaders/world1/shadow.fsh deriv_voxy/shaders/world1/shadow.fsh
+diff -ruN deriv/shaders/world1/shadow.fsh deriv_voxy/shaders/world1/shadow.fsh
 --- deriv/shaders/world1/shadow.fsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/shadow.fsh	2026-10-25 08:50:08.498382445 +0300
 @@ -1,3 +1,4 @@
@@ -1943,7 +1970,7 @@ diff -ruN -U2 deriv/shaders/world1/shadow.fsh deriv_voxy/shaders/world1/shadow.f
 +#include "/lib/Head/VoxyDH.inc"
  
  #include "/program/Shadow/Shadow.frag"
-diff -ruN -U2 deriv/shaders/world1/shadow.vsh deriv_voxy/shaders/world1/shadow.vsh
+diff -ruN deriv/shaders/world1/shadow.vsh deriv_voxy/shaders/world1/shadow.vsh
 --- deriv/shaders/world1/shadow.vsh	2024-04-03 22:49:14.000000000 +0300
 +++ deriv_voxy/shaders/world1/shadow.vsh	2026-10-25 08:50:08.495317072 +0300
 @@ -1,3 +1,4 @@

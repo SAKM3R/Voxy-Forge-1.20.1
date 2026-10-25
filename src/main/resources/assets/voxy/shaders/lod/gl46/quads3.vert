@@ -31,7 +31,7 @@ vec2 taaShift();
 // this would help alot with stuff like crops as they would look kinda weird i think,
 // same with flowers etc
 void main() {
-    taaOffset = taaShift();
+    voxyTaaOffset = taaShift();
 
     QuadData quad;
     setupQuad(quad, quadData[uint(gl_VertexID)>>2], positionBuffer[gl_BaseInstance], (gl_VertexID&3) == 1);

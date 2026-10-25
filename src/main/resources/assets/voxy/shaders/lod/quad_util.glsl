@@ -33,7 +33,7 @@ vec4 getFaceSize(uint faceData) {
 }
 
 
-vec2 taaOffset = vec2(0);//TODO: compute this
+vec2 voxyTaaOffset = vec2(0);//TODO: compute this
 
 struct QuadData {
     uvec4 attributeData;
@@ -223,7 +223,7 @@ vec4 getQuadCornerPos(in QuadData quad, uint cornerId) {
     point = applyWorldCurvature(point);
 
     vec4 pos = MVP * vec4(point, 1.0f);
-    pos.xy += taaOffset*pos.w;
+    pos.xy += voxyTaaOffset*pos.w;
     return pos;
 }
 

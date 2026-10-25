@@ -86,12 +86,11 @@ public abstract class MixinLevelRenderer implements IGetVoxyRenderSystem {
         try {
             this.renderer = new VoxyRenderSystem(world, instance.getServiceManager());
         } catch (RuntimeException e) {
-            // MC 1.21.1 NeoForge: Iris shader integration excluded - irisShaderPackEnabled() returns false
-            if (false) {
-                // IrisUtil.disableIrisShaders();
-            } else {
-                throw e;
-            }
+            // A shader pack whose Voxy programs do not build must not take the game down: run without LODs
+            // instead (the log says why), the way Voxy stands down for packs without voxy.json.
+            Logger.error("Could not create the Voxy renderer, LODs are off until the next reload", e);
+            this.renderer = null;
+            return;
         }
         instance.updateDedicatedThreads();
     }
