@@ -109,8 +109,13 @@ public class VoxyConfig {
     // Only start new chunks while the server's average tick time is below this (milliseconds).
     public int distantGenMaxMspt = 45;
 
+    // The file is read whether or not Voxy is available yet: VoxyConfig is often class-loaded early (fog, game
+    // renderer and Embeddium hooks touch CONFIG during startup), before initVoxyClient() registers the instance
+    // factory. Building a throwaway 'disabled' config at that point made Voxy start switched off on every
+    // launch, although voxy-config.json said it was on. Whether Voxy can actually run is checked at use time
+    // (isRenderingEnabled(), VoxyCommon.isAvailable() in the join/instance code).
     private static VoxyConfig loadOrCreate() {
-        if (VoxyCommon.isAvailable()) {
+        if (FMLPaths.CONFIGDIR.get() != null) {
             var path = getConfigPath();
             if (Files.exists(path)) {
                 try (FileReader reader = new FileReader(path.toFile())) {
@@ -118,6 +123,7 @@ public class VoxyConfig {
                     if (conf != null) {
                         conf.sanitize();
                         conf.save();
+                        Logger.info("Loaded config: enabled=" + conf.enabled + ", rendering=" + conf.enableRendering);
                         return conf;
                     } else {
                         Logger.error("Failed to load voxy config, resetting");
