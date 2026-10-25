@@ -31,6 +31,12 @@ public class MixinLevelRenderer {
             LightTexture lightTexture,
             Matrix4f projectionMatrix,
             CallbackInfo ci) {
+        // Rebuild the LOD renderer when Iris has moved to another pipeline without telling the world renderer
+        var current = ((IGetVoxyRenderSystem) this).getVoxyRenderSystem();
+        if (current != null && current.isForStaleIrisPipeline()) {
+            ((IGetVoxyRenderSystem) this).shutdownRenderer();
+            ((IGetVoxyRenderSystem) this).createRenderer();
+        }
         if (IrisUtil.irisShaderPackEnabled()) {
             var renderer = ((IGetVoxyRenderSystem) this).getVoxyRenderSystem();
             if (renderer != null) {

@@ -70,6 +70,15 @@ public class IrisUtil {
         return Iris.getCurrentPack().isPresent();
     }
 
+    /** The Iris pipeline currently in use (identity only), or null without Oculus. */
+    public static Object currentIrisPipeline() {
+        return IRIS_INSTALLED ? currentIrisPipeline0() : null;
+    }
+
+    private static Object currentIrisPipeline0() {
+        return Iris.getPipelineManager().getPipelineNullable();
+    }
+
     /** True when an Oculus shader pack is active. */
     public static boolean irisShaderPackEnabled() {
         return IRIS_INSTALLED && irisShaderPackEnabled0();

@@ -100,6 +100,16 @@ public class VoxyRenderSystem {
         return MDICSectionRenderer.FACTORY;
     }
 
+    // The Iris pipeline this render system was built against. Iris does not always rebuild the world renderer
+    // when the shader pack changes (it skips allChanged() when two packs share their block settings, e.g. a pack
+    // and an edited copy of it), so the LOD pipeline would keep the old pack's destroyed render targets.
+    private final Object irisPipelineAtCreation = IrisUtil.currentIrisPipeline();
+
+    /** True when Iris has switched to another pipeline since this render system was built. */
+    public boolean isForStaleIrisPipeline() {
+        return IrisUtil.IRIS_INSTALLED && IrisUtil.currentIrisPipeline() != this.irisPipelineAtCreation;
+    }
+
     public VoxyRenderSystem(WorldEngine world, ServiceManager sm) {
         //Keep the world loaded, NOTE: this is done FIRST, to keep and ensure that even if the rest of loading takes more
         // than timeout, we keep the world acquired
@@ -352,6 +362,15 @@ public class VoxyRenderSystem {
             if (IrisUtil.irisShaderPackEnabled()) {
                 Logger.error("Voxy LOD-under-Iris-shaders rendering failed; disabling LOD while shaders are active", t);
                 this.irisLodRenderBroken = true;
+                // The pipeline can throw half way through with its own framebuffer, stencil and depth state still
+                // set; left like that the rest of the frame (and every frame after) renders black
+                glBindFramebuffer(GL_FRAMEBUFFER, oldFB);
+                GL11.glDisable(GL11.GL_STENCIL_TEST);
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+                GL11.glDepthFunc(GL11.GL_LEQUAL);
+                GL11.glDepthMask(true);
+                GL11.glColorMask(true, true, true, true);
+                GL11.glDisable(GL11.GL_BLEND);
             } else {
                 throw t;
             }
