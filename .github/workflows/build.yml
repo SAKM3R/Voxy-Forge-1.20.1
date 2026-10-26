@@ -82,7 +82,7 @@ jobs:
           - { name: complementary, pack: complementary, preset: preset.txt }
           - { name: complementary-opt, pack: complementary, preset: preset-opt.txt, extra: -Pnocolour }
           - { name: derivative, pack: derivative, preset: preset.txt, extra: -Pnocolour }
-          - { name: bliss, pack: bliss, preset: preset.txt, extra: -Pnocolour }
+          - { name: bliss, pack: bliss, preset: preset.txt }
     steps:
       - uses: actions/checkout@v4
 
