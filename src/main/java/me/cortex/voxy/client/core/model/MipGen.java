@@ -83,7 +83,15 @@ public class MipGen {
             int y = (i&1)*MODEL_TEXTURE_SIZE;
             int j = 0;
             boolean anyTransparent = false;
+            final int[] depth = textures[i].depth();
             for (int t : textures[i].colour()) {
+                // Per-pixel tint flag for faces that are only partly tinted (grass side overlay, resource-pack
+                // grass with untinted detail): an opaque pixel that came from a tinted quad is stored with alpha
+                // 254 instead of 255, so the LOD shader can tint exactly those pixels instead of guessing from
+                // how grey they look (which leaves non-grey tinted textures untinted - pale grass).
+                if ((depth[j] & (1 << 7)) != 0 && (t >>> 24) == 0xFF) {
+                    t = (t & 0x00FFFFFF) | 0xFE000000;
+                }
                 int o = ((y+(j>>LAYERS))*LENGTH_B + ((j&(MODEL_TEXTURE_SIZE-1))+x))*4; j++;//LAYERS here is just cause faster
                 //t = ((t&0xFF000000)==0)?0x00_FF_00_FF:t;//great for testing
                 MemoryUtil.memPutInt(addr+o, t);

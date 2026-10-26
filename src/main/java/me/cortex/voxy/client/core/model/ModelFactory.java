@@ -766,8 +766,19 @@ public class ModelFactory {
     }
 
     private static BlockColor getColourProvider(Block block) {
-        // MC 1.21.1: blockColors is now Map<Block,BlockColor>, use .get(block) instead of .byId(id)
-        return Minecraft.getInstance().getBlockColors().blockColors.get(block);
+        // Forge 1.20.1 keys BlockColors by the block's registry holder (Holder.Reference<Block>), not by the
+        // Block itself: looking it up with the Block always missed, so no LOD block was ever tinted by its biome
+        // (grey grass and leaves, untinted water that shaders then coloured wrongly)
+        Object colours = Minecraft.getInstance().getBlockColors().blockColors;
+        if (colours instanceof java.util.Map<?, ?> map) {
+            Object provider = map.get(net.minecraftforge.registries.ForgeRegistries.BLOCKS.getDelegateOrThrow(block));
+            if (provider == null) provider = map.get(block);
+            return (BlockColor) provider;
+        }
+        if (colours instanceof net.minecraft.core.IdMapper<?> ids) {
+            return (BlockColor) ids.byId(net.minecraft.core.registries.BuiltInRegistries.BLOCK.getId(block));
+        }
+        return null;
     }
 
     //TODO: add a method to detect biome dependent colours (can do by detecting if getColor is ever called)

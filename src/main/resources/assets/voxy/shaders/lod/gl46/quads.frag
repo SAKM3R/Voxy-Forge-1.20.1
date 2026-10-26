@@ -47,6 +47,15 @@ vec4 uint2vec4RGBA(uint colour) {
 //    return (interData.x&2u)==0u;
 //}
 
+// Partly tinted faces: the model bakery stores opaque pixels of tinted quads with alpha 254/255 (MipGen).
+// Pixels that are not opaque fall back to the old guess: grey pixels are the tinted ones.
+bool partialTintPixel(vec4 texel) {
+    if (texel.a > 0.9) {
+        return texel.a < (254.5/255.0);
+    }
+    return abs(texel.r-texel.g) < 0.02f && abs(texel.g-texel.b) < 0.02f;
+}
+
 uint tintingState() {
     return (interData.x>>2)&3u;
 }
@@ -99,10 +108,7 @@ vec4 computeColour(vec2 texturePos, vec4 colour) {
     uint tintingFunction = tintingState();
     bool doTint = tintingFunction==2;//Always tint if function == 2
     if (tintingFunction == 1) {//partial tint
-        vec4 tintTest = textureLod(blockModelAtlas, texturePos, 0);
-        if (abs(tintTest.r-tintTest.g) < 0.02f && abs(tintTest.g-tintTest.b) < 0.02f) {
-            doTint = true;
-        }
+        doTint = partialTintPixel(textureLod(blockModelAtlas, texturePos, 0));
     }
     if (doTint) {
         // Normalise the baked tint to full brightness (preserving hue), matching what the Iris LOD
@@ -218,10 +224,7 @@ void main() {
     uint tintingFunction = tintingState();
     bool doTint = tintingFunction==2;//Always tint if function == 2
     if (tintingFunction==1) {//Partial tint
-        vec4 tintTest = texture(blockModelAtlas, texPos, -2);
-        if (abs(tintTest.r-tintTest.g) < 0.02f && abs(tintTest.g-tintTest.b) < 0.02f) {
-            doTint = true;
-        }
+        doTint = partialTintPixel(textureLod(blockModelAtlas, texPos, 0));
     }
     vec4 tint = vec4(1);
     if (doTint) {
