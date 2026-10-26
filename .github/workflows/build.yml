@@ -76,13 +76,13 @@ jobs:
       matrix:
         include:
           - { name: photon, pack: photon, preset: preset.txt }
-          - { name: photon-cinematic, pack: photon, preset: preset-cinematic.txt }
-          - { name: photon-ultra, pack: photon, preset: preset-ultra.txt }
-          - { name: photon-opt, pack: photon-opt, preset: preset.txt }
+          - { name: photon-cinematic, pack: photon, preset: preset-cinematic.txt, extra: -Pnocolour }
+          - { name: photon-ultra, pack: photon, preset: preset-ultra.txt, extra: -Pnocolour }
+          - { name: photon-opt, pack: photon-opt, preset: preset.txt, extra: -Pnocolour }
           - { name: complementary, pack: complementary, preset: preset.txt }
-          - { name: complementary-opt, pack: complementary, preset: preset-opt.txt }
-          - { name: derivative, pack: derivative, preset: preset.txt }
-          - { name: bliss, pack: bliss, preset: preset.txt }
+          - { name: complementary-opt, pack: complementary, preset: preset-opt.txt, extra: -Pnocolour }
+          - { name: derivative, pack: derivative, preset: preset.txt, extra: -Pnocolour }
+          - { name: bliss, pack: bliss, preset: preset.txt, extra: -Pnocolour }
     steps:
       - uses: actions/checkout@v4
 
@@ -113,7 +113,7 @@ jobs:
           printf 'enableShaders=true\nshaderPack=%s\n' "${{ matrix.pack }}_voxy.zip" > run/config/oculus.properties
           for attempt in 1 2; do
             rm -rf run/logs run/screenshots run/crash-reports run/saves run/patched_shaders
-            timeout 2100 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest -PwithOculus --console=plain > $out/smoke.log 2>&1 || true
+            timeout 2100 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest -PwithOculus ${{ matrix.extra }} --console=plain > $out/smoke.log 2>&1 || true
             grep -q "Timed out trying to setup the Game Window" $out/smoke.log || break
           done
           cp run/logs/latest.log run/screenshots/*.png $out/ 2>/dev/null || true

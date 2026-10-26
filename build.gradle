@@ -41,6 +41,8 @@ minecraft {
 			// ./gradlew runClient -Psmoketest : creates a world, plays for a bit, logs Voxy's state and quits
 			if (project.hasProperty('smoketest')) {
 				property 'voxy.smoketest', 'true'
+				// -Pnocolour skips the colour check (it renders at render distance 12, too slow for heavy packs on CI)
+				if (project.hasProperty('nocolour')) property 'voxy.smoketest.nocolour', 'true'
 			}
 			mods {
 				voxy {
