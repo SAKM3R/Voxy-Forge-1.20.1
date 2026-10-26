@@ -19,6 +19,7 @@ import static org.lwjgl.opengl.GL45.glBindTextureUnit;
 
 public class ModelStore {
     public static final int MODEL_SIZE = 64;
+    public static final int COLOUR_ENTRIES = 1<<22;
     final GlBuffer modelBuffer;
     final GlBuffer modelColourBuffer;
     final GlTexture textures;
@@ -26,7 +27,10 @@ public class ModelStore {
 
     public ModelStore() {
         this.modelBuffer = new GlBuffer(MODEL_SIZE * (1<<16)).name("ModelData");
-        this.modelColourBuffer = new GlBuffer(4 * (1<<16)).name("ModelColour");
+        // Biome colour LUT: one entry per (biome dependent model, biome). 65536 entries overflowed in big modpacks
+        // (hundreds of modded biomes x hundreds of tinted grass / leaves / vines), so the tail of the LUT was
+        // written past the end of the buffer
+        this.modelColourBuffer = new GlBuffer(4L * COLOUR_ENTRIES).fill(-1).name("ModelColour");
         this.textures = new GlTexture().store(GL_RGBA8, Integer.numberOfTrailingZeros(ModelFactory.MODEL_TEXTURE_SIZE), ModelFactory.MODEL_TEXTURE_SIZE*3*256,ModelFactory.MODEL_TEXTURE_SIZE*2*256).name("ModelTextures");
 
 

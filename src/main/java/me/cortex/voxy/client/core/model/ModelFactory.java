@@ -260,6 +260,8 @@ public class ModelFactory {
         return !this.rawBakeResults.isEmpty();
     }
 
+    private boolean warnedColourLutFull = false;
+    private int loggedBiomeCount = 0;
     private final ConcurrentLinkedDeque<Mapper.BiomeEntry> biomeQueue = new ConcurrentLinkedDeque<>();
     public void addBiome(Mapper.BiomeEntry biome) {
         this.biomeQueue.add(biome);
@@ -461,6 +463,21 @@ public class ModelFactory {
 
             //Or it with the fluid state biome dependency
             isBiomeColourDependent |= ModelQueries.isBiomeColoured(this.getModelMetadataFromClientId(clientFluidStateId));
+        }
+        // Without a colour provider there is nothing to fill a biome colour table with: the model would be flagged as
+        // reading the table with an index of -1, i.e. the colours of whatever model sits at the start of it
+        if (colourProvider == null) {
+            isBiomeColourDependent = false;
+        }
+        if (isBiomeColourDependent && (long) (this.modelsRequiringBiomeColours.size() + 1) * Math.max(this.biomes.size(), 1) > ModelStore.COLOUR_ENTRIES) {
+            // The biome colour table is full: this model gets its plains colour instead of a table past the buffer
+            if (!this.warnedColourLutFull) {
+                this.warnedColourLutFull = true;
+                Logger.warn("Biome colour table is full (" + this.modelsRequiringBiomeColours.size() + " models x " + this.biomes.size() + " biomes), further blocks get a fixed tint");
+            }
+            isBiomeColourDependent = false;
+            entry = new ModelEntry(entry.down(), entry.up(), entry.north(), entry.south(), entry.west(), entry.east(), entry.fluidBlockStateId(),
+                    captureColourConstant(colourProvider, blockState, DEFAULT_BIOME.value())|0xFF000000);
         }
 
 
@@ -738,6 +755,18 @@ public class ModelFactory {
         }
 
         if (this.modelsRequiringBiomeColours.isEmpty()) return null;
+        if ((long) this.biomes.size() * this.modelsRequiringBiomeColours.size() > ModelStore.COLOUR_ENTRIES) {
+            if (!this.warnedColourLutFull) {
+                this.warnedColourLutFull = true;
+                Logger.warn("Biome colour table is full (" + this.modelsRequiringBiomeColours.size() + " models x " + this.biomes.size() + " biomes), biome " + id + " keeps default colours");
+            }
+            return null;
+        }
+        if (this.biomes.size() % 32 == 0 || this.biomes.size() > this.loggedBiomeCount + 32) {
+            this.loggedBiomeCount = this.biomes.size();
+            Logger.info("Biome colour table: " + this.modelsRequiringBiomeColours.size() + " models x " + this.biomes.size() + " biomes = "
+                    + ((long) this.biomes.size() * this.modelsRequiringBiomeColours.size()) + " of " + ModelStore.COLOUR_ENTRIES + " entries");
+        }
 
         var result = new BiomeUploadResult(this.biomes.size(), this.modelsRequiringBiomeColours.size());
 
@@ -745,9 +774,7 @@ public class ModelFactory {
         long modelUpPtr = result.modelBiomeIndexPairs.address;
         for (var entry : this.modelsRequiringBiomeColours) {
             var colourProvider = getColourProvider(entry.right().getBlock());
-            if (colourProvider == null) {
-                throw new IllegalStateException();
-            }
+
             //Populate the list of biomes for the model state
             int biomeIndex = (i++) * this.biomes.size();
             MemoryUtil.memPutLong(modelUpPtr, Integer.toUnsignedLong(entry.left())|(Integer.toUnsignedLong(biomeIndex)<<32));modelUpPtr+=8;
@@ -757,7 +784,7 @@ public class ModelFactory {
             // null without advancing the pointer compacts the colours down and leaves the tail of the buffer
             // unwritten, which renders as black since the buffer is not zeroed.
             for (var biomeE : this.biomes) {
-                int colour = biomeE == null ? -1 : (captureColourConstant(colourProvider, entry.right(), biomeE)|0xFF000000);
+                int colour = (biomeE == null || colourProvider == null) ? -1 : (captureColourConstant(colourProvider, entry.right(), biomeE)|0xFF000000);
                 MemoryUtil.memPutInt(clrUploadPtr, colour); clrUploadPtr += 4;
             }
         }

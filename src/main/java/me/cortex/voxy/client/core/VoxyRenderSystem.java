@@ -265,9 +265,13 @@ public class VoxyRenderSystem {
         return viewport;
     }
 
-    // Set if Voxy's Iris LOD pipeline throws while rendering; we then skip LOD-under-shaders for the
-    // session so shaders keep working instead of the game crashing every frame.
+    // Set if Voxy's Iris LOD pipeline throws while rendering; LOD-under-shaders is then skipped for a while so
+    // shaders keep working instead of failing every frame. A single failure (a frame drawn while the pack was
+    // still reloading, a buffer resized mid-frame) used to switch LODs off for the whole session, so it is
+    // retried a few times before giving up.
     private boolean irisLodRenderBroken = false;
+    private int irisLodFailures = 0;
+    private long irisLodRetryAt = 0;
     private boolean warnedDefaultFramebuffer = false;
 
     public void renderOpaque(Viewport<?> viewport) {
@@ -298,7 +302,11 @@ public class VoxyRenderSystem {
         }
         // If LOD-under-shaders has errored before, keep shaders usable and just skip Voxy LOD.
         if (this.irisLodRenderBroken && IrisUtil.irisShaderPackEnabled()) {
-            return;
+            if (this.irisLodFailures >= 5 || System.currentTimeMillis() < this.irisLodRetryAt) {
+                return;
+            }
+            this.irisLodRenderBroken = false;
+            Logger.info("Retrying LOD rendering under shaders (attempt " + (this.irisLodFailures + 1) + ")");
         }
         // Under Iris the captured viewport can arrive un-sized; size + update it before any framebuffers
         // (the depth-bound buffer, the LOD framebuffer) are built from its dimensions - otherwise they
@@ -360,8 +368,11 @@ public class VoxyRenderSystem {
             this.pipeline.runPipeline(viewport, boundFB, dims[2], dims[3]);
         } catch (Throwable t) {
             if (IrisUtil.irisShaderPackEnabled()) {
-                Logger.error("Voxy LOD-under-Iris-shaders rendering failed; disabling LOD while shaders are active", t);
+                this.irisLodFailures++;
+                Logger.error("Voxy LOD-under-Iris-shaders rendering failed (" + this.irisLodFailures + "/5); "
+                        + (this.irisLodFailures >= 5 ? "disabling LOD while shaders are active" : "retrying in 3 seconds"), t);
                 this.irisLodRenderBroken = true;
+                this.irisLodRetryAt = System.currentTimeMillis() + 3000;
                 // The pipeline can throw half way through with its own framebuffer, stencil and depth state still
                 // set; left like that the rest of the frame (and every frame after) renders black
                 glBindFramebuffer(GL_FRAMEBUFFER, oldFB);
