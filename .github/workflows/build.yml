@@ -40,7 +40,7 @@ jobs:
           export LIBGL_ALWAYS_SOFTWARE=1 MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460
           for attempt in 1 2; do
             rm -rf run/logs run/screenshots run/crash-reports run/saves
-            timeout 1200 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest --console=plain > smoke.log 2>&1 || true
+            timeout 1800 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest --console=plain > smoke.log 2>&1 || true
             # Forge's early window sometimes times out on xvfb; that is the runner, not the mod
             grep -q "Timed out trying to setup the Game Window" smoke.log || break
           done
@@ -113,7 +113,7 @@ jobs:
           printf 'enableShaders=true\nshaderPack=%s\n' "${{ matrix.pack }}_voxy.zip" > run/config/oculus.properties
           for attempt in 1 2; do
             rm -rf run/logs run/screenshots run/crash-reports run/saves run/patched_shaders
-            timeout 1500 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest -PwithOculus --console=plain > $out/smoke.log 2>&1 || true
+            timeout 2100 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest -PwithOculus --console=plain > $out/smoke.log 2>&1 || true
             grep -q "Timed out trying to setup the Game Window" $out/smoke.log || break
           done
           cp run/logs/latest.log run/screenshots/*.png $out/ 2>/dev/null || true

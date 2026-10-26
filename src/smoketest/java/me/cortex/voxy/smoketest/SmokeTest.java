@@ -67,7 +67,7 @@ public class SmokeTest {
         if (!ENABLED || event.phase != TickEvent.Phase.END) return;
         var mc = Minecraft.getInstance();
         maybeStart();
-        if (System.nanoTime() - startNanos > 12L * 60 * 1_000_000_000L) {
+        if (System.nanoTime() - startNanos > 20L * 60 * 1_000_000_000L) {
             LOG.error("VOXY_SMOKE_RESULT timeout");
             mc.stop();
             return;
@@ -111,8 +111,90 @@ public class SmokeTest {
         }
         if (ticksInWorld == 1550) {
             report("final");
+            if (!COLOUR_CHECK) {
+                LOG.info("VOXY_SMOKE_RESULT done");
+                mc.stop();
+            }
+        }
+        if (COLOUR_CHECK && ticksInWorld > 1550) {
+            colourCheck(mc, ticksInWorld - 1550);
+        }
+    }
+
+    // Colour check: the same view drawn once by LODs (render distance 5) and once by real chunks (render
+    // distance 12), looking over a beach at the sea and at the land, so LOD water and grass colours can be
+    // compared against vanilla terrain pixel for pixel.
+    private static final boolean COLOUR_CHECK = !Boolean.getBoolean("voxy.smoketest.nocolour");
+    private static java.util.concurrent.CompletableFuture<double[]> SPOT;
+    private static double[] spot;
+
+    private static void colourCheck(Minecraft mc, int t) {
+        var server = mc.getSingleplayerServer();
+        if (t == 1) {
+            var origin = mc.player.blockPosition();
+            SPOT = server.submit(() -> {
+                var level = server.overworld();
+                var beach = level.findClosestBiome3d(b -> b.is(net.minecraft.world.level.biome.Biomes.BEACH), origin, 6400, 32, 64);
+                if (beach == null) return null;
+                var bp = beach.getFirst();
+                var sea = level.findClosestBiome3d(b -> b.is(net.minecraft.tags.BiomeTags.IS_OCEAN), bp, 640, 16, 64);
+                double yaw = 0;
+                if (sea != null) {
+                    var sp = sea.getFirst();
+                    yaw = Math.toDegrees(Math.atan2(-(sp.getX() - bp.getX()), sp.getZ() - bp.getZ()));
+                }
+                return new double[]{bp.getX() + 0.5, bp.getZ() + 0.5, yaw};
+            });
+        }
+        if (t == 40) {
+            spot = SPOT.getNow(null);
+            LOG.info("VOXY_SMOKE colour spot {}", spot == null ? "none" : java.util.Arrays.toString(spot));
+            if (spot == null) { LOG.info("VOXY_SMOKE_RESULT done"); mc.stop(); return; }
+            mc.player.setPos(spot[0], 100, spot[1]);
+        }
+        if (spot == null) return;
+        if (t > 40 && t < 1400) {
+            // Hover 22 blocks above the beach, looking slightly down
+            int ground = mc.level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, (int) spot[0], (int) spot[1]);
+            if (ground > mc.level.getMinBuildHeight() + 1) mc.player.setPos(spot[0], ground + 22, spot[1]);
+            mc.player.setXRot(12);
+        }
+        // LOD view: render distance 5, Voxy on (distant generation fills the LODs around the new spot)
+        if (t == 700) shot(mc, (float) spot[2], "colour-lod-sea");
+        if (t == 720) shot(mc, (float) spot[2] + 180, "colour-lod-land");
+        if (t == 740) {
+            me.cortex.voxy.client.config.VoxyConfig.CONFIG.enableRendering = false;
+            ((IGetVoxyRenderSystem) mc.levelRenderer).shutdownRenderer();
+            mc.options.renderDistance().set(12);
+        }
+        // Vanilla view of the same terrain: render distance 12, Voxy off
+        if (t == 1300) shot(mc, (float) spot[2], "colour-vanilla-sea");
+        if (t == 1320) shot(mc, (float) spot[2] + 180, "colour-vanilla-land");
+        if (t == 1340) {
             LOG.info("VOXY_SMOKE_RESULT done");
             mc.stop();
+        }
+    }
+
+    private static void shot(Minecraft mc, float yaw, String name) {
+        mc.player.setYRot(yaw);
+        mc.player.setYHeadRot(yaw);
+        // grab a few frames later so the new direction has rendered (and TAA settled)
+        pendingShot = name;
+        pendingShotAt = ticksInWorld + 12;
+    }
+
+    private static String pendingShot;
+    private static int pendingShotAt;
+
+    @SubscribeEvent
+    public static void onClientTickShots(TickEvent.ClientTickEvent event) {
+        if (!ENABLED || event.phase != TickEvent.Phase.END || pendingShot == null) return;
+        if (ticksInWorld >= pendingShotAt) {
+            var mc = Minecraft.getInstance();
+            var name = pendingShot;
+            pendingShot = null;
+            net.minecraft.client.Screenshot.grab(mc.gameDirectory, "voxy-" + name + ".png", mc.getMainRenderTarget(), msg -> LOG.info("VOXY_SMOKE screenshot: {}", msg.getString()));
         }
     }
 
