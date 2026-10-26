@@ -2672,8 +2672,8 @@ diff -ruN -U2 bliss/shaders/programs/voxy/voxy_opaque.glsl bliss_voxy/shaders/pr
 +}
 diff -ruN -U2 bliss/shaders/programs/voxy/voxy_translucent.glsl bliss_voxy/shaders/programs/voxy/voxy_translucent.glsl
 --- bliss/shaders/programs/voxy/voxy_translucent.glsl	1970-01-01 03:00:00.000000000 +0300
-+++ bliss_voxy/shaders/programs/voxy/voxy_translucent.glsl	2026-10-27 00:13:40.054135631 +0300
-@@ -0,0 +1,179 @@
++++ bliss_voxy/shaders/programs/voxy/voxy_translucent.glsl	2026-10-27 00:24:38.402233109 +0300
+@@ -0,0 +1,182 @@
 +// Voxy LOD water and other translucents for Bliss, written like gbuffers_all_translucent: the forward-shaded
 +// surface goes to colortex2 (premultiplied, as the gbuffers_water blend leaves it), the translucent id
 +// (colortex7.a = 1 for water), the refraction normal/albedo (colortex11) and the sky lightmap (colortex14).
@@ -2686,6 +2686,9 @@ diff -ruN -U2 bliss/shaders/programs/voxy/voxy_translucent.glsl bliss_voxy/shade
 +
 +#define texture2D texture
 +#define texture2DLod textureLod
++
++// Voxy projection inverse (Voxy sets it, as for Photon; the voxy.json uniform list only covers Iris uniforms)
++uniform mat4 vxProjInv;
 +
 +layout(location = 0) out vec4 voxyData2;
 +layout(location = 1) out vec4 voxyData7;
