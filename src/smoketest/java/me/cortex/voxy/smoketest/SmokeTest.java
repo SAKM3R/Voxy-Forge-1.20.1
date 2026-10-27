@@ -56,10 +56,15 @@ public class SmokeTest {
         mc.options.pauseOnLostFocus = false;
         mc.options.onboardAccessibility = false;
         LOG.info("VOXY_SMOKE creating world");
+        var rules = new GameRules();
+        rules.getRule(GameRules.RULE_DAYLIGHT).set(false, null);
+        rules.getRule(GameRules.RULE_WEATHER_CYCLE).set(false, null);
         mc.tell(() -> mc.createWorldOpenFlows().createFreshLevel("voxy-smoke",
-                new LevelSettings("voxy-smoke", GameType.CREATIVE, false, Difficulty.PEACEFUL, true, new GameRules(), WorldDataConfiguration.DEFAULT),
-                new WorldOptions(12345L, true, false),
-                WorldPresets::createNormalWorldDimensions));
+                new LevelSettings("voxy-smoke", GameType.CREATIVE, false, Difficulty.PEACEFUL, true, SceneTest.ENABLED ? rules : new GameRules(), WorldDataConfiguration.DEFAULT),
+                new WorldOptions(12345L, !SceneTest.ENABLED, false),
+                SceneTest.ENABLED
+                        ? (access -> access.registryOrThrow(net.minecraft.core.registries.Registries.WORLD_PRESET).getHolderOrThrow(WorldPresets.FLAT).value().createWorldDimensions())
+                        : WorldPresets::createNormalWorldDimensions));
     }
 
     @SubscribeEvent
@@ -74,6 +79,11 @@ public class SmokeTest {
         }
         if (mc.level == null || mc.player == null) return;
         ticksInWorld++;
+        if (SceneTest.ENABLED) {
+            if (ticksInWorld % 100 == 0) report("progress");
+            SceneTest.tick(mc, ticksInWorld);
+            return;
+        }
         if (ticksInWorld == 20) {
             mc.player.getAbilities().flying = true;
             mc.player.setPos(mc.player.getX(), mc.player.getY() + 25, mc.player.getZ());
@@ -182,6 +192,10 @@ public class SmokeTest {
         // grab a few frames later so the new direction has rendered (and TAA settled)
         pendingShot = name;
         pendingShotAt = ticksInWorld + 12;
+    }
+
+    static void grab(Minecraft mc, String name) {
+        net.minecraft.client.Screenshot.grab(mc.gameDirectory, "voxy-" + name + ".png", mc.getMainRenderTarget(), msg -> LOG.info("VOXY_SMOKE screenshot: {}", msg.getString()));
     }
 
     private static String pendingShot;

@@ -43,6 +43,8 @@ minecraft {
 				property 'voxy.smoketest', 'true'
 				// -Pnocolour skips the colour check (it renders at render distance 12, too slow for heavy packs on CI)
 				if (project.hasProperty('nocolour')) property 'voxy.smoketest.nocolour', 'true'
+				// -Pscene runs the scene test instead: a fixed ocean with ice/snow towers, near (vanilla) and far (LOD)
+				if (project.hasProperty('scene')) property 'voxy.smoketest.scene', 'true'
 			}
 			mods {
 				voxy {

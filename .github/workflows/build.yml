@@ -93,13 +93,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - { name: vanilla, pack: none, preset: none }
           - { name: photon, pack: photon, preset: preset.txt }
-          - { name: photon-cinematic, pack: photon, preset: preset-cinematic.txt, extra: -Pnocolour }
-          - { name: photon-ultra, pack: photon, preset: preset-ultra.txt, extra: -Pnocolour }
-          - { name: photon-opt, pack: photon-opt, preset: preset.txt, extra: -Pnocolour }
+          - { name: photon-ultra, pack: photon, preset: preset-ultra.txt }
+          - { name: photon-opt, pack: photon-opt, preset: preset.txt }
           - { name: complementary, pack: complementary, preset: preset.txt }
-          - { name: complementary-opt, pack: complementary, preset: preset-opt.txt, extra: -Pnocolour }
-          - { name: derivative, pack: derivative, preset: preset.txt, extra: -Pnocolour }
+          - { name: complementary-opt, pack: complementary, preset: preset-opt.txt }
+          - { name: derivative, pack: derivative, preset: preset.txt }
           - { name: bliss, pack: bliss, preset: preset.txt }
     steps:
       - uses: actions/checkout@v4
@@ -120,18 +120,22 @@ jobs:
           export LIBGL_ALWAYS_SOFTWARE=1 MESA_GL_VERSION_OVERRIDE=4.6 MESA_GLSL_VERSION_OVERRIDE=460
           out=out-${{ matrix.name }}
           mkdir -p $out run/shaderpacks run/config
-          set +e
-          ci/build-pack.sh ${{ matrix.pack }} run/shaderpacks/${{ matrix.pack }}_voxy.zip > $out/pack.txt 2>&1; rc=$?
-          set -e
-          cat $out/pack.txt
-          # Packs that are not published anywhere the runner can fetch them (Derivative) are only checked offline
-          if [ $rc = 2 ]; then echo "::warning::Original ${{ matrix.pack }} pack not available to CI, skipped"; exit 0; fi
-          [ $rc = 0 ] || exit $rc
-          cp shaderpack/packs/${{ matrix.pack }}/${{ matrix.preset }} run/shaderpacks/${{ matrix.pack }}_voxy.zip.txt
-          printf 'enableShaders=true\nshaderPack=%s\n' "${{ matrix.pack }}_voxy.zip" > run/config/oculus.properties
+          if [ "${{ matrix.pack }}" = none ]; then
+            printf 'enableShaders=false\n' > run/config/oculus.properties
+          else
+            set +e
+            ci/build-pack.sh ${{ matrix.pack }} run/shaderpacks/${{ matrix.pack }}_voxy.zip > $out/pack.txt 2>&1; rc=$?
+            set -e
+            cat $out/pack.txt
+            # Packs that are not published anywhere the runner can fetch them (Derivative) are only checked offline
+            if [ $rc = 2 ]; then echo "::warning::Original ${{ matrix.pack }} pack not available to CI, skipped"; exit 0; fi
+            [ $rc = 0 ] || exit $rc
+            cp shaderpack/packs/${{ matrix.pack }}/${{ matrix.preset }} run/shaderpacks/${{ matrix.pack }}_voxy.zip.txt
+            printf 'enableShaders=true\nshaderPack=%s\n' "${{ matrix.pack }}_voxy.zip" > run/config/oculus.properties
+          fi
           for attempt in 1 2; do
             rm -rf run/logs run/screenshots run/crash-reports run/saves run/patched_shaders
-            timeout 2100 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest -PwithOculus ${{ matrix.extra }} --console=plain > $out/smoke.log 2>&1 || true
+            timeout 2100 xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient -Psmoketest -Pscene -PwithOculus --console=plain > $out/smoke.log 2>&1 || true
             grep -q "Timed out trying to setup the Game Window" $out/smoke.log || break
           done
           cp run/logs/latest.log run/screenshots/*.png $out/ 2>/dev/null || true
@@ -139,7 +143,7 @@ jobs:
           grep "VOXY_SMOKE\|Voxy render system created\|Creating voxy iris\|could not be found\|Did not find all\|Failed to compile\|error:" run/logs/latest.log | head -80 || true
           if grep -q "Mixin apply failed" run/logs/latest.log; then echo "::error::A mixin failed to apply"; exit 1; fi
           grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Shader smoke test did not finish"; exit 1; }
-          grep -q "using pipeline 'IrisVoxyRenderPipeline'" run/logs/latest.log || { echo "::error::Voxy shader pipeline was not used"; exit 1; }
+          [ "${{ matrix.pack }}" = none ] || grep -q "using pipeline 'IrisVoxyRenderPipeline'" run/logs/latest.log || { echo "::error::Voxy shader pipeline was not used"; exit 1; }
           if grep -q "Failed to compile shader patch" run/logs/latest.log; then echo "::error::The pack's Voxy shader did not compile"; exit 1; fi
 
       - name: Upload output
