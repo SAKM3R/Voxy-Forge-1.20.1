@@ -1,0 +1,95 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+MixinGradle did not locate the diffplug APT plugin, skipping eclipse task configuration
+
+> Task :downloadMcpConfig
+> Task :extractSrg
+> Task :createMcpToSrg
+
+> Task :compileJava
+[17:54:52] [main/INFO]: Writing debug log file accesstransform.log
+[17:54:52] [main/INFO]: Access Transformer processor running version 8.2.14
+[17:54:52] [main/INFO]: Command line arguments [--inJar, /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0/forge-1.20.1-47.3.0-injected.jar, --outJar, /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1.jar, --logFile, accesstransform.log, --atFile, /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/resources/META-INF/accesstransformer.cfg, --atFile, /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/_atJar_4/parent_at.cfg]
+[17:54:52] [main/INFO]: Reading from /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0/forge-1.20.1-47.3.0-injected.jar
+[17:54:52] [main/INFO]: Writing to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1.jar
+[17:54:52] [main/INFO]: Transformer file /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/resources/META-INF/accesstransformer.cfg
+[17:54:52] [main/INFO]: Transformer file /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/_atJar_4/parent_at.cfg
+[17:54:52] [main/WARN]: Found existing output jar /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1.jar, overwriting
+[17:54:55] [main/INFO]: JAR transformation complete /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1.jar
+Creating SRG -> MCP TSRG
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:3: warning: Unsafe is internal proprietary API and may be removed in a future release
+import sun.misc.Unsafe;
+               ^
+Note: SpongePowered MIXIN Annotation Processor Version=0.8.5 (MixinGradle Version=0.7.38)
+Note: Supported obfuscation types: ObfuscationServiceMCP supports [notch] ObfuscationServiceFG3 supports [searge]
+Note: Loading searge mappings from /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createMcpToSrg/output.tsrg
+Note: Writing refmap to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/tmp/compileJava/compileJava-refmap.json
+Note: Writing refmap to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/tmp/compileJava/compileJava-refmap.json
+Note: Writing searge composite mappings to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/tmp/compileJava/compileJava-mappings.tsrg
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:3: warning: Unsafe is internal proprietary API and may be removed in a future release
+import sun.misc.Unsafe;
+               ^
+Note: Writing refmap to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/tmp/compileJava/compileJava-refmap.json
+Note: Writing refmap to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/tmp/compileJava/compileJava-refmap.json
+Note: Writing searge composite mappings to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/tmp/compileJava/compileJava-mappings.tsrg
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:3: warning: Unsafe is internal proprietary API and may be removed in a future release
+import sun.misc.Unsafe;
+               ^
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/Voxy.java:32: warning: [removal] SodiumOptionsGUI in me.jellysquid.mods.sodium.client.gui has been deprecated and marked for removal
+                    () -> new ConfigScreenHandler.ConfigScreenFactory((mc, parent) -> new SodiumOptionsGUI(parent)));
+                                                                                          ^
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/client/core/VoxyRenderSystem.java:673: error: cannot find symbol
+        final int W = ModelFactory.MODEL_TEXTURE_SIZE * 3, H = ModelFactory.MODEL_TEXTURE_SIZE * 2, PER_ROW = 64;
+                      ^
+  symbol:   variable ModelFactory
+  location: class VoxyRenderSystem
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/client/core/VoxyRenderSystem.java:673: error: cannot find symbol
+        final int W = ModelFactory.MODEL_TEXTURE_SIZE * 3, H = ModelFactory.MODEL_TEXTURE_SIZE * 2, PER_ROW = 64;
+                                                               ^
+  symbol:   variable ModelFactory
+  location: class VoxyRenderSystem
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:8: warning: Unsafe is internal proprietary API and may be removed in a future release
+    private static final Unsafe UNSAFE;
+                         ^
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:8: warning: Unsafe is internal proprietary API and may be removed in a future release
+    private static final Unsafe UNSAFE;
+                         ^
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:8: warning: Unsafe is internal proprietary API and may be removed in a future release
+    private static final Unsafe UNSAFE;
+                         ^
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:11: warning: Unsafe is internal proprietary API and may be removed in a future release
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+                          ^
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:13: warning: Unsafe is internal proprietary API and may be removed in a future release
+            UNSAFE = (Unsafe)field.get(null);
+                      ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+2 errors
+9 warnings
+
+> Task :compileJava FAILED
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1793123672803.json
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler error output for details.
+
+* Try:
+> Run with --info option to get more log output.
+> Run with --scan to get full insights.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.8/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 39s
+4 actionable tasks: 4 executed
