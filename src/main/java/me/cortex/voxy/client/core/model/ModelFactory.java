@@ -291,16 +291,42 @@ public class ModelFactory {
         var upload = this.uploadResults.poll();
         if (upload==null) return;
 
+        // The block textures go up from client memory, so nothing may be bound as the pixel unpack buffer: with a
+        // shader pack Iris can leave one bound, and then the upload reads (or fails to read) from that buffer and the
+        // LOD atlas keeps whatever was in that slot - another block's texture from the previous renderer (yellow
+        // snow, green ice, red snow layers, invisible water) under shaders only. The unpack layout is set in full too.
+        int[] prev = new int[]{
+                glGetInteger(org.lwjgl.opengl.GL21.GL_PIXEL_UNPACK_BUFFER_BINDING),
+                glGetInteger(GL_UNPACK_ROW_LENGTH), glGetInteger(GL_UNPACK_SKIP_PIXELS), glGetInteger(GL_UNPACK_SKIP_ROWS),
+                glGetInteger(GL_UNPACK_ALIGNMENT), glGetInteger(GL_UNPACK_SWAP_BYTES), glGetInteger(GL_UNPACK_LSB_FIRST),
+                glGetInteger(org.lwjgl.opengl.GL12.GL_UNPACK_IMAGE_HEIGHT), glGetInteger(org.lwjgl.opengl.GL12.GL_UNPACK_SKIP_IMAGES)};
+        org.lwjgl.opengl.GL15.glBindBuffer(org.lwjgl.opengl.GL21.GL_PIXEL_UNPACK_BUFFER, 0);
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
         glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
         glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-        do {
-            upload.upload(this.storage);
-            upload.free();
-            upload = this.uploadResults.poll();
-        } while (upload != null);
-        UploadStream.INSTANCE.commit();
+        glPixelStorei(GL_UNPACK_SWAP_BYTES, GL_FALSE);
+        glPixelStorei(GL_UNPACK_LSB_FIRST, GL_FALSE);
+        glPixelStorei(org.lwjgl.opengl.GL12.GL_UNPACK_IMAGE_HEIGHT, 0);
+        glPixelStorei(org.lwjgl.opengl.GL12.GL_UNPACK_SKIP_IMAGES, 0);
+        try {
+            do {
+                upload.upload(this.storage);
+                upload.free();
+                upload = this.uploadResults.poll();
+            } while (upload != null);
+            UploadStream.INSTANCE.commit();
+        } finally {
+            org.lwjgl.opengl.GL15.glBindBuffer(org.lwjgl.opengl.GL21.GL_PIXEL_UNPACK_BUFFER, prev[0]);
+            glPixelStorei(GL_UNPACK_ROW_LENGTH, prev[1]);
+            glPixelStorei(GL_UNPACK_SKIP_PIXELS, prev[2]);
+            glPixelStorei(GL_UNPACK_SKIP_ROWS, prev[3]);
+            glPixelStorei(GL_UNPACK_ALIGNMENT, prev[4]);
+            glPixelStorei(GL_UNPACK_SWAP_BYTES, prev[5]);
+            glPixelStorei(GL_UNPACK_LSB_FIRST, prev[6]);
+            glPixelStorei(org.lwjgl.opengl.GL12.GL_UNPACK_IMAGE_HEIGHT, prev[7]);
+            glPixelStorei(org.lwjgl.opengl.GL12.GL_UNPACK_SKIP_IMAGES, prev[8]);
+        }
     }
 
     private interface ResultUploader {

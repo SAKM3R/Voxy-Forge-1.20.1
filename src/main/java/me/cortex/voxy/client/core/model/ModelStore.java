@@ -32,6 +32,11 @@ public class ModelStore {
         // written past the end of the buffer
         this.modelColourBuffer = new GlBuffer(4L * COLOUR_ENTRIES).fill(-1).name("ModelColour");
         this.textures = new GlTexture().store(GL_RGBA8, Integer.numberOfTrailingZeros(ModelFactory.MODEL_TEXTURE_SIZE), ModelFactory.MODEL_TEXTURE_SIZE*3*256,ModelFactory.MODEL_TEXTURE_SIZE*2*256).name("ModelTextures");
+        // A new texture is not cleared: on some drivers it comes back holding the atlas of the renderer that was just
+        // freed (another block's texture in every slot). Start it transparent, so a slot nothing was baked into shows nothing.
+        for (int lvl = 0; lvl < ModelFactory.LAYERS; lvl++) {
+            org.lwjgl.opengl.GL44.glClearTexImage(this.textures.id, lvl, GL_RGBA, GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
+        }
 
 
         // MC 1.21.1: TextureAtlas.mipLevel is now private, use accessor mixin
