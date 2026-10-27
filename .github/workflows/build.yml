@@ -32,6 +32,15 @@ jobs:
           set -o pipefail
           ./gradlew build --console=plain 2>&1 | tee build.log
 
+      - name: Publish the build log when the build fails
+        if: failure()
+        run: |
+          mkdir -p buildlog && cp build.log buildlog/ && echo "${{ github.sha }}" > buildlog/commit
+          cd buildlog
+          git init -q -b build-log && git config user.name ci && git config user.email ci@localhost
+          git add -A && git commit -qm "build log for ${{ github.sha }}"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" build-log
+
       - name: Upload jar
         uses: actions/upload-artifact@v4
         with:
