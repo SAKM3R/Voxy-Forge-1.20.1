@@ -38,6 +38,15 @@ jobs:
           name: jar
           path: build/libs/*.jar
 
+      # The jar on a branch of its own right away, so a build can be tried before the smoke tests finish
+      - name: Publish jar to the dev-jar branch
+        run: |
+          mkdir -p devjar && cp build/libs/*.jar devjar/ && echo "${{ github.sha }}" > devjar/commit
+          cd devjar
+          git init -q -b dev-jar && git config user.name ci && git config user.email ci@localhost
+          git add -A && git commit -qm "jar for ${{ github.sha }}"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" dev-jar
+
       # Boots the game on a software GPU (Mesa llvmpipe), creates a world, plays ~75 seconds and checks that
       # every mixin applies and Voxy's renderer comes up (src/smoketest).
       - name: Smoke test
