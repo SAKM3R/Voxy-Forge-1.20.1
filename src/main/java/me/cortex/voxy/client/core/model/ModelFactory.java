@@ -261,6 +261,7 @@ public class ModelFactory {
     }
 
     private boolean warnedColourLutFull = false;
+    private static final boolean LOG_TINTS = Boolean.getBoolean("voxy.logTints");
     private static final java.util.concurrent.atomic.AtomicInteger LOGGED_TINTS = new java.util.concurrent.atomic.AtomicInteger();
     private int loggedBiomeCount = 0;
     private final ConcurrentLinkedDeque<Mapper.BiomeEntry> biomeQueue = new ConcurrentLinkedDeque<>();
@@ -632,7 +633,7 @@ public class ModelFactory {
         metadata |= fullyOpaque?(1L<<(48+6)):0;
 
         // Which blocks the LODs tint, and with what, to track down wrongly coloured LODs from a log
-        if (tintedFaces != 0 && LOGGED_TINTS.incrementAndGet() <= 1500) {
+        if (tintedFaces != 0 && LOG_TINTS && LOGGED_TINTS.incrementAndGet() <= 1500) {
             Logger.info("LOD tint: " + blockState + " faces=" + Integer.toBinaryString(tintedFaces) + " provider=" + colourProvider.getClass().getName()
                     + (isBiomeColourDependent ? " biome-coloured" : String.format(" colour=%08X", entry.tintingColour)) + " model=" + modelId);
         }

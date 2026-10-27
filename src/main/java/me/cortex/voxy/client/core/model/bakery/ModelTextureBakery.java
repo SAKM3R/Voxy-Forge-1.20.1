@@ -23,7 +23,9 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.ARBDrawBuffersBlend;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL20;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL14C.glBlendFuncSeparate;
@@ -183,7 +185,63 @@ public class ModelTextureBakery {
     }
 
 
+    // The bake draws into its own framebuffer but inherits whatever write masks and tests are current, and with a
+    // shader pack Iris leaves per-buffer colour masks (and depth mask / depth func / scissor) set from the pass it
+    // ran last. Baked like that, a block lost colour channels (snow and ice came out yellow, red or green under
+    // Photon and Bliss, and differently each time) or kept the previous block's depth.
     public int renderToStream(BlockState state, int streamBuffer, int streamOffset) {
+        boolean[][] colourMasks = new boolean[2][4];
+        try (var stack = org.lwjgl.system.MemoryStack.stackPush()) {
+            var buf = stack.malloc(4);
+            for (int i = 0; i < 2; i++) {
+                org.lwjgl.opengl.GL30.glGetBooleani_v(GL_COLOR_WRITEMASK, i, buf);
+                for (int c = 0; c < 4; c++) colourMasks[i][c] = buf.get(c) != 0;
+            }
+        }
+        boolean depthMask = glGetBoolean(GL_DEPTH_WRITEMASK);
+        int depthFunc = glGetInteger(GL_DEPTH_FUNC);
+        int stencilWriteMask = glGetInteger(GL_STENCIL_WRITEMASK);
+        boolean scissor = glIsEnabled(GL_SCISSOR_TEST);
+        boolean polygonOffset = glIsEnabled(GL_POLYGON_OFFSET_FILL);
+        boolean alphaToCoverage = glIsEnabled(GL13.GL_SAMPLE_ALPHA_TO_COVERAGE);
+        boolean srgb = glIsEnabled(GL_FRAMEBUFFER_SRGB);
+        boolean logicOp = glIsEnabled(GL_COLOR_LOGIC_OP);
+        boolean rasterizerDiscard = glIsEnabled(GL_RASTERIZER_DISCARD);
+        int blendEqRgb = glGetInteger(GL20.GL_BLEND_EQUATION_RGB);
+        int blendEqAlpha = glGetInteger(GL20.GL_BLEND_EQUATION_ALPHA);
+        int polygonMode = glGetInteger(GL_POLYGON_MODE);
+
+        for (int i = 0; i < 2; i++) glColorMaski(i, true, true, true, true);
+        glDepthMask(true);
+        glDepthFunc(GL_LEQUAL);
+        glStencilMask(0xFF);
+        glDisable(GL_SCISSOR_TEST);
+        glDisable(GL_POLYGON_OFFSET_FILL);
+        glDisable(GL13.GL_SAMPLE_ALPHA_TO_COVERAGE);
+        glDisable(GL_FRAMEBUFFER_SRGB);
+        glDisable(GL_COLOR_LOGIC_OP);
+        glDisable(GL_RASTERIZER_DISCARD);
+        GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        try {
+            return this.renderToStream0(state, streamBuffer, streamOffset);
+        } finally {
+            for (int i = 0; i < 2; i++) glColorMaski(i, colourMasks[i][0], colourMasks[i][1], colourMasks[i][2], colourMasks[i][3]);
+            glDepthMask(depthMask);
+            glDepthFunc(depthFunc);
+            glStencilMask(stencilWriteMask);
+            if (scissor) glEnable(GL_SCISSOR_TEST);
+            if (polygonOffset) glEnable(GL_POLYGON_OFFSET_FILL);
+            if (alphaToCoverage) glEnable(GL13.GL_SAMPLE_ALPHA_TO_COVERAGE);
+            if (srgb) glEnable(GL_FRAMEBUFFER_SRGB);
+            if (logicOp) glEnable(GL_COLOR_LOGIC_OP);
+            if (rasterizerDiscard) glEnable(GL_RASTERIZER_DISCARD);
+            GL20.glBlendEquationSeparate(blendEqRgb, blendEqAlpha);
+            glPolygonMode(GL_FRONT_AND_BACK, polygonMode);
+        }
+    }
+
+    private int renderToStream0(BlockState state, int streamBuffer, int streamOffset) {
         this.capture.clear();
         boolean isBlock = true;
         RenderType layer;
