@@ -19,6 +19,7 @@ public class SceneTest {
     static final boolean ENABLED = Boolean.getBoolean("voxy.smoketest.scene");
     private static final int Z0 = -24, Z1 = 24, FLOOR = 48, SEA = 62;
     private static final int[] TOWERS = {15, 130, 220, 320};
+    private static int view = 0;
 
     static void tick(Minecraft mc, int t) {
         var server = mc.getSingleplayerServer();
@@ -30,22 +31,26 @@ public class SceneTest {
         if (t >= 120 && t < 220) {
             mc.player.setPos(-30 + (t - 120) * 4, 90, 0);
         }
+        // Off to the side of the strip, so the near tower (real chunks, ~50 blocks) and the far ones (LODs) stand
+        // next to each other in the frame with water in front of each
         if (t >= 220 && t < 1100) {
-            mc.player.setPos(-40, 80, 0);
-            mc.player.setXRot(14);
-            mc.player.setYRot(-90);
-            mc.player.setYHeadRot(-90);
+            mc.player.setPos(0, 95, -50);
+            mc.player.setXRot(view == 1 ? 40 : 22);
+            mc.player.setYRot(-49);
+            mc.player.setYHeadRot(-49);
         }
         if (t == 900) SmokeTest.grab(mc, "scene");
-        if (t == 920) mc.player.setXRot(35);
+        if (t == 920) view = 1;
         if (t == 960) SmokeTest.grab(mc, "scene-water");
         if (t == 980) {
             me.cortex.voxy.client.config.VoxyConfig.debugMode = 1;
-            mc.player.setXRot(14);
+            view = 0;
         }
         if (t == 1010) SmokeTest.grab(mc, "scene-notint");
-        if (t == 1020) me.cortex.voxy.client.config.VoxyConfig.debugMode = 0;
-        if (t == 1060) {
+        if (t == 1015) me.cortex.voxy.client.config.VoxyConfig.debugMode = 3;
+        if (t == 1040) SmokeTest.grab(mc, "scene-whitetex");
+        if (t == 1045) me.cortex.voxy.client.config.VoxyConfig.debugMode = 0;
+        if (t == 1080) {
             LOG.info("VOXY_SMOKE_RESULT done");
             mc.stop();
         }
