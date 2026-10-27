@@ -341,6 +341,11 @@ void main() {
 		// Get material and normal
 
 		Material material = material_from(albedo, material_mask, position_world, flat_normal, light_levels);
+#ifdef LOD_MOD_ACTIVE
+		// LODs have no shadow map, so their subsurface scattering runs with sss_depth 0, i.e. at full strength in
+		// direct sun: ice, snow and other SSS materials came out glowing yellow-green far away. Keep it on foliage only.
+		if (is_lod && (material_mask < 2u || material_mask > 5u)) material.sss_amount = 0.0;
+#endif
 
 		vec3 normal = flat_normal;
         bool parallax_shadow = false;

@@ -2595,8 +2595,8 @@ diff -ruN -U2 bliss/shaders/composite3.fsh bliss_voxy/shaders/composite3.fsh
      if(z < 1.0 && isEyeInWater == 0) color.rgb = mix(color.rgb, sky, fog * heightFalloff* lightleakfix);
 diff -ruN -U2 bliss/shaders/programs/voxy/voxy_opaque.glsl bliss_voxy/shaders/programs/voxy/voxy_opaque.glsl
 --- bliss/shaders/programs/voxy/voxy_opaque.glsl	1970-01-01 03:00:00.000000000 +0300
-+++ bliss_voxy/shaders/programs/voxy/voxy_opaque.glsl	2026-10-25 08:53:15.001274262 +0300
-@@ -0,0 +1,75 @@
++++ bliss_voxy/shaders/programs/voxy/voxy_opaque.glsl	2026-10-27 21:22:32.772495956 +0300
+@@ -0,0 +1,74 @@
 +// Voxy LOD terrain for Bliss: writes the same gbuffers as gbuffers_terrain (gbuffers_all_solid.fsh)
 +// - colortex1 packed albedo/normal/lightmap, colortex7, colortex8 specular/SSS/emission,
 +// colortex15 flat normal + vanilla AO - so the deferred passes light the LODs like normal terrain.
@@ -2641,12 +2641,11 @@ diff -ruN -U2 bliss/shaders/programs/voxy/voxy_opaque.glsl bliss_voxy/shaders/pr
 +	Albedo.a = id == 10003 ? 0.55 : 1.0; // normalMat.a
 +
 +	float EMISSIVE = id == 10005 ? 0.5 : 0.0;
++	// Subsurface scattering only on plants and leaves: past the shadow map Bliss has no blocker depth for LODs,
++	// so the scattering runs at full strength in direct light and packed/blue ice (10004), snow (10006) and the
++	// like glowed red and yellow far away
 +	float SSSAMOUNT = 0.0;
-+	if (id == 10001 || id == 10003 || id == 10004) SSSAMOUNT = 1.0;
-+	if (id == 10006 || id == 200) SSSAMOUNT = 0.75;
-+	#ifdef MISC_BLOCK_SSS
-+		if (id == 10007 || id == 10008) SSSAMOUNT = 0.5;
-+	#endif
++	if (id == 10001 || id == 10003) SSSAMOUNT = 1.0;
 +
 +	vec4 spec = vec4(0.0); // no LabPBR textures on LODs
 +	#ifdef VOXY_TRANSLUCENT
