@@ -670,7 +670,7 @@ public class VoxyRenderSystem {
         }
         java.nio.file.Files.writeString(dir.resolve(name + "-models.txt"), sb.toString());
         int count = maxModel + 1;
-        final int W = ModelFactory.MODEL_TEXTURE_SIZE * 3, H = ModelFactory.MODEL_TEXTURE_SIZE * 2, PER_ROW = 64;
+        final int W = me.cortex.voxy.client.core.model.ModelFactory.MODEL_TEXTURE_SIZE * 3, H = me.cortex.voxy.client.core.model.ModelFactory.MODEL_TEXTURE_SIZE * 2, PER_ROW = 64;
         int rows = Math.max(1, (count + PER_ROW - 1) / PER_ROW);
         var img = new com.mojang.blaze3d.platform.NativeImage(PER_ROW * W, rows * H, true);
         var tex = this.modelService.getStore().getTextures();
