@@ -243,8 +243,14 @@ void main() {
     // Under shaderpacks the pack lights LOD from the lightmap + face normal only, without the smooth AO /
     // ambient data full chunks provide, so LOD reads a little dark. Lift the albedo we hand the pack to
     // compensate. Tune LOD_SHADER_BRIGHTNESS to taste (1.0 = no lift, matches raw block colour).
+    // NOTE: the colour handed to the pack must stay within [0,1]. Packs (Photon, Bliss, ...) pack two 8 bit values
+    // into one 16 bit gbuffer channel with floor(255*x), so anything above 1.0 overflows into the neighbouring
+    // value: near white textures (snow, ice, water highlights) lost their blue channel and shifted the material id
+    // in Photon (distant ice/snow turned yellow-green) and corrupted the normal/lightmap in Bliss (red/green specks,
+    // black sides, broken water). So the lift is clamped.
     float LOD_SHADER_BRIGHTNESS = mix(1.0, 1.025, uColorFix);
-    vec4 emitColour = vec4(colour.rgb * LOD_SHADER_BRIGHTNESS, colour.a);
+    vec4 emitColour = clamp(vec4(colour.rgb * LOD_SHADER_BRIGHTNESS, colour.a), 0.0, 1.0);
+    tint = clamp(tint, 0.0, 1.0);
     voxy_emitFragment(VoxyFragmentParameters(emitColour, tile, texPos, face, modelId, getLightmap(), tint, model.customId));
 
     #endif
