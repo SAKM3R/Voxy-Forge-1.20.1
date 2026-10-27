@@ -171,6 +171,9 @@ public class MDICSectionRenderer extends AbstractSectionRenderer<MDICViewport, B
         // World-curvature fix toggle (see /voxy curvefix). 1.0 = fixed curve, 0.0 = original curve.
         MemoryUtil.memPutFloat(ptr, VoxyConfig.CONFIG.curveFix ? 1.0f : 0.0f); ptr += 4;
 
+        // LOD colour debugging (see /voxy debug)
+        MemoryUtil.memPutInt(ptr, VoxyConfig.debugMode); ptr += 4;
+
         UploadStream.INSTANCE.commit();
     }
 

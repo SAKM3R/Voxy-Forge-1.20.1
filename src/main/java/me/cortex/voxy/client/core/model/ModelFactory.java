@@ -261,6 +261,7 @@ public class ModelFactory {
     }
 
     private boolean warnedColourLutFull = false;
+    private static final java.util.concurrent.atomic.AtomicInteger LOGGED_TINTS = new java.util.concurrent.atomic.AtomicInteger();
     private int loggedBiomeCount = 0;
     private final ConcurrentLinkedDeque<Mapper.BiomeEntry> biomeQueue = new ConcurrentLinkedDeque<>();
     public void addBiome(Mapper.BiomeEntry biome) {
@@ -531,6 +532,7 @@ public class ModelFactory {
         metadata |= cullsSame?32:0;
 
         boolean fullyOpaque = true;
+        int tintedFaces = 0;
 
         //TODO: FIXME faces that have the same "alignment depth" e.g. (sizes[0]+sizes[1])~=1 can be merged into a double faced single quad
 
@@ -616,6 +618,7 @@ public class ModelFactory {
             // multiply the texture by the -1 tint, which it maps to zero => solid black leaves.
             if (colourProvider!=null && (isBiomeColourDependent || entry.tintingColour!=-1)) {//We have a tint
                 int tintState = TextureUtils.computeFaceTint(textureData[face], checkMode);
+                tintedFaces |= (tintState == 2 || tintState == 3) ? (1 << face) : 0;
                 if (tintState == 2) {//Partial tint
                     faceModelData |= 1<<24;
                 } else if (tintState == 3) {//Full tint
@@ -627,6 +630,12 @@ public class ModelFactory {
         }
 
         metadata |= fullyOpaque?(1L<<(48+6)):0;
+
+        // Which blocks the LODs tint, and with what, to track down wrongly coloured LODs from a log
+        if (tintedFaces != 0 && LOGGED_TINTS.incrementAndGet() <= 1500) {
+            Logger.info("LOD tint: " + blockState + " faces=" + Integer.toBinaryString(tintedFaces) + " provider=" + colourProvider.getClass().getName()
+                    + (isBiomeColourDependent ? " biome-coloured" : String.format(" colour=%08X", entry.tintingColour)) + " model=" + modelId);
+        }
 
         boolean canBeCorrectlyRendered = true;//This represents if a model can be correctly (perfectly) represented
         // i.e. no gaps
@@ -662,6 +671,9 @@ public class ModelFactory {
             int biomeIndex = this.modelsRequiringBiomeColours.size() * this.biomes.size();
             MemoryUtil.memPutInt(uploadPtr, biomeIndex);
             this.modelsRequiringBiomeColours.add(new Pair<>(modelId, blockState));
+            if ((this.modelsRequiringBiomeColours.size() & 63) == 0) {
+                Logger.info("Biome colour table: " + this.modelsRequiringBiomeColours.size() + " models x " + this.biomes.size() + " biomes");
+            }
 
             if (!this.biomes.isEmpty()) {
                 uploadResult.biomeUploadIndex = biomeIndex;

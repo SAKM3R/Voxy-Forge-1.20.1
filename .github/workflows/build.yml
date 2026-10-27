@@ -32,6 +32,12 @@ jobs:
           set -o pipefail
           ./gradlew build --console=plain 2>&1 | tee build.log
 
+      - name: Upload jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar
+          path: build/libs/*.jar
+
       # Boots the game on a software GPU (Mesa llvmpipe), creates a world, plays ~75 seconds and checks that
       # every mixin applies and Voxy's renderer comes up (src/smoketest).
       - name: Smoke test
@@ -52,12 +58,6 @@ jobs:
           if grep -q "Missing metadata in pack mod:voxy\|VOXY_SMOKE loading screen modLoadWarnings = \[[^]]" run/logs/latest.log; then echo "::error::Forge reported a mod loading warning"; exit 1; fi
           grep -q "VOXY_SMOKE final .*renderSystem=true" run/logs/latest.log || { echo "::error::Voxy did not start"; exit 1; }
           grep -q "VOXY_SMOKE_RESULT done" run/logs/latest.log || { echo "::error::Smoke test did not finish"; exit 1; }
-
-      - name: Upload jar
-        uses: actions/upload-artifact@v4
-        with:
-          name: jar
-          path: build/libs/*.jar
 
       - name: Upload smoke test output
         if: always()

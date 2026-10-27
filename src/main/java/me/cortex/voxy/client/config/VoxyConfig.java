@@ -70,6 +70,10 @@ public class VoxyConfig {
     // and uploaded to the LOD shaders as uColorFix.
     public boolean colorFix = true;
 
+    // LOD colour debugging, set with "/voxy debug <mode>" and never saved: 0 normal, 1 no tint,
+    // 2 full-detail textures (no mipmaps), 3 tint only (white textures), 4 tinted pixels shown red
+    public static transient int debugMode = 0;
+
     // Runtime toggle for the world-curvature fix (seamless start at the vanilla edge + camera-relative, smooth
     // tracking). Toggled in-game via "/voxy curvefix". true = fixed curve, false = original curve (measured from
     // the section origin, so it cuts at the boundary and snaps every 32 blocks). Uploaded to the shader as uCurveFix.

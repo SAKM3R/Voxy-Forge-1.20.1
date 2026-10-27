@@ -110,6 +110,9 @@ vec4 computeColour(vec2 texturePos, vec4 colour) {
     if (tintingFunction == 1) {//partial tint
         doTint = partialTintPixel(textureLod(blockModelAtlas, texturePos, 0));
     }
+    if (uDebugMode == 1) doTint = false;
+    if (uDebugMode == 3) colour.rgb = vec3(1.0);
+    if (uDebugMode == 4) return vec4(doTint ? vec3(1.0, 0.1, 0.1) : vec3(0.6), 1.0);
     if (doTint) {
         // Normalise the baked tint to full brightness (preserving hue), matching what the Iris LOD
         // shader does. Some modded foliage (e.g. Dynamic Trees leaves) bakes a very dark tint that,
@@ -156,6 +159,7 @@ void main() {
         vec2 dx = dFdx(uvSmol);//vec2(lDx, dDx);
         vec2 dy = dFdy(uvSmol);//vec2(lDy, dDy);
         colour = textureGrad(blockModelAtlas, texPos, dx, dy);
+        if (uDebugMode == 2) colour = textureLod(blockModelAtlas, texPos, 0);
     }// else {
     //    colour = textureLod(blockModelAtlas, texPos, 0);
     //}
@@ -226,6 +230,9 @@ void main() {
     if (tintingFunction==1) {//Partial tint
         doTint = partialTintPixel(textureLod(blockModelAtlas, texPos, 0));
     }
+    if (uDebugMode == 1) doTint = false;
+    if (uDebugMode == 3) colour.rgb = vec3(1.0);
+    if (uDebugMode == 4) { colour.rgb = doTint ? vec3(1.0, 0.1, 0.1) : vec3(0.6); doTint = false; }
     vec4 tint = vec4(1);
     if (doTint) {
         tint = uint2vec4RGBA(interData.z).yzwx;

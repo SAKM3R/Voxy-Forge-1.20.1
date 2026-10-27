@@ -78,6 +78,9 @@ public class VoxyCommands {
                         .executes(VoxyCommands::toggleColorFix)
                         .then(Commands.literal("on").executes(ctx->setColorFix(ctx, true)))
                         .then(Commands.literal("off").executes(ctx->setColorFix(ctx, false))))
+                .then(Commands.literal("debug")
+                        .then(Commands.argument("mode", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 4))
+                                .executes(ctx->setDebugMode(ctx, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "mode")))))
                 .then(Commands.literal("curvefix")
                         .executes(VoxyCommands::toggleCurveFix)
                         .then(Commands.literal("on").executes(ctx->setCurveFix(ctx, true)))
@@ -92,6 +95,13 @@ public class VoxyCommands {
     private static int setColorFix(CommandContext<CommandSourceStack> ctx, boolean on) {
         VoxyConfig.CONFIG.colorFix = on;
         ctx.getSource().sendSuccess(()->Component.literal("Voxy LOD colour fix " + (on ? "ENABLED" : "DISABLED (raw brightness)")), false);
+        return 0;
+    }
+
+    private static int setDebugMode(CommandContext<CommandSourceStack> ctx, int mode) {
+        VoxyConfig.debugMode = mode;
+        String[] names = {"normal", "no tint", "full-detail textures (no mipmaps)", "tint only", "tinted pixels in red"};
+        ctx.getSource().sendSuccess(()->Component.literal("Voxy LOD debug view: " + mode + " = " + names[mode]), false);
         return 0;
     }
 

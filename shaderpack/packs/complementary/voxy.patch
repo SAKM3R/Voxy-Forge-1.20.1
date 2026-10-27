@@ -336,8 +336,8 @@ diff -ruN compl/shaders/program/voxy_opaque.glsl compl_voxy/shaders/program/voxy
 +#endif
 diff -ruN compl/shaders/program/voxy_translucent.glsl compl_voxy/shaders/program/voxy_translucent.glsl
 --- compl/shaders/program/voxy_translucent.glsl	1970-01-01 03:00:00.000000000 +0300
-+++ compl_voxy/shaders/program/voxy_translucent.glsl	2026-10-25 09:04:02.401887336 +0300
-@@ -0,0 +1,226 @@
++++ compl_voxy/shaders/program/voxy_translucent.glsl	2026-10-27 19:42:28.822610687 +0300
+@@ -0,0 +1,224 @@
 +/////////////////////////////////////
 +// Complementary Shaders by EminGT //
 +/////////////////////////////////////
@@ -473,7 +473,8 @@ diff -ruN compl/shaders/program/voxy_translucent.glsl compl_voxy/shaders/program
 +    glColor = parameters.sampledColour * parameters.tinting;
 +
 +    vec3 screenPos = vec3(gl_FragCoord.xy / vec2(viewWidth, viewHeight), gl_FragCoord.z);
-+    if (texture2D(depthtex1, screenPos.xy).r < 1.0) discard;
++    // (dh_water discards where vanilla terrain is in front; Voxy already depth-tests the LODs against it, and
++    //  depthtex1 still holds the previous frame here, LOD water included, so that test threw the water away)
 +
 +    #ifdef TAA
 +        vec3 viewPos = ScreenToView(vec3(TAAJitter(screenPos.xy, -0.5), screenPos.z));
@@ -507,11 +508,8 @@ diff -ruN compl/shaders/program/voxy_translucent.glsl compl_voxy/shaders/program
 +        sqrtAtmColorMult = sqrt(atmColorMult);
 +    #endif
 +
-+    #ifdef VL_CLOUDS_ACTIVE
-+        float cloudLinearDepth = texelFetch(gaux1, texelCoord, 0).r;
-+
-+        if (pow2(cloudLinearDepth + OSIEBCA * dither) * renderDistance < min(lViewPos, renderDistance)) discard;
-+    #endif
++    // (dh_water also discards behind the volumetric clouds' depth in gaux1, but this runs before the clouds are
++    //  drawn this frame, so gaux1 holds something else and the test removed the LOD water with clouds on)
 +
 +    vec3 nViewPos = normalize(viewPos);
 +    float VdotU = dot(nViewPos, upVec);

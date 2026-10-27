@@ -1,7 +1,7 @@
 diff -ruN -U2 bliss/shaders/composite1.fsh bliss_voxy/shaders/composite1.fsh
 --- bliss/shaders/composite1.fsh	2023-07-14 15:29:20.000000000 +0300
-+++ bliss_voxy/shaders/composite1.fsh	2026-10-27 00:14:14.714963291 +0300
-@@ -1,1259 +1,1301 @@
++++ bliss_voxy/shaders/composite1.fsh	2026-10-27 19:42:41.404597624 +0300
+@@ -1,1259 +1,1303 @@
 -#version 120
 -//Render sky, volumetric clouds, direct lighting
 -//#extension GL_EXT_gpu_shader4 : disable
@@ -2051,8 +2051,10 @@ diff -ruN -U2 bliss/shaders/composite1.fsh bliss_voxy/shaders/composite1.fsh
 +			if (vxTrans < vxOpaque) {
 +				vec4 surface = vxProjInv * vec4(vec3(texcoord / RENDER_SCALE, vxTrans) * 2.0 - 1.0, 1.0);
 +				surface.xyz /= surface.w;
-+				// unless real geometry is in front of it
-+				if (length(fragpos) > length(surface.xyz) * 0.98) {
++				// unless real geometry is in front of it. Voxy writes LODs past the vanilla far plane into the vanilla
++				// depth buffer clamped to it, so a depth that comes back at the far plane is the LOD water itself.
++				bool realInFront = -fragpos.z < -surface.z * 0.98 && -fragpos.z < far * 0.95;
++				if (!realInFront) {
 +					voxyWater = true;
 +					voxyWaterSurface = surface.xyz;
 +					if (vxOpaque < 1.0) {
