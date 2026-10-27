@@ -78,6 +78,9 @@ public class VoxyCommands {
                         .executes(VoxyCommands::toggleColorFix)
                         .then(Commands.literal("on").executes(ctx->setColorFix(ctx, true)))
                         .then(Commands.literal("off").executes(ctx->setColorFix(ctx, false))))
+                .then(Commands.literal("dump")
+                        .then(Commands.argument("name", StringArgumentType.word())
+                                .executes(ctx->dumpModels(ctx, StringArgumentType.getString(ctx, "name")))))
                 .then(Commands.literal("debug")
                         .then(Commands.argument("mode", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 4))
                                 .executes(ctx->setDebugMode(ctx, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "mode")))))
@@ -95,6 +98,21 @@ public class VoxyCommands {
     private static int setColorFix(CommandContext<CommandSourceStack> ctx, boolean on) {
         VoxyConfig.CONFIG.colorFix = on;
         ctx.getSource().sendSuccess(()->Component.literal("Voxy LOD colour fix " + (on ? "ENABLED" : "DISABLED (raw brightness)")), false);
+        return 0;
+    }
+
+    private static int dumpModels(CommandContext<CommandSourceStack> ctx, String name) {
+        var renderer = IGetVoxyRenderSystem.getNullable();
+        if (renderer == null) {
+            ctx.getSource().sendFailure(Component.literal("Voxy is not rendering"));
+            return 1;
+        }
+        try {
+            String where = renderer.dumpModels(name);
+            ctx.getSource().sendSuccess(()->Component.literal("Voxy LOD models written to " + where), false);
+        } catch (Exception e) {
+            ctx.getSource().sendFailure(Component.literal("Voxy dump failed: " + e));
+        }
         return 0;
     }
 

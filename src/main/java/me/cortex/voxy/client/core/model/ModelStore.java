@@ -51,6 +51,10 @@ public class ModelStore {
     }
 
 
+    public GlTexture getTextures() {
+        return this.textures;
+    }
+
     public void free() {
         this.modelBuffer.free();
         this.modelColourBuffer.free();

@@ -650,4 +650,53 @@ public class VoxyRenderSystem {
     public WorldEngine getEngine() {
         return this.worldIn;
     }
+
+    // /voxy dump: the baked LOD textures of every model (as one image) and which block each model is, so wrong LOD
+    // colours can be traced to the bake or to the geometry. Writes to <game dir>/voxy-dump/<name>.
+    public String dumpModels(String name) throws Exception {
+        var dir = net.minecraft.client.Minecraft.getInstance().gameDirectory.toPath().resolve("voxy-dump");
+        java.nio.file.Files.createDirectories(dir);
+        var factory = this.modelService.factory;
+        var mapper = this.worldIn.getMapper();
+        int[] ids = factory._unsafeRawAccess();
+        StringBuilder sb = new StringBuilder();
+        sb.append("pipeline=").append(this.pipeline.getClass().getSimpleName()).append('\n');
+        int maxModel = -1;
+        for (int blockId = 0; blockId < Math.min(ids.length, mapper.getBlockStateCount()); blockId++) {
+            int model = ids[blockId];
+            if (model < 0) continue;
+            maxModel = Math.max(maxModel, model);
+            sb.append(model).append('\t').append(blockId).append('\t').append(mapper.getBlockStateFromBlockId(blockId)).append('\n');
+        }
+        java.nio.file.Files.writeString(dir.resolve(name + "-models.txt"), sb.toString());
+        int count = maxModel + 1;
+        final int W = ModelFactory.MODEL_TEXTURE_SIZE * 3, H = ModelFactory.MODEL_TEXTURE_SIZE * 2, PER_ROW = 64;
+        int rows = Math.max(1, (count + PER_ROW - 1) / PER_ROW);
+        var img = new com.mojang.blaze3d.platform.NativeImage(PER_ROW * W, rows * H, true);
+        var tex = this.modelService.getStore().getTextures();
+        int prevPack = glGetInteger(org.lwjgl.opengl.GL21.GL_PIXEL_PACK_BUFFER_BINDING);
+        org.lwjgl.opengl.GL15.glBindBuffer(org.lwjgl.opengl.GL21.GL_PIXEL_PACK_BUFFER, 0);
+        glPixelStorei(GL11.GL_PACK_ALIGNMENT, 4);
+        glPixelStorei(GL11.GL_PACK_ROW_LENGTH, 0);
+        var buf = org.lwjgl.system.MemoryUtil.memAlloc(W * H * 4);
+        try {
+            for (int m = 0; m < count; m++) {
+                int x = (m & 0xFF) * W, y = ((m >> 8) & 0xFF) * H;
+                buf.clear();
+                org.lwjgl.opengl.GL45.glGetTextureSubImage(tex.id, 0, x, y, 0, W, H, 1, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buf);
+                int ox = (m % PER_ROW) * W, oy = (m / PER_ROW) * H;
+                for (int py = 0; py < H; py++) {
+                    for (int px = 0; px < W; px++) {
+                        img.setPixelRGBA(ox + px, oy + py, buf.getInt((px + py * W) * 4));
+                    }
+                }
+            }
+        } finally {
+            org.lwjgl.system.MemoryUtil.memFree(buf);
+            org.lwjgl.opengl.GL15.glBindBuffer(org.lwjgl.opengl.GL21.GL_PIXEL_PACK_BUFFER, prevPack);
+        }
+        img.writeToFile(dir.resolve(name + "-atlas.png"));
+        img.close();
+        return dir.toString() + " (" + count + " models)";
+    }
 }
