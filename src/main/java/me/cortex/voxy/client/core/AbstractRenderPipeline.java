@@ -112,10 +112,48 @@ public abstract class AbstractRenderPipeline extends TrackedObject {
 
         if (!this.deferTranslucency) {
             rs.renderTranslucent(viewport);
+        } else {
+            this.pendingDeferredTranslucent = true;
         }
 
         this.finish(viewport, sourceFrameBuffer, srcWidth, srcHeight);
         glBindFramebuffer(GL_FRAMEBUFFER, sourceFrameBuffer);
+    }
+
+    private boolean pendingDeferredTranslucent = false;
+
+    public boolean isTranslucencyDeferred() {
+        return this.deferTranslucency;
+    }
+
+    /**
+     * Deferred translucency (voxy.json deferTranslucentRendering): draw the LOD translucents of this frame now,
+     * at the translucent stage, with the depth/stencil the opaque LOD pass left in the translucent framebuffer.
+     * Called with the caller's framebuffer bound; restores the framebuffer and viewport.
+     */
+    public void renderDeferredTranslucent(Viewport<?> viewport) {
+        if (!this.deferTranslucency || !this.pendingDeferredTranslucent) return;
+        this.pendingDeferredTranslucent = false;
+
+        int sourceFb = glGetInteger(GL_DRAW_FRAMEBUFFER_BINDING);
+        int[] dims = new int[4];
+        glGetIntegerv(GL_VIEWPORT, dims);
+        glViewport(0, 0, viewport.width, viewport.height);
+
+        glEnable(GL_STENCIL_TEST);
+        glStencilMask(0xFF);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+        glStencilFunc(GL_EQUAL, 1, 0xFF);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
+        glDepthMask(true);
+        glColorMask(true, true, true, true);
+
+        ((AbstractSectionRenderer)this.sectionRenderer).renderTranslucent(viewport);
+
+        glDisable(GL_STENCIL_TEST);
+        glBindFramebuffer(GL_FRAMEBUFFER, sourceFb);
+        glViewport(dims[0], dims[1], dims[2], dims[3]);
     }
 
     protected void initDepthStencil(int sourceFrameBuffer, int targetFb, int srcWidth, int srcHeight, int width, int height) {

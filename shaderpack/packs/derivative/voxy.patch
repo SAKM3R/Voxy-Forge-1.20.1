@@ -607,8 +607,8 @@ diff -ruN deriv/shaders/program/DH/Water.frag deriv_voxy/shaders/program/DH/Wate
 +}
 diff -ruN deriv/shaders/program/Voxy/voxy.json deriv_voxy/shaders/program/Voxy/voxy.json
 --- deriv/shaders/program/Voxy/voxy.json	1970-01-01 03:00:00.000000000 +0300
-+++ deriv_voxy/shaders/program/Voxy/voxy.json	2026-10-27 19:42:28.824095988 +0300
-@@ -0,0 +1,79 @@
++++ deriv_voxy/shaders/program/Voxy/voxy.json	2026-10-28 22:07:09.922806026 +0300
+@@ -0,0 +1,80 @@
 +{
 +    "unusedString": "
 +        // Run through the Iris preprocessor, so the pack settings (TAA_ENABLED) are visible here
@@ -616,6 +616,7 @@ diff -ruN deriv/shaders/program/Voxy/voxy.json deriv_voxy/shaders/program/Voxy/v
 +    ",
 +    "version": 1,
 +    "excludeLodsFromVanillaDepth": true,
++    "deferTranslucentRendering": true,
 +    "opaqueDrawBuffers": [6, 7, 3],
 +    "translucentDrawBuffers": [7, 2, 3],
 +    "blending": {

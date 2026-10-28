@@ -205,25 +205,26 @@ public class IrisVoxyRenderPipeline extends AbstractRenderPipeline {
         }
     }
 
-    private void doBindings() {
+    private void doBindings(boolean translucent) {
         this.bindUniforms();
         if (this.data.getSsboSet() != null) {
             this.data.getSsboSet().bindingFunction().accept(10);
         }
-        if (this.data.getImageSet() != null) {
-            this.data.getImageSet().bindingFunction().accept(6);
+        var images = translucent ? this.data.getTranslucentImageSet() : this.data.getImageSet();
+        if (images != null) {
+            images.bindingFunction().accept(6);
         }
     }
     @Override
     public void setupAndBindOpaque(Viewport<?> viewport) {
         this.fb.bind();
-        this.doBindings();
+        this.doBindings(false);
     }
 
     @Override
     public void setupAndBindTranslucent(Viewport<?> viewport) {
         this.fbTranslucent.bind();
-        this.doBindings();
+        this.doBindings(true);
         if (this.data.getBlender() != null) {
             this.data.getBlender().run();
         }

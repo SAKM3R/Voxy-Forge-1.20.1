@@ -47,6 +47,7 @@ public class IrisVoxyRenderPipelineData {
     private final StructLayout uniforms;
     private final Runnable blendingSetup;
     private final ImageSet imageSet;
+    private ImageSet translucentImageSet;
     private final SSBOSet ssboSet;
     public final boolean renderToVanillaDepth;
     public final float[] resolutionScale;
@@ -80,6 +81,10 @@ public class IrisVoxyRenderPipelineData {
         return this.imageSet;
     }
 
+    public ImageSet getTranslucentImageSet() {
+        return this.translucentImageSet != null ? this.translucentImageSet : this.imageSet;
+    }
+
     public StructLayout getUniforms() {
         return this.uniforms;
     }
@@ -98,17 +103,25 @@ public class IrisVoxyRenderPipelineData {
         var uniforms = createUniformLayoutStructAndUpdater(createUniformSet(cu, patch));
 
 
-        var imageSet = createImageSet(ipipe, patch);
+        var imageSet = createImageSet(ipipe, patch, ipipe::getFlippedAfterPrepare);
+        // Deferred translucency draws (and samples) at the translucent stage, where the buffers the deferred
+        // passes wrote have been flipped: use the same flip state Iris gives its own translucent programs
+        var translucentImageSet = patch.deferedTranslucentRendering() ? createImageSet(ipipe, patch, ipipe::getFlippedAfterTranslucent) : imageSet;
 
         var ssboSet = createSSBOLayouts(patch.getSSBOs(), ssboHolder);
 
         var opaqueDrawTargets = getDrawBuffers(patch.getOpqaueTargets(), ipipe.getFlippedAfterPrepare(), ((IrisRenderingPipelineAccessor)ipipe).getRenderTargets());
-        var translucentDrawTargets = getDrawBuffers(patch.getTranslucentTargets(), ipipe.getFlippedAfterPrepare(), ((IrisRenderingPipelineAccessor)ipipe).getRenderTargets());
+        var translucentDrawTargets = getDrawBuffers(patch.getTranslucentTargets(), patch.deferedTranslucentRendering() ? ipipe.getFlippedAfterTranslucent() : ipipe.getFlippedAfterPrepare(), ((IrisRenderingPipelineAccessor)ipipe).getRenderTargets());
 
 
 
         //TODO: need to transform the string patch with the uniform decleration aswell as sampler declerations
-        return new IrisVoxyRenderPipelineData(patch, opaqueDrawTargets, translucentDrawTargets, uniforms, patch.createBlendSetup(), imageSet, ssboSet);
+        var data = new IrisVoxyRenderPipelineData(patch, opaqueDrawTargets, translucentDrawTargets, uniforms, patch.createBlendSetup(), imageSet, ssboSet);
+        data.translucentImageSet = translucentImageSet;
+        if (data.deferTranslucency) {
+            Logger.info("Shader pack asked for deferred LOD translucency: LOD translucents are drawn after the deferred passes");
+        }
+        return data;
     }
 
     private static int[] getDrawBuffers(int[] targets, ImmutableSet<Integer> stageWritesToAlt, RenderTargets rt) {
@@ -138,7 +151,7 @@ public class IrisVoxyRenderPipelineData {
     }
 
     public boolean shouldDeferTranslucency() {
-        return false;
+        return this.deferTranslucency;
     }
 
     public record StructLayout(int size, String layout, LongConsumer updater) {}
@@ -421,7 +434,7 @@ public class IrisVoxyRenderPipelineData {
     public record ImageSet(String layout, IntConsumer bindingFunction) {
 
     }
-    private static ImageSet createImageSet(IrisRenderingPipeline ipipe, IrisShaderPatch patch) {
+    private static ImageSet createImageSet(IrisRenderingPipeline ipipe, IrisShaderPatch patch, java.util.function.Supplier<ImmutableSet<Integer>> flipped) {
         var samplerDataSet = patch.getSamplerSet();
         if (samplerDataSet == null) return null;
         Set<String> samplerNameSet = new LinkedHashSet<>(samplerDataSet.keySet());
@@ -498,7 +511,7 @@ public class IrisVoxyRenderPipelineData {
             }
         };
 
-        ipipe.addGbufferOrShadowSamplers(samplerBuilder, imageBuilder, ipipe::getFlippedAfterPrepare, false, true, true, false);
+        ipipe.addGbufferOrShadowSamplers(samplerBuilder, imageBuilder, flipped, false, true, true, false);
 
         //samplerSet contains our samplers
         if (samplerSet.size() != samplerNameSet.size()) {

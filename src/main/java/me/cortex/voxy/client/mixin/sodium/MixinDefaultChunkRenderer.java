@@ -73,6 +73,13 @@ public abstract class MixinDefaultChunkRenderer extends ShaderChunkRenderer {
                 }
                 renderer.renderOpaque(viewport);
             }
+        } else if (renderPass == DefaultTerrainRenderPasses.TRANSLUCENT && IrisUtil.irisShaderPackEnabled()) {
+            // Deferred LOD translucency: Iris has run the pack's deferred passes by the time the translucent
+            // terrain pass draws
+            var renderer = ((IGetVoxyRenderSystem) Minecraft.getInstance().levelRenderer).getVoxyRenderSystem();
+            if (renderer != null) {
+                renderer.renderDeferredTranslucent(renderer.getViewport());
+            }
         }
     }
 }

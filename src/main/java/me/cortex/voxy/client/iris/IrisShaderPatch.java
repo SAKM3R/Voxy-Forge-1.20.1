@@ -181,7 +181,10 @@ public class IrisShaderPatch {
         public float[] renderScale;
         public boolean useViewportDims;
         public boolean skipShaderDepthHackFix;
-        //public boolean deferTranslucentRendering;
+        // The LOD translucents are drawn at the translucent stage (after the pack's deferred passes, into the
+        // post-deferred buffer sides) instead of right after the opaque LODs. For packs whose deferred passes
+        // write buffers the translucent LOD output lives in (Derivative: colortex2).
+        public boolean deferTranslucentRendering;
         public String checkValid() {
             if (this.blending != null) {
                 int i = 0;
@@ -279,7 +282,7 @@ public class IrisShaderPatch {
     }
 
     public boolean deferedTranslucentRendering() {
-        return false;//this.patchData.deferTranslucentRendering;
+        return this.patchData.deferTranslucentRendering;
     }
 
     public Runnable createBlendSetup() {

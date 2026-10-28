@@ -274,6 +274,69 @@ public class VoxyRenderSystem {
     private long irisLodRetryAt = 0;
     private boolean warnedDefaultFramebuffer = false;
 
+    /**
+     * Deferred LOD translucency (a shader pack's voxy.json asked for deferTranslucentRendering): called from the
+     * translucent terrain pass, after the pack's deferred passes, to draw this frame's LOD translucents into the
+     * post-deferred buffers. GL state the vanilla/Iris translucent rendering relies on is put back afterwards.
+     */
+    public void renderDeferredTranslucent(Viewport<?> viewport) {
+        if (viewport == null || !(this.pipeline instanceof IrisVoxyRenderPipeline) || !this.pipeline.isTranslucencyDeferred()) {
+            return;
+        }
+        if (IrisUtil.irisShadowActive() || this.irisLodRenderBroken) {
+            return;
+        }
+        int oldFB = GL11.glGetInteger(GL_DRAW_FRAMEBUFFER_BINDING);
+        if (oldFB == 0) {
+            return;
+        }
+        int[] oldBufferBindings = new int[10];
+        for (int i = 0; i < oldBufferBindings.length; i++) {
+            oldBufferBindings[i] = glGetIntegeri(GL_SHADER_STORAGE_BUFFER_BINDING, i);
+        }
+        int[] dims = new int[4];
+        glGetIntegerv(GL_VIEWPORT, dims);
+        boolean blend = glIsEnabled(GL_BLEND);
+        int blendSrcRgb = glGetInteger(GL_BLEND_SRC_RGB), blendDstRgb = glGetInteger(GL_BLEND_DST_RGB);
+        int blendSrcA = glGetInteger(GL_BLEND_SRC_ALPHA), blendDstA = glGetInteger(GL_BLEND_DST_ALPHA);
+        boolean depthTest = glIsEnabled(GL_DEPTH_TEST);
+        boolean cull = glIsEnabled(GL_CULL_FACE);
+        boolean depthMask = glGetBoolean(GL_DEPTH_WRITEMASK);
+        int depthFunc = glGetInteger(GL_DEPTH_FUNC);
+        int program = glGetInteger(GL_CURRENT_PROGRAM);
+        try {
+            this.pipeline.renderDeferredTranslucent(viewport);
+        } catch (Throwable t) {
+            this.irisLodFailures++;
+            Logger.error("Voxy deferred LOD translucency failed (" + this.irisLodFailures + "/5)", t);
+            this.irisLodRenderBroken = true;
+            this.irisLodRetryAt = System.currentTimeMillis() + 3000;
+        }
+
+        glBindFramebuffer(GL_FRAMEBUFFER, oldFB);
+        glViewport(dims[0], dims[1], dims[2], dims[3]);
+        GL11.glDisable(GL11.GL_STENCIL_TEST);
+        GL11.glColorMask(true, true, true, true);
+        if (blend) GL11.glEnable(GL_BLEND); else GL11.glDisable(GL_BLEND);
+        org.lwjgl.opengl.GL14.glBlendFuncSeparate(blendSrcRgb, blendDstRgb, blendSrcA, blendDstA);
+        if (depthTest) GL11.glEnable(GL_DEPTH_TEST); else GL11.glDisable(GL_DEPTH_TEST);
+        if (cull) GL11.glEnable(GL_CULL_FACE); else GL11.glDisable(GL_CULL_FACE);
+        GL11.glDepthMask(depthMask);
+        GL11.glDepthFunc(depthFunc);
+        GlStateManager._glBindVertexArray(0);
+        for (int i = 0; i < 12; i++) {
+            GlStateManager._activeTexture(GlConst.GL_TEXTURE0+i);
+            GlStateManager._bindTexture(0);
+            glBindSampler(i, 0);
+        }
+        GlStateManager._activeTexture(GlConst.GL_TEXTURE0);
+        IrisUtil.clearIrisSamplers();
+        for (int i = 0; i < oldBufferBindings.length; i++) {
+            glBindBufferBase(GL_SHADER_STORAGE_BUFFER, i, oldBufferBindings[i]);
+        }
+        glUseProgram(program);
+    }
+
     public void renderOpaque(Viewport<?> viewport) {
         if (viewport == null) {
             return;
