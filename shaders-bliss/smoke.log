@@ -1,0 +1,640 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+MixinGradle did not locate the diffplug APT plugin, skipping eclipse task configuration
+
+> Task :downloadMcpConfig
+> Task :extractSrg
+> Task :createMcpToSrg
+
+> Task :compileJava
+[22:18:29] [main/INFO]: Writing debug log file accesstransform.log
+[22:18:29] [main/INFO]: Access Transformer processor running version 8.2.14
+[22:18:29] [main/INFO]: Command line arguments [--inJar, /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0/forge-1.20.1-47.3.0-injected.jar, --outJar, /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1.jar, --logFile, accesstransform.log, --atFile, /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/resources/META-INF/accesstransformer.cfg, --atFile, /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/_atJar_4/parent_at.cfg]
+[22:18:29] [main/INFO]: Reading from /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0/forge-1.20.1-47.3.0-injected.jar
+[22:18:29] [main/INFO]: Writing to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1.jar
+[22:18:29] [main/INFO]: Transformer file /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/resources/META-INF/accesstransformer.cfg
+[22:18:29] [main/INFO]: Transformer file /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/_atJar_4/parent_at.cfg
+[22:18:29] [main/WARN]: Found existing output jar /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1.jar, overwriting
+[22:18:31] [main/INFO]: JAR transformation complete /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1.jar
+Creating SRG -> MCP TSRG
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:3: warning: Unsafe is internal proprietary API and may be removed in a future release
+import sun.misc.Unsafe;
+               ^
+Note: SpongePowered MIXIN Annotation Processor Version=0.8.5 (MixinGradle Version=0.7.38)
+Note: Supported obfuscation types: ObfuscationServiceMCP supports [notch] ObfuscationServiceFG3 supports [searge]
+Note: Loading searge mappings from /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createMcpToSrg/output.tsrg
+Note: Writing refmap to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/tmp/compileJava/compileJava-refmap.json
+Note: Writing refmap to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/tmp/compileJava/compileJava-refmap.json
+Note: Writing searge composite mappings to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/tmp/compileJava/compileJava-mappings.tsrg
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:3: warning: Unsafe is internal proprietary API and may be removed in a future release
+import sun.misc.Unsafe;
+               ^
+Note: Writing refmap to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/tmp/compileJava/compileJava-refmap.json
+Note: Writing refmap to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/tmp/compileJava/compileJava-refmap.json
+Note: Writing searge composite mappings to /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/tmp/compileJava/compileJava-mappings.tsrg
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:3: warning: Unsafe is internal proprietary API and may be removed in a future release
+import sun.misc.Unsafe;
+               ^
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:8: warning: Unsafe is internal proprietary API and may be removed in a future release
+    private static final Unsafe UNSAFE;
+                         ^
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:8: warning: Unsafe is internal proprietary API and may be removed in a future release
+    private static final Unsafe UNSAFE;
+                         ^
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:8: warning: Unsafe is internal proprietary API and may be removed in a future release
+    private static final Unsafe UNSAFE;
+                         ^
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:11: warning: Unsafe is internal proprietary API and may be removed in a future release
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+                          ^
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/common/util/UnsafeUtil.java:13: warning: Unsafe is internal proprietary API and may be removed in a future release
+            UNSAFE = (Unsafe)field.get(null);
+                      ^
+/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/src/main/java/me/cortex/voxy/Voxy.java:32: warning: [removal] SodiumOptionsGUI in me.jellysquid.mods.sodium.client.gui has been deprecated and marked for removal
+                    () -> new ConfigScreenHandler.ConfigScreenFactory((mc, parent) -> new SodiumOptionsGUI(parent)));
+                                                                                          ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+9 warnings
+
+> Task :processResources
+> Task :classes
+> Task :createSrgToMcp
+> Task :downloadMCMeta
+> Task :downloadAssets
+> Task :extractNatives
+> Task :makeSrcDirs
+> Task :prepareRuns
+> Task :prepareRunClient
+> Task :compileSmoketestJava
+> Task :processSmoketestResources NO-SOURCE
+> Task :smoketestClasses
+> Task :prepareRunClientCompile
+
+> Task :runClient
+2026-10-28 22:18:47,551 main WARN Advanced terminal features are not available in this environment
+[22:18:47] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientuserdev, --version, MOD_DEV, --assetIndex, 5, --assetsDir, /home/runner/.gradle/caches/forge_gradle/assets, --gameDir, ., --fml.forgeVersion, 47.3.0, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --mixin.config, client.voxy.mixins.json, --mixin.config, common.voxy.mixins.json, --mixin.config, voxy.iris.mixins.json]
+[22:18:47] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 21.0.13 by Eclipse Adoptium; OS Linux arch amd64 version 7.0.0-1017-azure
+[22:18:47] [main/WARN] [ne.mi.fm.lo.FMLConfig/CORE]: Configuration file /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/run/config/fml.toml is not correct. Correcting
+[22:18:47] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowSkipGLVersions] was corrected from null to []
+[22:18:47] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowSquir] was corrected from null to false
+[22:18:47] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowShowCPU] was corrected from null to false
+[22:18:47] [main/INFO] [ne.mi.fm.lo.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
+[22:18:47] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
+[22:18:49] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
+[LWJGL] [ThreadLocalUtil] Unsupported JNI version detected, this may result in a crash. Please inform LWJGL developers.
+[22:18:49] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23134!/ Service=ModLauncher Env=CLIENT
+[22:18:49] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: llvmpipe (LLVM 21.1.8, 256 bits) GL version 4.6 (Core Profile) Mesa 26.0.8-1ubuntu0.3, Mesa
+[22:18:49] [main/WARN] [ne.mi.fm.lo.mo.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.20.1-47.3.0/d7ebc62120f202109e300e084ca1a31a7b946a62/javafmllanguage-1.20.1-47.3.0.jar is missing mods.toml file
+[22:18:49] [main/WARN] [ne.mi.fm.lo.mo.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.20.1-47.3.0/1bf3e845ea0ce750096da8c71c8364b188ab74d4/lowcodelanguage-1.20.1-47.3.0.jar is missing mods.toml file
+[22:18:49] [main/WARN] [ne.mi.fm.lo.mo.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.20.1-47.3.0/6093682e943ddccbabf70539319d7f2fe64db2e7/mclanguage-1.20.1-47.3.0.jar is missing mods.toml file
+[22:18:49] [main/WARN] [ne.mi.fm.lo.mo.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.20.1-47.3.0/3b6be96aba3e323f3c918e8ef6a96312d82d76ad/fmlcore-1.20.1-47.3.0.jar is missing mods.toml file
+[22:18:49] [main/WARN] [ne.mi.ja.se.JarSelector/]: Attempted to select a dependency jar for JarJar which was passed in as source: mixinextras. Using Mod File: /home/runner/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-forge/0.4.1/5c35573a7b76103724799ca1174a69699b8a9aec/mixinextras-forge-0.4.1.jar
+[22:18:49] [main/INFO] [ne.mi.fm.lo.mo.JarInJarDependencyLocator/]: Found 2 dependencies adding them to mods collection
+[22:18:50] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
+[22:18:50] [main/INFO] [cp.mo.mo.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientuserdev' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, /home/runner/.gradle/caches/forge_gradle/assets, --assetIndex, 5]
+[22:18:50] [main/WARN] [mixin/]: Reference map 'voxy.refmap.json' for client.voxy.mixins.json could not be read. If this is a development environment you can ignore this message
+[22:18:50] [main/WARN] [mixin/]: Reference map 'voxy.refmap.json' for common.voxy.mixins.json could not be read. If this is a development environment you can ignore this message
+[22:18:50] [main/WARN] [mixin/]: Reference map 'voxy.refmap.json' for voxy.iris.mixins.json could not be read. If this is a development environment you can ignore this message
+[22:18:50] [main/INFO] [Embeddium/]: Loaded configuration file for Embeddium: 51 options available, 3 override(s) found
+[22:18:50] [main/INFO] [Embeddium-GraphicsAdapterProbe/]: Searching for graphics cards...
+[22:18:50] [main/WARN] [Embeddium-GraphicsAdapterProbe/]: No graphics cards were found. Either you have no hardware devices supporting 3D acceleration, or something has gone terribly wrong!
+[22:18:50] [main/WARN] [Embeddium-Workarounds/]: Unable to determine desktop session type because the environment variable XDG_SESSION_TYPE is not set! Your user session may not be configured correctly.
+[22:18:51] [main/INFO] [mixin/]: Remapping refMap embeddium-refmap.json using /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createSrgToMcp/output.srg
+[22:18:51] [main/INFO] [mixin/]: Remapping refMap oculus-mixins-refmap.json using /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createSrgToMcp/output.srg
+[22:18:51] [main/INFO] [mixin/]: Remapping refMap oculus-mixins-refmap.json using /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createSrgToMcp/output.srg
+[22:18:51] [main/INFO] [mixin/]: Remapping refMap oculus-mixins-refmap.json using /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createSrgToMcp/output.srg
+[22:18:51] [main/INFO] [mixin/]: Remapping refMap oculus-mixins-refmap.json using /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createSrgToMcp/output.srg
+[22:18:51] [main/INFO] [mixin/]: Remapping refMap oculus-mixins-refmap.json using /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createSrgToMcp/output.srg
+[22:18:51] [main/INFO] [mixin/]: Remapping refMap oculus-mixins-refmap.json using /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createSrgToMcp/output.srg
+[22:18:51] [main/INFO] [mixin/]: Remapping refMap sodiumCompatibility-oculus-mixins-refmap.json using /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createSrgToMcp/output.srg
+[22:18:51] [main/INFO] [mixin/]: Remapping refMap oculus-mixins-refmap.json using /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createSrgToMcp/output.srg
+[22:18:51] [main/INFO] [mixin/]: Remapping refMap oculus-mixins-refmap.json using /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createSrgToMcp/output.srg
+[22:18:51] [main/INFO] [mixin/]: Remapping refMap oculus-mixins-refmap.json using /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createSrgToMcp/output.srg
+[22:18:51] [main/INFO] [mixin/]: Remapping refMap oculus-mixins-refmap.json using /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/createSrgToMcp/output.srg
+[22:18:51] [main/WARN] [mixin/]: Error loading class: mekanism/client/render/entity/RenderFlame (java.lang.ClassNotFoundException: mekanism.client.render.entity.RenderFlame)
+[22:18:51] [main/WARN] [mixin/]: Error loading class: mekanism/client/render/armor/MekaSuitArmor (java.lang.ClassNotFoundException: mekanism.client.render.armor.MekaSuitArmor)
+[22:18:51] [main/WARN] [Embeddium/]: Force-disabling mixin 'features.render.world.sky.WorldRendererMixin' as rule 'mixin.features.render.world.sky' (added by mods [oculus]) disables it and children
+[22:18:51] [main/WARN] [Embeddium/]: Force-disabling mixin 'features.render.world.sky.ClientWorldMixin' as rule 'mixin.features.render.world.sky' (added by mods [oculus]) disables it and children
+[22:18:51] [main/WARN] [Embeddium/]: Force-disabling mixin 'features.render.world.sky.BackgroundRendererMixin' as rule 'mixin.features.render.world.sky' (added by mods [oculus]) disables it and children
+[22:18:51] [main/WARN] [Embeddium/]: Force-disabling mixin 'features.render.gui.font.GlyphRendererMixin' as rule 'mixin.features.render.gui.font' (added by mods [oculus]) disables it and children
+[22:18:51] [main/WARN] [Embeddium/]: Force-disabling mixin 'features.render.gui.font.FontSetMixin' as rule 'mixin.features.render.gui.font' (added by mods [oculus]) disables it and children
+[22:18:51] [main/WARN] [Embeddium/]: Force-disabling mixin 'features.render.entity.shadows.EntityRenderDispatcherMixin' as rule 'mixin.features.render.entity' (added by mods [oculus]) disables it and children
+[22:18:51] [main/WARN] [Embeddium/]: Force-disabling mixin 'features.render.entity.remove_streams.ModelPartMixin' as rule 'mixin.features.render.entity' (added by mods [oculus]) disables it and children
+[22:18:51] [main/WARN] [Embeddium/]: Force-disabling mixin 'features.render.entity.remove_streams.HierarchicalModelMixin' as rule 'mixin.features.render.entity' (added by mods [oculus]) disables it and children
+[22:18:51] [main/WARN] [Embeddium/]: Force-disabling mixin 'features.render.entity.fast_render.ModelPartMixin' as rule 'mixin.features.render.entity' (added by mods [oculus]) disables it and children
+[22:18:51] [main/WARN] [Embeddium/]: Force-disabling mixin 'features.render.entity.fast_render.CuboidMixin' as rule 'mixin.features.render.entity' (added by mods [oculus]) disables it and children
+[22:18:51] [main/WARN] [Embeddium/]: Force-disabling mixin 'features.render.entity.cull.EntityRendererMixin' as rule 'mixin.features.render.entity' (added by mods [oculus]) disables it and children
+[22:18:51] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.4.1).
+[22:18:54] [Datafixer Bootstrap/INFO] [mojang/DataFixerBuilder]: 188 Datafixer optimizations took 152 milliseconds
+[22:18:55] [Render thread/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1.jar%23199!/assets/.mcassetsroot' uses unexpected schema
+[22:18:55] [Render thread/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1.jar%23199!/data/.mcassetsroot' uses unexpected schema
+[22:18:55] [Render thread/INFO] [mojang/YggdrasilAuthenticationService]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[22:18:55] [Render thread/INFO] [minecraft/Minecraft]: Setting user: Dev
+[22:18:55] [Render thread/INFO] [minecraft/Minecraft]: Backend library: LWJGL version 3.3.1 build 7
+[22:18:55] [Render thread/ERROR] [Embeddium-MixinTaintDetector/]: Mod mixin into Embeddium internals detected. This instance is now tainted. The Embeddium team does not provide any guarantee of support for issues encountered while such mods are installed.
+[22:18:55] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.gui.SodiumGameOptions, which may cause instability.
+[22:18:55] [Render thread/INFO] [Embeddium-PostlaunchChecks/]: OpenGL Vendor: Mesa
+[22:18:55] [Render thread/INFO] [Embeddium-PostlaunchChecks/]: OpenGL Renderer: llvmpipe (LLVM 21.1.8, 256 bits)
+[22:18:55] [Render thread/INFO] [Embeddium-PostlaunchChecks/]: OpenGL Version: 4.6 (Core Profile) Mesa 26.0.8-1ubuntu0.3
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered Config as LZ4 for config type CompressorConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered Config as ZSTD for config type CompressorConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered Config as LMDB for config type StorageConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered Config as Memory for config type StorageConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered Config as Redis for config type StorageConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered Config as RocksDB for config type StorageConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered Config as ReadonlyCachingLayer for config type StorageConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered Config as CompressionAdaptor for config type StorageConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered ConditionalStorageBackendConfig as ConditionalConfig for config type StorageConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered Config as FragmentationAdaptor for config type StorageConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered Config2 as AutoFragmentationAdaptor for config type StorageConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered BasicPathInsertionConfig as BasicPathConfig for config type StorageConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered Config as Serializer for config type SectionStorageConfig
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.cn.cg.Serialization]: Registered 13 config types
+[22:18:56] [Render thread/WARN] [Voxy/]: [me.cx.vy.ct.VoxyClient]: GPU does not support subgroup operations, expect some performance degradation
+[22:18:56] [Render thread/INFO] [Oculus/]: Debug functionality is disabled.
+[22:18:56] [Render thread/INFO] [Oculus/]: OpenGL 4.5 detected, enabling DSA.
+[22:18:56] [Render thread/WARN] [Oculus/]: Ignoring ambiguous boolean option ENTITIES
+[22:18:56] [Render thread/WARN] [Oculus/]: Ignoring ambiguous boolean option WORLD
+[22:18:56] [Render thread/WARN] [Oculus/]: Ignoring ambiguous boolean option WORLD
+[22:18:56] [Render thread/WARN] [Oculus/]: Ignoring ambiguous boolean option WORLD
+[22:18:56] [Render thread/WARN] [Oculus/]: Ignoring ambiguous boolean option WORLD
+[22:18:56] [Render thread/WARN] [Oculus/]: Ignoring ambiguous boolean option WEATHER
+[22:18:56] [Render thread/WARN] [Oculus/]: Ignoring ambiguous boolean option ENTITIES
+[22:18:56] [Render thread/WARN] [Oculus/]: Ignoring ambiguous boolean option WORLD
+[22:18:56] [Render thread/WARN] [Oculus/]: Ignoring ambiguous boolean option ENTITIES
+[22:18:56] [Render thread/WARN] [Oculus/]: Ignoring ambiguous boolean option WORLD
+[22:18:56] [Render thread/ERROR] [Oculus/]: Invalid alpha test directive for gbuffers_hand: true
+[22:18:56] [Render thread/WARN] [Oculus/]: Unable to resolve shader pack option menu element "ORB_BB" defined in shaders.properties
+[22:18:56] [Render thread/WARN] [Oculus/]: Unable to resolve shader pack option menu element "AUTOFOCUS" defined in shaders.properties
+[22:18:56] [Render thread/WARN] [Oculus/]: Unable to resolve shader pack option menu element "Cumulus_Clouds" defined in shaders.properties
+[22:18:56] [Render thread/WARN] [Oculus/]: Unable to resolve shader pack option menu element "Allow_Vanilla_sky" defined in shaders.properties
+[22:18:56] [Render thread/INFO] [Oculus/]: Profile: Custom (+20 options changed by user)
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.is.IrisShaderPatch]: External opaque shader patch applied
+[22:18:56] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.is.IrisShaderPatch]: External translucent shader patch applied
+[22:18:56] [Render thread/INFO] [Oculus/]: Using shaderpack: bliss_voxy.zip
+[22:18:56] [modloading-worker-0/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.gui.SodiumOptionsGUI, which may cause instability.
+[22:18:56] [modloading-worker-0/INFO] [ne.mi.co.ForgeMod/FORGEMOD]: Forge mod loading, version 47.3.0, for MC 1.20.1 with MCP 20230612.114412
+[22:18:56] [modloading-worker-0/INFO] [ne.mi.co.MinecraftForge/FORGE]: MinecraftForge v47.3.0 Initialized
+[22:18:57] [Render thread/INFO] [Oculus/]: Hardware information:
+[22:18:57] [Render thread/INFO] [Oculus/]: CPU: 4x AMD EPYC 9V45 96-Core Processor
+[22:18:57] [Render thread/INFO] [Oculus/]: GPU: llvmpipe (LLVM 21.1.8, 256 bits) (Supports OpenGL 4.6 (Core Profile) Mesa 26.0.8-1ubuntu0.3)
+[22:18:57] [Render thread/INFO] [Oculus/]: OS: Linux (7.0.0-1017-azure)
+[22:18:58] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.vertex.VertexFormatDescriptionImpl, which may cause instability.
+[22:18:58] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.vertex.buffer.SodiumBufferBuilder, which may cause instability.
+[22:18:58] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus, voxy] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.SodiumWorldRenderer, which may cause instability.
+[22:18:58] [Render thread/INFO] [ne.mi.ga.ForgeGameTestHooks/]: Enabled Gametest Namespaces: []
+[22:18:58] [Render thread/ERROR] [mojang/Narrator]: Error while loading the narrator
+com.mojang.text2speech.Narrator$InitializeException: Failed to load library flite
+	at com.mojang.text2speech.NarratorLinux$FliteLibrary.loadNative(NarratorLinux.java:69) ~[text2speech-1.17.9.jar:?] {}
+	at com.mojang.text2speech.NarratorLinux.<init>(NarratorLinux.java:18) ~[text2speech-1.17.9.jar:?] {}
+	at com.mojang.text2speech.Narrator.getNarrator(Narrator.java:41) ~[text2speech-1.17.9.jar:?] {}
+	at net.minecraft.client.GameNarrator.<init>(GameNarrator.java:19) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.Minecraft.<init>(Minecraft.java:553) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:A,pl:runtimedistcleaner:A}
+	at net.minecraft.client.main.Main.main(Main.java:182) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?] {}
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?] {}
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+	at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+	at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?] {}
+Caused by: java.lang.UnsatisfiedLinkError: Unable to load library 'flite':
+libflite.so: cannot open shared object file: No such file or directory
+libflite.so: cannot open shared object file: No such file or directory
+Native library (linux-x86-64/libflite.so) not found in resource path (/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/classes/java/main:/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-forge/0.4.1/5c35573a7b76103724799ca1174a69699b8a9aec/mixinextras-forge-0.4.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-lmdb/3.3.1/519f16154e43f2e0732a0eb3cd36349892814dbf/lwjgl-lmdb-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-lmdb/3.3.1/58bd2b0465fd93605d4209baa343454a8d39e61d/lwjgl-lmdb-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-lmdb/3.3.1/3102a2f83ccc3de00e79bae7f1ca3dbe2333db71/lwjgl-lmdb-3.3.1-natives-windows.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-zstd/3.3.1/7776e1aba83e73d4f729bcebaddf0bf6a04a3a28/lwjgl-zstd-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-zstd/3.3.1/a39a3481b18b4d5d92c8d3b35f28a5e06a0fc275/lwjgl-zstd-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-zstd/3.3.1/bd451f67973392392a98317b7cdfe2e94f83f4ba/lwjgl-zstd-3.3.1-natives-windows.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.rocksdb/rocksdbjni/10.2.1/381243de9230cb91a1c9d62e55003fe60dd23097/rocksdbjni-10.2.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/5.1.0/2d0489afae48292829951cb21fecb9fffdccc22e/jedis-5.1.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-pool2/2.12.0/458563f69fbdaebf7daadfe10dc3a22e42a7de50/commons-pool2-2.12.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lz4/lz4-java/1.8.0/4b986a99445e49ea5fbf5d149c4b63f6ed6c6780/lz4-java-1.8.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.tukaani/xz/1.10/1be8166f89e035a56c6bfc67dbc423996fe577e2/xz-1.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.xerial/sqlite-jdbc/3.49.1.0/145d3a6819b86f3618728273329392269104c8c7/sqlite-jdbc-3.49.1.0.jar:/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:/home/runner/.gradle/caches/forge_gradle/deobf_dependencies/maven/modrinth/embeddium/0.3.31+mc1.20.1_mapped_official_1.20.1/embeddium-0.3.31+mc1.20.1_mapped_official_1.20.1.jar:/home/runner/.gradle/caches/forge_gradle/deobf_dependencies/maven/modrinth/oculus/1.20.1-1.8.0_mapped_official_1.20.1/oculus-1.20.1-1.8.0_mapped_official_1.20.1.jar:/home/runner/.gradle/caches/forge_gradle/minecraft_repo/versions/1.20.1/client-extra.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlearlydisplay/1.20.1-47.3.0/91e33682894f35862e9ce29d633e3258120952f0/fmlearlydisplay-1.20.1-47.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.20.1-47.3.0/d7ebc62120f202109e300e084ca1a31a7b946a62/javafmllanguage-1.20.1-47.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.20.1-47.3.0/1bf3e845ea0ce750096da8c71c8364b188ab74d4/lowcodelanguage-1.20.1-47.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.20.1-47.3.0/6093682e943ddccbabf70539319d7f2fe64db2e7/mclanguage-1.20.1-47.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.20.1-47.3.0/3b6be96aba3e323f3c918e8ef6a96312d82d76ad/fmlcore-1.20.1-47.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlloader/1.20.1-47.3.0/547850469c8a336b4c60cb8619f6cd421e9e5f55/fmlloader-1.20.1-47.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarSelector/0.3.19/376cc9c8ea60720cf027c01fc033de915699801c/JarJarSelector-0.3.19.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarMetadata/0.3.19/83feaa9b770e6ac0e96ee4fc23fa89325c5fe2/JarJarMetadata-0.3.19.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/31.1-jre/60458f877d055d0c9114d9e1a2efb737b4bc282c/guava-31.1-jre.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.1/1227f9e0666314f9de41477e3ec277e542ed7f7b/java-objc-bridge-1.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/forgespi/7.0.1/3b4972a0cdb135853dba219be61a79b22cff1309/forgespi-7.0.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mergetool/1.1.5/f3da18e12c696d35a47c82cbb2cc8b5aa15e1154/mergetool-1.1.5-api.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/24.0.1/13c5c75c4206580aa4d683bffee658caae6c9f43/annotations-24.0.1.jar:/home/runner/.gradle/caches/forge_gradle/mcp_repo/net/minecraft/mapping/1.20.1/mapping-1.20.1-mapping.zip:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/accesstransformers/8.0.4/272d240aa73f42195b2a68e2ebd8b701ecf41f63/accesstransformers-8.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/eventbus/6.0.5/699143dd438431d06b57416944f7cedbe52e1475/eventbus-6.0.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/cpw.mods/modlauncher/10.0.9/6d9443f56f50bb85cea383686ff9c867391458b/modlauncher-10.0.9.jar:/home/runner/.gradle/caches/modules-2/files-2.1/cpw.mods/bootstraplauncher/1.1.2/c546e00443d8432cda6baa1c860346980742628/bootstraplauncher-1.1.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/cpw.mods/securejarhandler/2.1.10/51e6a22c6c716beb11e244bf5b8be480f51dd6b5/securejarhandler-2.1.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/coremods/5.1.6/62fab3c3d59d37f8e15af311cb638c6f6123423/coremods-5.1.6.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.openjdk.nashorn/nashorn-core/15.3/43977e804697048fc8d81d333a36c17d07a5b3dd/nashorn-core-15.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/9.7/e86dda4696d3c185fcc95d8d311904e7ce38a53f/asm-commons-9.7.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.7/c0655519f24d92af2202cb681cd7c1569df6ead6/asm-util-9.7.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.7/e4a258b7eb96107106c0599f0061cfc1832fe07a/asm-analysis-9.7.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.7/e446a17b175bfb733b87c5c2560ccb4e57d69f1a/asm-tree-9.7.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.7/73d7b3086e14beb604ced229c302feff6449723/asm-9.7.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4/4.9.1/e92af8ab33e428461927b484e90bb155a4f3a052/antlr4-4.9.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.9.1/428664f05d2b7f7b7610204b5aa7c1763f62011a/antlr4-runtime-4.9.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/unsafe/0.2.0/54d7a0a5e8fdb71b973025caa46f341ae5904f39/unsafe-0.2.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.electronwill.night-config/toml/3.6.4/51d6cefb2b55ee55ee26b16391212fb2c7dfb4f4/toml-3.6.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.electronwill.night-config/core/3.6.4/510f174abbf1c947494db50ef2445683bd52c230/core-3.6.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.8.5/4433f50c07debefaed0553bd0068f4f48d449313/maven-artifact-3.8.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.jodah/typetools/0.6.3/a01aaa6ddaea9ec07ec4f209487b7a46a526283a/typetools-0.6.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecrell/terminalconsoleappender/1.2.0/96d02cd3b384ff015a8fef4223bcb4ccf1717c95/terminalconsoleappender-1.2.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.jline/jline-reader/3.12.1/4382ab1382c7b6f379377ed5f665dc2f6e1218bc/jline-reader-3.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.jline/jline-terminal/3.12.1/c777448314e050d980a6b697c140f3bfe9eb7416/jline-terminal-3.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarFileSystems/0.3.19/2464eb7d6b9ddb9db36a82cf8a95193e5c6fe020/JarJarFileSystems-0.3.19.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.2.2/54f5efc19bca95d709d9a37d19ffcbba3d21c1a6/oshi-core-6.2.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10/dd9b193aef96e973d5a11ab13cd17430c2e4306b/gson-2.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/71.1/9e7d3304c23f9ba5cb71915f7cce23231a57a445/icu4j-71.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/4.0.43/2ff9d747a77570a07a60d32ac77eb6162ad2a2d9/authlib-4.0.43.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/blocklist/1.0.10/5c685c5ffa94c4cd39496c7184c1d122e515ecef/blocklist-1.0.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/brigadier/1.1.8/5244ce82c3337bba4a196a3ce858bfaecc74404a/brigadier-1.1.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/6.0.8/3ba4a30557a9b057760af4011f909ba619fc5125/datafixerupper-6.0.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/logging/1.1.1/832b8e6674a9b325a5175a3a6267dfaf34c85139/logging-1.1.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/patchy/2.2.10/da05971b07cbb379d002cf7eaec6a2048211fefc/patchy-2.2.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/text2speech/1.17.9/3cad216e3a7f0c19b4b394388bc9ffc446f13b14/text2speech-1.17.9.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.13/e5f6cae5ca7ecaac1ec2827a9e2d65ae2869cada/httpclient-4.5.13.jar:/home/runner/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.15/49d94806b6e3dc933dacbd8acb0fdbab8ebd1e5d/commons-codec-1.15.jar:/home/runner/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.11.0/a2503f302b11ebde7ebc3df41daebe0e4eea3689/commons-io-2.11.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.1.82.Final/644041d1fa96a5d3130a29e8978630d716d76e38/netty-handler-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec/4.1.82.Final/b77200379acb345a9ffdece1c605e591ac3e4e0a/netty-codec-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-epoll/4.1.82.Final/476409d6255001ca53a55f65b01c13822f8dc93a/netty-transport-native-epoll-4.1.82.Final-linux-aarch_64.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-epoll/4.1.82.Final/c7350a71920f3ae9142945e25fed4846cce53374/netty-transport-native-epoll-4.1.82.Final-linux-x86_64.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-classes-epoll/4.1.82.Final/e7c7dd18deac93105797f30057c912651ea76521/netty-transport-classes-epoll-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-unix-common/4.1.82.Final/3e895b35ca1b8a0eca56cacff4c2dde5d2c6abce/netty-transport-native-unix-common-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.1.82.Final/e431a218d91acb6476ccad5f5aafde50aa3945ca/netty-transport-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.1.82.Final/a544270cf1ae8b8077082f5036436a9a9971ea71/netty-buffer-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.1.82.Final/38f665ae8dcd29032eea31245ba7806bed2e0fa8/netty-resolver-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.1.82.Final/22d148e85c3f5ebdacc0ce1f5aabb1d420f73f3/netty-common-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/8.5.9/bb7ea75ecdb216654237830b3a96d87ad91f8cc5/fastutil-8.5.9.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna-platform/5.12.1/97406a297c852f4a41e688a176ec675f72e8329/jna-platform-5.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.12.1/b1e93a735caea94f503e95e6fe79bf9cdc1e985d/jna-5.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.4/4fdac2fbe92dfad86aa6e9301736f6b4342a3f5c/jopt-simple-5.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.21/4ec95b60d4e86b5c95a0e919cb172a0af98011ef/commons-compress-1.21.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.12.0/c6842c86792ff03b9f1d1fe2aab8dc23aa6c6f0e/commons-lang3-3.12.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.15/7f2e0c573eaa7a74bac2e89b359e1f73d92a0a1d/httpcore-4.4.15.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.19.0/3b6eeb4de4c49c0fe38a4ee27188ff5fee44d0bb/log4j-core-2.19.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-slf4j2-impl/2.19.0/5c04bfdd63ce9dceb2e284b81e96b6a70010ee10/log4j-slf4j2-impl-2.19.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.19.0/ea1b37f38c327596b216542bc636cfdc0b8036fa/log4j-api-2.19.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.joml/joml/1.10.5/22566d58af70ad3d72308bab63b8339906deb649/joml-1.10.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/cbac1b8d30cb4795149c1ef540f912671a8616d0/lwjgl-glfw-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/81716978214ecbda15050ca394b06ef61501a49e/lwjgl-glfw-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/a817bcf213db49f710603677457567c37d53e103/lwjgl-jemalloc-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/33dbb017b6ed6b25f993ad9d56741a49e7937718/lwjgl-jemalloc-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/2623a6b8ae1dfcd880738656a9f0243d2e6840bd/lwjgl-openal-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/f906b6439f6daa66001182ea7727e3467a93681b/lwjgl-openal-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/831a5533a21a5f4f81bbc51bb13e9899319b5411/lwjgl-opengl-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/ab9ab6fde3743e3550fa5d46d785ecb45b047d99/lwjgl-opengl-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/b119297cf8ed01f247abe8685857f8e7fcf5980f/lwjgl-stb-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/3ee7aec8686e52867677110415566a5342a80230/lwjgl-stb-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/ff1914111ef2e3e0110ef2dabc8d8cdaad82347/lwjgl-tinyfd-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/a35110b9471bea8cde826ab297550ee8c22f5035/lwjgl-tinyfd-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/ae58664f88e18a9bb2c77b063833ca7aaec484cb/lwjgl-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/1de885aba434f934201b99f2f1afb142036ac189/lwjgl-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.machinezoo.noexception/noexception/1.7.1/b65330c98e38a1f915fa54a6e5eca496505e3f0a/noexception-1.7.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-simple/1.7.30/e606eac955f55ecf1d8edcccba04eb8ac98088dd/slf4j-simple-1.7.30.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.1/f48d81adce2abf5ad3cfe463df517952749e03bc/slf4j-api-2.0.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/srgutils/0.4.11/fbad1341ffdb47d276bbdc40ecb06da49e053e74/srgutils-0.4.11.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.codehaus.plexus/plexus-utils/3.3.0/cf43b5391de623b36fe066a21127baef82c64022/plexus-utils-3.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.12.0/d5692f0526415fcc6de94bb5bfbd3afd9dd3b3e5/checker-qual-3.12.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.11.0/c5a0ace696d3f8b1c1d8cc036d8c03cc0cbe6b69/error_prone_annotations-2.11.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/ba035118bc8bac37d7eff77700720999acd9986d/j2objc-annotations-1.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.3/92f2c1ad8d84abcbeead6cf7f2c53a04166293c2/ST4-4.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.5.2/cd9cd41361c155f3af0f653009dcecb08d8b4afd/antlr-runtime-3.5.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.abego.treelayout/org.abego.treelayout.core/1.0.3/457216e8e6578099ae63667bb1e4439235892028/org.abego.treelayout.core-1.0.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.glassfish/javax.json/1.0.4/3178f73569fd7a1e5ffc464e680f7a8cc784b85a/javax.json-1.0.4.jar:/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/classes/java/smoketest:/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/resources/smoketest)
+	at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:307) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+	at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:467) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+	at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:409) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+	at com.mojang.text2speech.NarratorLinux$FliteLibrary.loadNative(NarratorLinux.java:67) ~[text2speech-1.17.9.jar:?] {}
+	... 19 more
+	Suppressed: java.lang.UnsatisfiedLinkError: libflite.so: cannot open shared object file: No such file or directory
+		at com.sun.jna.Native.open(Native Method) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+		at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:197) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+		at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:467) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+		at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:409) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+		at com.mojang.text2speech.NarratorLinux$FliteLibrary.loadNative(NarratorLinux.java:67) ~[text2speech-1.17.9.jar:?] {}
+		at com.mojang.text2speech.NarratorLinux.<init>(NarratorLinux.java:18) ~[text2speech-1.17.9.jar:?] {}
+		at com.mojang.text2speech.Narrator.getNarrator(Narrator.java:41) ~[text2speech-1.17.9.jar:?] {}
+		at net.minecraft.client.GameNarrator.<init>(GameNarrator.java:19) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+		at net.minecraft.client.Minecraft.<init>(Minecraft.java:553) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:A,pl:runtimedistcleaner:A}
+		at net.minecraft.client.main.Main.main(Main.java:182) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+		at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?] {}
+		at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?] {}
+		at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+		at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+		at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+		at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+		at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?] {}
+	Suppressed: java.lang.UnsatisfiedLinkError: libflite.so: cannot open shared object file: No such file or directory
+		at com.sun.jna.Native.open(Native Method) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+		at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:210) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+		at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:467) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+		at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:409) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+		at com.mojang.text2speech.NarratorLinux$FliteLibrary.loadNative(NarratorLinux.java:67) ~[text2speech-1.17.9.jar:?] {}
+		at com.mojang.text2speech.NarratorLinux.<init>(NarratorLinux.java:18) ~[text2speech-1.17.9.jar:?] {}
+		at com.mojang.text2speech.Narrator.getNarrator(Narrator.java:41) ~[text2speech-1.17.9.jar:?] {}
+		at net.minecraft.client.GameNarrator.<init>(GameNarrator.java:19) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+		at net.minecraft.client.Minecraft.<init>(Minecraft.java:553) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:A,pl:runtimedistcleaner:A}
+		at net.minecraft.client.main.Main.main(Main.java:182) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+		at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?] {}
+		at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?] {}
+		at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+		at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+		at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+		at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+		at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?] {}
+	Suppressed: java.io.IOException: Native library (linux-x86-64/libflite.so) not found in resource path (/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/classes/java/main:/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/resources/main:/home/runner/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-forge/0.4.1/5c35573a7b76103724799ca1174a69699b8a9aec/mixinextras-forge-0.4.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-lmdb/3.3.1/519f16154e43f2e0732a0eb3cd36349892814dbf/lwjgl-lmdb-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-lmdb/3.3.1/58bd2b0465fd93605d4209baa343454a8d39e61d/lwjgl-lmdb-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-lmdb/3.3.1/3102a2f83ccc3de00e79bae7f1ca3dbe2333db71/lwjgl-lmdb-3.3.1-natives-windows.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-zstd/3.3.1/7776e1aba83e73d4f729bcebaddf0bf6a04a3a28/lwjgl-zstd-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-zstd/3.3.1/a39a3481b18b4d5d92c8d3b35f28a5e06a0fc275/lwjgl-zstd-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-zstd/3.3.1/bd451f67973392392a98317b7cdfe2e94f83f4ba/lwjgl-zstd-3.3.1-natives-windows.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.rocksdb/rocksdbjni/10.2.1/381243de9230cb91a1c9d62e55003fe60dd23097/rocksdbjni-10.2.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/5.1.0/2d0489afae48292829951cb21fecb9fffdccc22e/jedis-5.1.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-pool2/2.12.0/458563f69fbdaebf7daadfe10dc3a22e42a7de50/commons-pool2-2.12.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lz4/lz4-java/1.8.0/4b986a99445e49ea5fbf5d149c4b63f6ed6c6780/lz4-java-1.8.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.tukaani/xz/1.10/1be8166f89e035a56c6bfc67dbc423996fe577e2/xz-1.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.xerial/sqlite-jdbc/3.49.1.0/145d3a6819b86f3618728273329392269104c8c7/sqlite-jdbc-3.49.1.0.jar:/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.0_mapped_official_1.20.1/forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:/home/runner/.gradle/caches/forge_gradle/deobf_dependencies/maven/modrinth/embeddium/0.3.31+mc1.20.1_mapped_official_1.20.1/embeddium-0.3.31+mc1.20.1_mapped_official_1.20.1.jar:/home/runner/.gradle/caches/forge_gradle/deobf_dependencies/maven/modrinth/oculus/1.20.1-1.8.0_mapped_official_1.20.1/oculus-1.20.1-1.8.0_mapped_official_1.20.1.jar:/home/runner/.gradle/caches/forge_gradle/minecraft_repo/versions/1.20.1/client-extra.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlearlydisplay/1.20.1-47.3.0/91e33682894f35862e9ce29d633e3258120952f0/fmlearlydisplay-1.20.1-47.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.20.1-47.3.0/d7ebc62120f202109e300e084ca1a31a7b946a62/javafmllanguage-1.20.1-47.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.20.1-47.3.0/1bf3e845ea0ce750096da8c71c8364b188ab74d4/lowcodelanguage-1.20.1-47.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.20.1-47.3.0/6093682e943ddccbabf70539319d7f2fe64db2e7/mclanguage-1.20.1-47.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.20.1-47.3.0/3b6be96aba3e323f3c918e8ef6a96312d82d76ad/fmlcore-1.20.1-47.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlloader/1.20.1-47.3.0/547850469c8a336b4c60cb8619f6cd421e9e5f55/fmlloader-1.20.1-47.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarSelector/0.3.19/376cc9c8ea60720cf027c01fc033de915699801c/JarJarSelector-0.3.19.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarMetadata/0.3.19/83feaa9b770e6ac0e96ee4fc23fa89325c5fe2/JarJarMetadata-0.3.19.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/31.1-jre/60458f877d055d0c9114d9e1a2efb737b4bc282c/guava-31.1-jre.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.1/1227f9e0666314f9de41477e3ec277e542ed7f7b/java-objc-bridge-1.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/forgespi/7.0.1/3b4972a0cdb135853dba219be61a79b22cff1309/forgespi-7.0.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mergetool/1.1.5/f3da18e12c696d35a47c82cbb2cc8b5aa15e1154/mergetool-1.1.5-api.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/24.0.1/13c5c75c4206580aa4d683bffee658caae6c9f43/annotations-24.0.1.jar:/home/runner/.gradle/caches/forge_gradle/mcp_repo/net/minecraft/mapping/1.20.1/mapping-1.20.1-mapping.zip:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/accesstransformers/8.0.4/272d240aa73f42195b2a68e2ebd8b701ecf41f63/accesstransformers-8.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/eventbus/6.0.5/699143dd438431d06b57416944f7cedbe52e1475/eventbus-6.0.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/cpw.mods/modlauncher/10.0.9/6d9443f56f50bb85cea383686ff9c867391458b/modlauncher-10.0.9.jar:/home/runner/.gradle/caches/modules-2/files-2.1/cpw.mods/bootstraplauncher/1.1.2/c546e00443d8432cda6baa1c860346980742628/bootstraplauncher-1.1.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/cpw.mods/securejarhandler/2.1.10/51e6a22c6c716beb11e244bf5b8be480f51dd6b5/securejarhandler-2.1.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/coremods/5.1.6/62fab3c3d59d37f8e15af311cb638c6f6123423/coremods-5.1.6.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.openjdk.nashorn/nashorn-core/15.3/43977e804697048fc8d81d333a36c17d07a5b3dd/nashorn-core-15.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/9.7/e86dda4696d3c185fcc95d8d311904e7ce38a53f/asm-commons-9.7.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.7/c0655519f24d92af2202cb681cd7c1569df6ead6/asm-util-9.7.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.7/e4a258b7eb96107106c0599f0061cfc1832fe07a/asm-analysis-9.7.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.7/e446a17b175bfb733b87c5c2560ccb4e57d69f1a/asm-tree-9.7.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.7/73d7b3086e14beb604ced229c302feff6449723/asm-9.7.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4/4.9.1/e92af8ab33e428461927b484e90bb155a4f3a052/antlr4-4.9.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.9.1/428664f05d2b7f7b7610204b5aa7c1763f62011a/antlr4-runtime-4.9.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/unsafe/0.2.0/54d7a0a5e8fdb71b973025caa46f341ae5904f39/unsafe-0.2.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.electronwill.night-config/toml/3.6.4/51d6cefb2b55ee55ee26b16391212fb2c7dfb4f4/toml-3.6.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.electronwill.night-config/core/3.6.4/510f174abbf1c947494db50ef2445683bd52c230/core-3.6.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.8.5/4433f50c07debefaed0553bd0068f4f48d449313/maven-artifact-3.8.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.jodah/typetools/0.6.3/a01aaa6ddaea9ec07ec4f209487b7a46a526283a/typetools-0.6.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecrell/terminalconsoleappender/1.2.0/96d02cd3b384ff015a8fef4223bcb4ccf1717c95/terminalconsoleappender-1.2.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.jline/jline-reader/3.12.1/4382ab1382c7b6f379377ed5f665dc2f6e1218bc/jline-reader-3.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.jline/jline-terminal/3.12.1/c777448314e050d980a6b697c140f3bfe9eb7416/jline-terminal-3.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarFileSystems/0.3.19/2464eb7d6b9ddb9db36a82cf8a95193e5c6fe020/JarJarFileSystems-0.3.19.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.2.2/54f5efc19bca95d709d9a37d19ffcbba3d21c1a6/oshi-core-6.2.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10/dd9b193aef96e973d5a11ab13cd17430c2e4306b/gson-2.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/71.1/9e7d3304c23f9ba5cb71915f7cce23231a57a445/icu4j-71.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/4.0.43/2ff9d747a77570a07a60d32ac77eb6162ad2a2d9/authlib-4.0.43.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/blocklist/1.0.10/5c685c5ffa94c4cd39496c7184c1d122e515ecef/blocklist-1.0.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/brigadier/1.1.8/5244ce82c3337bba4a196a3ce858bfaecc74404a/brigadier-1.1.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/6.0.8/3ba4a30557a9b057760af4011f909ba619fc5125/datafixerupper-6.0.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/logging/1.1.1/832b8e6674a9b325a5175a3a6267dfaf34c85139/logging-1.1.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/patchy/2.2.10/da05971b07cbb379d002cf7eaec6a2048211fefc/patchy-2.2.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/text2speech/1.17.9/3cad216e3a7f0c19b4b394388bc9ffc446f13b14/text2speech-1.17.9.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.13/e5f6cae5ca7ecaac1ec2827a9e2d65ae2869cada/httpclient-4.5.13.jar:/home/runner/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.15/49d94806b6e3dc933dacbd8acb0fdbab8ebd1e5d/commons-codec-1.15.jar:/home/runner/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.11.0/a2503f302b11ebde7ebc3df41daebe0e4eea3689/commons-io-2.11.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.1.82.Final/644041d1fa96a5d3130a29e8978630d716d76e38/netty-handler-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec/4.1.82.Final/b77200379acb345a9ffdece1c605e591ac3e4e0a/netty-codec-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-epoll/4.1.82.Final/476409d6255001ca53a55f65b01c13822f8dc93a/netty-transport-native-epoll-4.1.82.Final-linux-aarch_64.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-epoll/4.1.82.Final/c7350a71920f3ae9142945e25fed4846cce53374/netty-transport-native-epoll-4.1.82.Final-linux-x86_64.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-classes-epoll/4.1.82.Final/e7c7dd18deac93105797f30057c912651ea76521/netty-transport-classes-epoll-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-unix-common/4.1.82.Final/3e895b35ca1b8a0eca56cacff4c2dde5d2c6abce/netty-transport-native-unix-common-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.1.82.Final/e431a218d91acb6476ccad5f5aafde50aa3945ca/netty-transport-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.1.82.Final/a544270cf1ae8b8077082f5036436a9a9971ea71/netty-buffer-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.1.82.Final/38f665ae8dcd29032eea31245ba7806bed2e0fa8/netty-resolver-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.1.82.Final/22d148e85c3f5ebdacc0ce1f5aabb1d420f73f3/netty-common-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/8.5.9/bb7ea75ecdb216654237830b3a96d87ad91f8cc5/fastutil-8.5.9.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna-platform/5.12.1/97406a297c852f4a41e688a176ec675f72e8329/jna-platform-5.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.12.1/b1e93a735caea94f503e95e6fe79bf9cdc1e985d/jna-5.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.4/4fdac2fbe92dfad86aa6e9301736f6b4342a3f5c/jopt-simple-5.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.21/4ec95b60d4e86b5c95a0e919cb172a0af98011ef/commons-compress-1.21.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.12.0/c6842c86792ff03b9f1d1fe2aab8dc23aa6c6f0e/commons-lang3-3.12.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.15/7f2e0c573eaa7a74bac2e89b359e1f73d92a0a1d/httpcore-4.4.15.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.19.0/3b6eeb4de4c49c0fe38a4ee27188ff5fee44d0bb/log4j-core-2.19.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-slf4j2-impl/2.19.0/5c04bfdd63ce9dceb2e284b81e96b6a70010ee10/log4j-slf4j2-impl-2.19.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.19.0/ea1b37f38c327596b216542bc636cfdc0b8036fa/log4j-api-2.19.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.joml/joml/1.10.5/22566d58af70ad3d72308bab63b8339906deb649/joml-1.10.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/cbac1b8d30cb4795149c1ef540f912671a8616d0/lwjgl-glfw-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/81716978214ecbda15050ca394b06ef61501a49e/lwjgl-glfw-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/a817bcf213db49f710603677457567c37d53e103/lwjgl-jemalloc-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/33dbb017b6ed6b25f993ad9d56741a49e7937718/lwjgl-jemalloc-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/2623a6b8ae1dfcd880738656a9f0243d2e6840bd/lwjgl-openal-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/f906b6439f6daa66001182ea7727e3467a93681b/lwjgl-openal-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/831a5533a21a5f4f81bbc51bb13e9899319b5411/lwjgl-opengl-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/ab9ab6fde3743e3550fa5d46d785ecb45b047d99/lwjgl-opengl-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/b119297cf8ed01f247abe8685857f8e7fcf5980f/lwjgl-stb-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/3ee7aec8686e52867677110415566a5342a80230/lwjgl-stb-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/ff1914111ef2e3e0110ef2dabc8d8cdaad82347/lwjgl-tinyfd-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/a35110b9471bea8cde826ab297550ee8c22f5035/lwjgl-tinyfd-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/ae58664f88e18a9bb2c77b063833ca7aaec484cb/lwjgl-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/1de885aba434f934201b99f2f1afb142036ac189/lwjgl-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.machinezoo.noexception/noexception/1.7.1/b65330c98e38a1f915fa54a6e5eca496505e3f0a/noexception-1.7.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-simple/1.7.30/e606eac955f55ecf1d8edcccba04eb8ac98088dd/slf4j-simple-1.7.30.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.1/f48d81adce2abf5ad3cfe463df517952749e03bc/slf4j-api-2.0.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/srgutils/0.4.11/fbad1341ffdb47d276bbdc40ecb06da49e053e74/srgutils-0.4.11.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.codehaus.plexus/plexus-utils/3.3.0/cf43b5391de623b36fe066a21127baef82c64022/plexus-utils-3.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.12.0/d5692f0526415fcc6de94bb5bfbd3afd9dd3b3e5/checker-qual-3.12.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.11.0/c5a0ace696d3f8b1c1d8cc036d8c03cc0cbe6b69/error_prone_annotations-2.11.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/ba035118bc8bac37d7eff77700720999acd9986d/j2objc-annotations-1.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.3/92f2c1ad8d84abcbeead6cf7f2c53a04166293c2/ST4-4.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.5.2/cd9cd41361c155f3af0f653009dcecb08d8b4afd/antlr-runtime-3.5.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.abego.treelayout/org.abego.treelayout.core/1.0.3/457216e8e6578099ae63667bb1e4439235892028/org.abego.treelayout.core-1.0.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.glassfish/javax.json/1.0.4/3178f73569fd7a1e5ffc464e680f7a8cc784b85a/javax.json-1.0.4.jar:/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/classes/java/smoketest:/home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/build/resources/smoketest)
+		at com.sun.jna.Native.extractFromResourcePath(Native.java:1145) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+		at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:281) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+		at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:467) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+		at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:409) ~[jna-5.12.1.jar:5.12.1 (b0)] {}
+		at com.mojang.text2speech.NarratorLinux$FliteLibrary.loadNative(NarratorLinux.java:67) ~[text2speech-1.17.9.jar:?] {}
+		at com.mojang.text2speech.NarratorLinux.<init>(NarratorLinux.java:18) ~[text2speech-1.17.9.jar:?] {}
+		at com.mojang.text2speech.Narrator.getNarrator(Narrator.java:41) ~[text2speech-1.17.9.jar:?] {}
+		at net.minecraft.client.GameNarrator.<init>(GameNarrator.java:19) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+		at net.minecraft.client.Minecraft.<init>(Minecraft.java:553) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:A,pl:runtimedistcleaner:A}
+		at net.minecraft.client.main.Main.main(Main.java:182) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+		at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?] {}
+		at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?] {}
+		at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+		at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+		at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+		at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+		at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?] {}
+		at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?] {}
+[22:18:58] [Render thread/INFO] [minecraft/ReloadableResourceManager]: Reloading ResourceManager: vanilla, mod_resources
+[22:18:58] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Configuration file /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/run/config/forge-client.toml is not correct. Correcting
+[22:18:58] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client was corrected from null to its default, SimpleCommentedConfig:{}. 
+[22:18:58] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client.alwaysSetupTerrainOffThread was corrected from null to its default, false. 
+[22:18:58] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client.experimentalForgeLightPipelineEnabled was corrected from null to its default, false. 
+[22:18:58] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client.showLoadWarnings was corrected from null to its default, true. 
+[22:18:58] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client.useCombinedDepthStencilAttachment was corrected from null to its default, false. 
+[22:18:58] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client.compressLanIPv6Addresses was corrected from null to its default, true. 
+[22:18:58] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client.calculateAllNormals was corrected from null to its default, false. 
+[22:18:58] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client.stabilizeDirectionGetNearest was corrected from null to its default, true. 
+[22:18:58] [Worker-Main-2/INFO] [minecraft/UnihexProvider]: Found unifont_all_no_pua-15.0.06.hex, loading
+[22:18:59] [Forge Version Check/INFO] [ne.mi.fm.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[22:18:59] [Forge Version Check/INFO] [ne.mi.fm.VersionChecker/]: [forge] Found status: OUTDATED Current: 47.3.0 Target: 47.4.28
+[22:19:01] [Render thread/WARN] [minecraft/SoundEngine]: Missing sound for event: minecraft:item.goat_horn.play
+[22:19:01] [Render thread/WARN] [minecraft/SoundEngine]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+ALSA lib confmisc.c:855:(parse_card) [error.core] cannot find card '0'
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) [error.core] error evaluating strings
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) [error.core] error evaluating name
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5734:(snd_config_expand) [error.core] Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) [error.pcm] Unknown PCM default
+ALSA lib confmisc.c:855:(parse_card) [error.core] cannot find card '0'
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) [error.core] error evaluating strings
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) [error.core] error evaluating name
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5734:(snd_config_expand) [error.core] Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) [error.pcm] Unknown PCM default
+[22:19:01] [Render thread/ERROR] [minecraft/SoundEngine]: Error starting SoundSystem. Turning off sounds & music
+java.lang.IllegalStateException: Failed to open OpenAL device
+	at com.mojang.blaze3d.audio.Library.openDeviceOrFallback(Library.java:283) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at com.mojang.blaze3d.audio.Library.init(Library.java:153) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.sounds.SoundEngine.loadLibrary(SoundEngine.java:104) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.sounds.SoundEngine.reload(SoundEngine.java:96) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:125) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:40) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.server.packs.resources.SimplePreparableReloadListener.lambda$reload$1(SimplePreparableReloadListener.java:13) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading}
+	at java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:718) ~[?:?] {}
+	at java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:482) ~[?:?] {}
+	at net.minecraft.server.packs.resources.SimpleReloadInstance.lambda$new$3(SimpleReloadInstance.java:69) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading}
+	at net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:156) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:mixin,pl:accesstransformer:B,re:computing_frames,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B}
+	at net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:23) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:mixin,re:computing_frames,re:classloading}
+	at net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:130) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:mixin,pl:accesstransformer:B,re:computing_frames,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B}
+	at net.minecraft.util.thread.BlockableEventLoop.runAllTasks(BlockableEventLoop.java:115) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:mixin,pl:accesstransformer:B,re:computing_frames,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B}
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1106) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:A,pl:runtimedistcleaner:A}
+	at net.minecraft.client.Minecraft.run(Minecraft.java:718) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:A,pl:runtimedistcleaner:A}
+	at net.minecraft.client.main.Main.main(Main.java:218) ~[forge-1.20.1-47.3.0_mapped_official_1.20.1.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?] {}
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?] {}
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+	at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+	at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.3.0.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?] {}
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?] {}
+[22:19:01] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[22:19:01] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[22:19:01] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[22:19:01] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[22:19:01] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[22:19:01] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[22:19:01] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[22:19:01] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[22:19:01] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[22:19:01] [Render thread/WARN] [minecraft/ShaderInstance]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[22:19:01] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 256x256x0 minecraft:textures/atlas/particles.png-atlas
+[22:19:01] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 256x256x0 minecraft:textures/atlas/paintings.png-atlas
+[22:19:01] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 128x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[22:19:03] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE creating world
+[22:19:04] [Render thread/INFO] [minecraft/RecipeManager]: Loaded 7 recipes
+[22:19:04] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 1271 advancements
+[22:19:05] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.gl.device.GLRenderDevice$ImmediateDrawCommandList, which may cause instability.
+[22:19:05] [Server thread/INFO] [minecraft/IntegratedServer]: Starting integrated minecraft server version 1.20.1
+[22:19:05] [Server thread/INFO] [minecraft/MinecraftServer]: Generating keypair
+[22:19:05] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Configuration file ./saves/voxy-smoke/serverconfig/forge-server.toml is not correct. Correcting
+[22:19:05] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server was corrected from null to its default, SimpleCommentedConfig:{}. 
+[22:19:05] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.removeErroringBlockEntities was corrected from null to its default, false. 
+[22:19:05] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.removeErroringEntities was corrected from null to its default, false. 
+[22:19:05] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.fullBoundingBoxLadders was corrected from null to its default, false. 
+[22:19:05] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.zombieBaseSummonChance was corrected from null to its default, 0.1. 
+[22:19:05] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.zombieBabyChance was corrected from null to its default, 0.05. 
+[22:19:05] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.permissionHandler was corrected from null to its default, forge:default_handler. 
+[22:19:05] [Server thread/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key server.advertiseDedicatedServerToLan was corrected from null to its default, true. 
+[22:19:05] [Server thread/INFO] [minecraft/MinecraftServer]: Preparing start region for dimension minecraft:overworld
+[22:19:06] [Render thread/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 0%
+[22:19:06] [Render thread/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 1%
+[22:19:06] [Render thread/INFO] [minecraft/LoggerChunkProgressListener]: Preparing spawn area: 57%
+[22:19:06] [Server thread/INFO] [ne.mi.se.pe.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[22:19:06] [Render thread/INFO] [minecraft/LoggerChunkProgressListener]: Time elapsed: 1205 ms
+[22:19:06] [Server thread/INFO] [minecraft/IntegratedServer]: Changing view distance to 5, from 10
+[22:19:06] [Server thread/INFO] [minecraft/IntegratedServer]: Changing simulation distance to 5, from 0
+[22:19:07] [Render thread/WARN] [io.ne.ut.in.SystemPropertyUtil/]: Unable to parse the boolean system property 'java.net.preferIPv6Addresses':system - using the default value: false
+[22:19:07] [Netty Local Client IO #0/INFO] [ne.mi.ne.NetworkHooks/]: Connected to a modded server.
+[22:19:07] [Server thread/INFO] [minecraft/PlayerList]: Dev[local:E:cbe7bd59] logged in with entity id 1 at (9.5, -60.0, -9.5)
+[22:19:07] [Render thread/INFO] [Voxy/]: [me.cx.vy.cl.VoxyInstance]: Initializing voxy instance
+[22:19:07] [Render thread/INFO] [Voxy/]: [me.cx.vy.cl.VoxyInstance]: Dedicated voxy thread pool size: 1
+[22:19:07] [Server thread/INFO] [minecraft/MinecraftServer]: Dev joined the game
+[22:19:07] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [voxy] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.chunk.map.ChunkTracker, which may cause instability.
+[22:19:07] [Render thread/INFO] [Oculus/]: Reloading pipeline on dimension change: null => NamespacedId{namespace='minecraft', name='overworld'}
+[22:19:07] [Render thread/INFO] [Oculus/]: Creating pipeline for dimension NamespacedId{namespace='minecraft', name='overworld'}
+[22:19:07] [Render thread/INFO] [Oculus/]: Starting custom uniform resolving
+[22:19:07] [Server thread/INFO] [Voxy/]: [me.cx.vy.cl.VoxyInstance]: Creating new world engine: 3916592967303238950@1275514056
+[22:19:08] [Render thread/WARN] [ne.ir.ir.pi.tr.tr.CompatibilityTransformer/]: The in declaration 'WsunVec' in the FRAGMENT shader is missing a corresponding out declaration in the previous stage VERTEX and has been compatibility-patched. See debugging.md for more information.
+[22:19:08] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=1, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:265(141): warning: `tempOffsets' used uninitialized'
+[22:19:08] [Render thread/WARN] [ne.ir.ir.gl.sh.GlShader/]: Shader compilation log for deferred.vsh: 0:265(141): warning: `tempOffsets' used uninitialized
+
+[22:19:08] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=2, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:352(19): warning: `Coverage' used uninitialized'
+[22:19:08] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=3, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:352(29): warning: `Density' used uninitialized'
+[22:19:08] [Render thread/WARN] [ne.ir.ir.gl.sh.GlShader/]: Shader compilation log for deferred.fsh: 0:352(19): warning: `Coverage' used uninitialized
+0:352(29): warning: `Density' used uninitialized
+
+[22:19:08] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=4, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:175(19): warning: `Coverage' used uninitialized'
+[22:19:08] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=5, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:175(29): warning: `Density' used uninitialized'
+[22:19:08] [Render thread/WARN] [ne.ir.ir.gl.sh.GlShader/]: Shader compilation log for deferred1.fsh: 0:175(19): warning: `Coverage' used uninitialized
+0:175(29): warning: `Density' used uninitialized
+
+[22:19:08] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=6, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:354(19): warning: `Coverage' used uninitialized'
+[22:19:08] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=7, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:354(29): warning: `Density' used uninitialized'
+[22:19:08] [Render thread/WARN] [ne.ir.ir.gl.sh.GlShader/]: Shader compilation log for composite1.fsh: 0:354(19): warning: `Coverage' used uninitialized
+0:354(29): warning: `Density' used uninitialized
+
+[22:19:08] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=8, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:297(19): warning: `Coverage' used uninitialized'
+[22:19:08] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=9, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:297(29): warning: `Density' used uninitialized'
+[22:19:08] [Render thread/WARN] [ne.ir.ir.gl.sh.GlShader/]: Shader compilation log for composite2.fsh: 0:297(19): warning: `Coverage' used uninitialized
+0:297(29): warning: `Density' used uninitialized
+
+[22:19:09] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=10, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:214(19): warning: `Coverage' used uninitialized'
+[22:19:09] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=11, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:214(29): warning: `Density' used uninitialized'
+[22:19:09] [Render thread/WARN] [ne.ir.ir.gl.sh.GlShader/]: Shader compilation log for composite3.fsh: 0:214(19): warning: `Coverage' used uninitialized
+0:214(29): warning: `Density' used uninitialized
+
+[22:19:09] [Render thread/WARN] [ne.ir.ir.pi.tr.tr.CompatibilityTransformer/]: Removed empty external declarations (";").
+[22:19:09] [Render thread/WARN] [Oculus/]: [Patcher] gl_FragColor is not supported yet, please use gl_FragData! Assuming that the shaderpack author intended to use gl_FragData[0]...
+[22:19:09] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=12, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:187(19): warning: `Coverage' used uninitialized'
+[22:19:09] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=13, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:187(29): warning: `Density' used uninitialized'
+[22:19:09] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=14, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:187(19): warning: `Coverage' used uninitialized'
+[22:19:09] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=15, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:187(29): warning: `Density' used uninitialized'
+[22:19:09] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=16, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:186(19): warning: `Coverage' used uninitialized'
+[22:19:09] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=17, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:186(29): warning: `Density' used uninitialized'
+[22:19:09] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=18, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:186(19): warning: `Coverage' used uninitialized'
+[22:19:09] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=19, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:186(29): warning: `Density' used uninitialized'
+[22:19:09] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=20, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:341(19): warning: `Coverage' used uninitialized'
+[22:19:09] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=21, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:341(29): warning: `Density' used uninitialized'
+[22:19:10] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=22, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:344(19): warning: `Coverage' used uninitialized'
+[22:19:10] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=23, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:344(29): warning: `Density' used uninitialized'
+[22:19:10] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=24, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:344(19): warning: `Coverage' used uninitialized'
+[22:19:10] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=25, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:344(29): warning: `Density' used uninitialized'
+[22:19:10] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=26, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:186(19): warning: `Coverage' used uninitialized'
+[22:19:10] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=27, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:186(29): warning: `Density' used uninitialized'
+[22:19:10] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=28, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:186(19): warning: `Coverage' used uninitialized'
+[22:19:10] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=29, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:186(29): warning: `Density' used uninitialized'
+[22:19:10] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=30, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:181(19): warning: `Coverage' used uninitialized'
+[22:19:10] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=31, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:181(29): warning: `Density' used uninitialized'
+[22:19:10] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=32, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:342(19): warning: `Coverage' used uninitialized'
+[22:19:10] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=33, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:342(29): warning: `Density' used uninitialized'
+[22:19:12] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.ce.rg.sn.gy.BasicSectionGeometryData]: Creating and zeroing 255MB geometry buffer driver states 0MB of free memory
+[22:19:12] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.ce.rg.sn.gy.BasicSectionGeometryData]: if your game crashes/exits here without any other log message, try manually decreasing the geometry capacity
+[22:19:12] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.ce.rg.sn.gy.BasicSectionGeometryData]: Successfully allocated the geometry buffer in 120ms
+[22:19:12] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=34, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:353(40): warning: some implementations may not support implicit int -> uint conversions for `&' operators; consider casting explicitly for portability'
+[22:19:12] [Render thread/WARN] [Voxy/]: [me.cx.vy.ct.ce.gl.sr.Shader$Builder]: 0:353(40): warning: some implementations may not support implicit int -> uint conversions for `&' operators; consider casting explicitly for portability
+
+[22:19:12] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.ce.RenderPipelineFactory]: Creating voxy iris render pipeline
+[22:19:12] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=35, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:208(52): warning: some implementations may not support implicit int -> uint conversions for `&' operators; consider casting explicitly for portability'
+[22:19:12] [Render thread/WARN] [Voxy/]: [me.cx.vy.ct.ce.gl.sr.Shader$Builder]: 0:208(52): warning: some implementations may not support implicit int -> uint conversions for `&' operators; consider casting explicitly for portability
+
+[22:19:12] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.ce.VoxyRenderSystem]: Voxy render system created with 268434432 geometry capacity, using pipeline 'IrisVoxyRenderPipeline' with renderer 'MDICSectionRenderer'
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus, voxy] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.chunk.RenderSectionManager, which may cause instability.
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask, which may cause instability.
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.chunk.vertex.format.ChunkMeshFormats, which may cause instability.
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.chunk.vertex.format.ChunkMeshAttribute, which may cause instability.
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.gl.attribute.GlVertexFormat$Builder, which may cause instability.
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.gl.attribute.GlVertexAttributeFormat, which may cause instability.
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus, voxy] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.chunk.DefaultChunkRenderer, which may cause instability.
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.chunk.ShaderChunkRenderer, which may cause instability.
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [voxy] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.chunk.compile.executor.ChunkJobQueue, which may cause instability.
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.chunk.compile.ChunkBuildBuffers, which may cause instability.
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.chunk.vertex.builder.ChunkMeshBufferBuilder, which may cause instability.
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.chunk.compile.buffers.BakedChunkModelBuilder, which may cause instability.
+[22:19:12] [Render thread/WARN] [mixin/]: Error loading class: net/fabricmc/fabric/api/blockview/v2/FabricBlockView (java.lang.ClassNotFoundException: net.fabricmc.fabric.api.blockview.v2.FabricBlockView)
+[22:19:12] [Render thread/WARN] [mixin/]: Error loading class: net/fabricmc/fabric/api/rendering/data/v1/RenderAttachedBlockView (java.lang.ClassNotFoundException: net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView)
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.model.light.smooth.SmoothLightPipeline, which may cause instability.
+[22:19:12] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.model.light.flat.FlatLightPipeline, which may cause instability.
+[22:19:12] [Render thread/INFO] [ChunkBuilder/]: Started 1 worker threads
+[22:19:13] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 2 advancements
+[22:19:13] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.gl.shader.ShaderType, which may cause instability.
+[22:19:13] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.gl.shader.GlProgram, which may cause instability.
+[22:19:13] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=36, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:339(19): warning: `Coverage' used uninitialized'
+[22:19:13] [Render thread/INFO] [mojang/GlDebug]: OpenGL debug message: id=37, source=SHADER COMPILER, type=OTHER, severity=HIGH, message='0:339(29): warning: `Density' used uninitialized'
+[22:19:13] [Render thread/WARN] [me.je.mo.so.cl.gl.sh.GlShader/]: Shader compilation log for iris:sodium-terrain-gbuffer_translucent.fsh: 0:339(19): warning: `Coverage' used uninitialized
+0:339(29): warning: `Density' used uninitialized
+
+[22:19:13] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.vertex.serializers.VertexSerializerRegistryImpl, which may cause instability.
+[22:19:18] [Render thread/WARN] [Embeddium-MixinTaintDetector/]: Mod(s) [oculus] are modifying Embeddium class me.jellysquid.mods.sodium.client.render.chunk.region.RenderRegion$DeviceResources, which may cause instability.
+[22:19:20] [Server thread/INFO] [VoxySceneTest/]: VOXY_SMOKE scene built in 2340 ms
+[22:19:20] [Server thread/WARN] [minecraft/MinecraftServer]: Can't keep up! Is the server overloaded? Running 2394ms or 47 ticks behind
+[22:19:25] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE progress ticks=100 shaderPack=true available=true instance=true renderSystem=true compute=true indirect=true subgroup=false
+[22:19:25] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Buf/Tex [#/Mb]: [30/388],[9/540]
+[22:19:25] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: MQ/IF/MC: 0000, 002, 0005
+[22:19:25] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: RSSQ/TFC: 9/0
+[22:19:25] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: UC/GC: 0/255 PU: 0
+[22:19:25] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Using: IrisVoxyRenderPipeline
+[22:19:25] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Voxy frame runtime (millis):  0.263, 25.710,  4.083, 30.124
+[22:19:25] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra time:  0.000,  0.073,  0.051,  0.050
+[22:19:25] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra 2 time:  1.323,  0.173,  0.000,  3.894,  0.000
+[22:19:25] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: GpuTime: [39.09,198.76,100.64]
+[22:19:32] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE progress ticks=200 shaderPack=true available=true instance=true renderSystem=true compute=true indirect=true subgroup=false
+[22:19:32] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Buf/Tex [#/Mb]: [30/388],[9/540]
+[22:19:32] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: MQ/IF/MC: 0000, 000, 0008
+[22:19:32] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: RSSQ/TFC: 0/0
+[22:19:32] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: UC/GC: 0/255 PU: 74
+[22:19:32] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Using: IrisVoxyRenderPipeline
+[22:19:32] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Voxy frame runtime (millis):  0.321, 25.238,  4.023, 29.594
+[22:19:32] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra time:  0.085,  0.071,  0.051,  0.057
+[22:19:32] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra 2 time:  1.270,  0.174,  0.000,  3.738,  0.000
+[22:19:32] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: GpuTime: [35.11,265.83,90.25]
+[22:19:37] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE progress ticks=300 shaderPack=true available=true instance=true renderSystem=true compute=true indirect=true subgroup=false
+[22:19:37] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Buf/Tex [#/Mb]: [30/388],[9/540]
+[22:19:37] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: MQ/IF/MC: 0000, 002, 0010
+[22:19:37] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: RSSQ/TFC: 100/0
+[22:19:37] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: UC/GC: 0/255 PU: 51
+[22:19:37] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Using: IrisVoxyRenderPipeline
+[22:19:37] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Voxy frame runtime (millis):  0.388, 44.002,  3.869, 44.660
+[22:19:37] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra time:  0.096,  0.070,  0.050,  0.117
+[22:19:37] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra 2 time:  1.220,  0.272,  0.000,  3.590,  0.000
+[22:19:37] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: GpuTime: [30.86,237.46,79.37]
+[22:19:43] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE progress ticks=400 shaderPack=true available=true instance=true renderSystem=true compute=true indirect=true subgroup=false
+[22:19:43] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Buf/Tex [#/Mb]: [30/388],[9/540]
+[22:19:43] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: MQ/IF/MC: 0000, 000, 0013
+[22:19:43] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: RSSQ/TFC: 0/0
+[22:19:43] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: UC/GC: 2/255 PU: 0
+[22:19:43] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Using: IrisVoxyRenderPipeline
+[22:19:43] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Voxy frame runtime (millis):  3.234, 78.318,  6.868, 88.578
+[22:19:43] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra time:  1.156,  0.999,  0.999,  0.115
+[22:19:43] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra 2 time:  2.974,  4.020,  0.000,  6.699,  0.000
+[22:19:43] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: GpuTime: [27.18,214.08,69.68]
+[22:19:46] [Server thread/WARN] [minecraft/MinecraftServer]: Can't keep up! Is the server overloaded? Running 10685ms or 213 ticks behind
+[22:19:48] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE progress ticks=500 shaderPack=true available=true instance=true renderSystem=true compute=true indirect=true subgroup=false
+[22:19:48] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Buf/Tex [#/Mb]: [30/388],[9/540]
+[22:19:48] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: MQ/IF/MC: 0000, 000, 0013
+[22:19:48] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: RSSQ/TFC: 0/0
+[22:19:48] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: UC/GC: 3/255 PU: 1
+[22:19:48] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Using: IrisVoxyRenderPipeline
+[22:19:48] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Voxy frame runtime (millis):  3.112, 76.642,  6.596, 86.505
+[22:19:48] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra time:  1.112,  0.961,  0.959,  0.113
+[22:19:48] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra 2 time:  2.872,  3.876,  0.000,  6.431,  0.000
+[22:19:48] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: GpuTime: [23.90,192.40,60.62]
+[22:19:53] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE progress ticks=600 shaderPack=true available=true instance=true renderSystem=true compute=true indirect=true subgroup=false
+[22:19:53] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Buf/Tex [#/Mb]: [30/388],[9/540]
+[22:19:53] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: MQ/IF/MC: 0000, 000, 0013
+[22:19:53] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: RSSQ/TFC: 0/0
+[22:19:53] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: UC/GC: 3/255 PU: 0
+[22:19:53] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Using: IrisVoxyRenderPipeline
+[22:19:53] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Voxy frame runtime (millis):  3.001, 74.945,  6.336, 84.434
+[22:19:53] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra time:  1.071,  0.926,  0.925,  0.110
+[22:19:53] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra 2 time:  2.814,  3.744,  0.000,  6.174,  0.000
+[22:19:53] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: GpuTime: [21.01,172.67,52.71]
+[22:19:58] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE progress ticks=700 shaderPack=true available=true instance=true renderSystem=true compute=true indirect=true subgroup=false
+[22:19:58] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Buf/Tex [#/Mb]: [30/388],[9/540]
+[22:19:58] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: MQ/IF/MC: 0000, 000, 0013
+[22:19:58] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: RSSQ/TFC: 0/0
+[22:19:58] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: UC/GC: 3/255 PU: 4
+[22:19:58] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Using: IrisVoxyRenderPipeline
+[22:19:58] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Voxy frame runtime (millis):  2.887, 73.093,  6.084, 82.212
+[22:19:58] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra time:  1.030,  0.890,  0.888,  0.107
+[22:19:58] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra 2 time:  2.716,  3.607,  0.000,  5.928,  0.000
+[22:19:58] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: GpuTime: [18.36,153.57,45.35]
+[22:20:03] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE progress ticks=800 shaderPack=true available=true instance=true renderSystem=true compute=true indirect=true subgroup=false
+[22:20:03] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Buf/Tex [#/Mb]: [30/388],[9/540]
+[22:20:03] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: MQ/IF/MC: 0000, 000, 0013
+[22:20:03] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: RSSQ/TFC: 0/0
+[22:20:03] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: UC/GC: 3/255 PU: 5
+[22:20:03] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Using: IrisVoxyRenderPipeline
+[22:20:03] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Voxy frame runtime (millis):  2.783, 71.645,  5.845, 80.418
+[22:20:03] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra time:  0.992,  0.857,  0.854,  0.106
+[22:20:03] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra 2 time:  2.625,  3.475,  0.000,  5.691,  0.000
+[22:20:03] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: GpuTime: [16.01,137.09,39.07]
+[22:20:08] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE progress ticks=900 shaderPack=true available=true instance=true renderSystem=true compute=true indirect=true subgroup=false
+[22:20:08] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Buf/Tex [#/Mb]: [30/388],[9/540]
+[22:20:08] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: MQ/IF/MC: 0000, 000, 0013
+[22:20:08] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: RSSQ/TFC: 4/0
+[22:20:08] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: UC/GC: 4/255 PU: 7
+[22:20:08] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Using: IrisVoxyRenderPipeline
+[22:20:08] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Voxy frame runtime (millis):  2.677, 70.488,  5.614, 78.923
+[22:20:08] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra time:  0.952,  0.822,  0.820,  0.106
+[22:20:08] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra 2 time:  2.555,  3.364,  0.000,  5.463,  0.000
+[22:20:08] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: GpuTime: [13.83,121.46,33.30]
+[22:20:08] [IO-Worker-4/INFO] [VoxySmokeTest/]: VOXY_SMOKE screenshot: Saved screenshot as voxy-scene.png
+[22:20:08] [Server thread/WARN] [minecraft/MinecraftServer]: Can't keep up! Is the server overloaded? Running 7371ms or 147 ticks behind
+[22:20:11] [IO-Worker-6/INFO] [VoxySmokeTest/]: VOXY_SMOKE screenshot: Saved screenshot as voxy-scene-water.png
+[22:20:13] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE progress ticks=1000 shaderPack=true available=true instance=true renderSystem=true compute=true indirect=true subgroup=false
+[22:20:13] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Buf/Tex [#/Mb]: [30/388],[9/540]
+[22:20:13] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: MQ/IF/MC: 0000, 000, 0013
+[22:20:13] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: RSSQ/TFC: 0/0
+[22:20:13] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: UC/GC: 5/255 PU: 253
+[22:20:13] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Using: IrisVoxyRenderPipeline
+[22:20:13] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Voxy frame runtime (millis):  2.581, 69.197,  5.392, 77.311
+[22:20:13] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra time:  0.917,  0.792,  0.787,  0.105
+[22:20:13] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: Extra 2 time:  2.470,  3.243,  0.000,  5.245,  0.000
+[22:20:13] [Render thread/INFO] [VoxySmokeTest/]: VOXY_SMOKE debug: GpuTime: [12.22,110.65,28.97]
+[22:20:13] [IO-Worker-12/INFO] [VoxySmokeTest/]: VOXY_SMOKE screenshot: Saved screenshot as voxy-scene-notint.png
+[22:20:15] [IO-Worker-10/INFO] [VoxySmokeTest/]: VOXY_SMOKE screenshot: Saved screenshot as voxy-scene-whitetex.png
+[22:20:17] [Render thread/INFO] [VoxySceneTest/]: VOXY_SMOKE_RESULT done
+[22:20:17] [Render thread/INFO] [minecraft/Minecraft]: Stopping!
+[22:20:17] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Dev lost connection: Disconnected
+[22:20:17] [Server thread/INFO] [minecraft/MinecraftServer]: Dev left the game
+[22:20:17] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Stopping singleplayer server as player logged out
+[22:20:17] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[22:20:17] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[22:20:17] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[22:20:19] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[voxy-smoke]'/minecraft:overworld
+[22:20:19] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[voxy-smoke]'/minecraft:the_nether
+[22:20:19] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[voxy-smoke]'/minecraft:the_end
+[22:20:19] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (voxy-smoke): All chunks are saved
+[22:20:19] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[22:20:19] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[22:20:19] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
+[22:20:19] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.ce.VoxyRenderSystem]: Flushing download stream
+[22:20:19] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.ce.VoxyRenderSystem]: Shutting down rendering
+[22:20:19] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.ce.rg.sn.gy.BasicSectionGeometryData]: Attempting to wait for gpu memory to release
+[22:20:19] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.ce.VoxyRenderSystem]: Shutting down render pipeline
+[22:20:19] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.ce.VoxyRenderSystem]: Flushing download stream
+[22:20:19] [Render thread/INFO] [Voxy/]: [me.cx.vy.ct.ce.VoxyRenderSystem]: Render shutdown completed
+[22:20:19] [Render thread/INFO] [ChunkBuilder/]: Stopping worker threads
+[22:20:19] [Render thread/INFO] [Voxy/]: [me.cx.vy.cl.VoxyInstance]: Shutting down voxy instance
+[22:20:19] [Render thread/INFO] [Voxy/]: [me.cx.vy.cl.VoxyInstance]: Instance shutdown
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1793225893906.json
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.8/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 2m 9s
+12 actionable tasks: 12 executed

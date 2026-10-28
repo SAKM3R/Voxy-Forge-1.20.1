@@ -1,0 +1,3 @@
+[complementary] original from Modrinth: https://cdn.modrinth.com/data/HVnmMxH1/versions/b45ALGLG/ComplementaryReimagined_r5.4.zip
+/tmp/tmp.05rlClNR1S.zip: OK
+[complementary] built /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/run/shaderpacks/complementary_voxy.zip

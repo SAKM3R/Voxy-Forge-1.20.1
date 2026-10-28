@@ -1,0 +1,3 @@
+[bliss] original from Modrinth: https://cdn.modrinth.com/data/ZvMtQlho/versions/1v9k7OQB/Bliss_v2.0.3_%28Chocapic13_Shaders_edit%29.zip
+/tmp/tmp.wy8hhcSmWL.zip: OK
+[bliss] built /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/run/shaderpacks/bliss_voxy.zip

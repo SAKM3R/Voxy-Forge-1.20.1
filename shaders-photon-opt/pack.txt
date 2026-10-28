@@ -1,0 +1,1 @@
+[photon-opt] built /home/runner/work/Voxy-Forge-1.20.1/Voxy-Forge-1.20.1/run/shaderpacks/photon-opt_voxy.zip
