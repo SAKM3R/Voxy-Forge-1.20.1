@@ -1123,8 +1123,8 @@ diff -ruN compl/shaders/lib/uniforms.glsl compl_voxy/shaders/lib/uniforms.glsl
      uniform mat4 dhProjection;
 diff -ruN compl/shaders/program/voxy.json compl_voxy/shaders/program/voxy.json
 --- compl/shaders/program/voxy.json	1970-01-01 03:00:00.000000000 +0300
-+++ compl_voxy/shaders/program/voxy.json	2026-10-29 01:04:29.999182119 +0300
-@@ -0,0 +1,62 @@
++++ compl_voxy/shaders/program/voxy.json	2026-10-29 01:12:15.675350780 +0300
+@@ -0,0 +1,61 @@
 +{
 +    "unusedString": "
 +        // Run through the Iris preprocessor: common.glsl brings in the pack settings (TAA etc.)
@@ -1132,7 +1132,6 @@ diff -ruN compl/shaders/program/voxy.json compl_voxy/shaders/program/voxy.json
 +    ",
 +    "version": 1,
 +    "excludeLodsFromVanillaDepth": true,
-+    "deferTranslucentRendering": true,
 +    "opaqueDrawBuffers": [0],
 +    "translucentDrawBuffers": [0],
 +    "blending": {
