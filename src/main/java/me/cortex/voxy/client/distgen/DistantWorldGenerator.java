@@ -262,13 +262,11 @@ public class DistantWorldGenerator {
         this.sessionFailed = 0;
     }
 
-    public String describeStatus(int maxRadius) {
+    public net.minecraft.network.chat.Component describeStatus(int maxRadius) {
         boolean exhausted = this.pending.isEmpty() && this.currentRadius > maxRadius && this.inFlight.isEmpty();
-        return "center [" + this.centerX + ", " + this.centerZ + "]"
-                + " ring " + Math.max(0, Math.min(this.currentRadius, maxRadius)) + "/" + maxRadius + (exhausted ? " (complete)" : "")
-                + ", in-flight " + this.inFlight.size()
-                + ", session generated " + this.sessionGenerated + " (failed " + this.sessionFailed + ")"
-                + ", total known " + this.doneMap.getCount();
+        return net.minecraft.network.chat.Component.translatable(exhausted ? "voxy.cmd.distantgen.line.complete" : "voxy.cmd.distantgen.line",
+                this.centerX, this.centerZ, Math.max(0, Math.min(this.currentRadius, maxRadius)), maxRadius,
+                this.inFlight.size(), this.sessionGenerated, this.sessionFailed, this.doneMap.getCount());
     }
 
     public ServerLevel getLevel() {

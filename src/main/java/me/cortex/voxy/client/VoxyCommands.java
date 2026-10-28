@@ -97,29 +97,28 @@ public class VoxyCommands {
 
     private static int setColorFix(CommandContext<CommandSourceStack> ctx, boolean on) {
         VoxyConfig.CONFIG.colorFix = on;
-        ctx.getSource().sendSuccess(()->Component.literal("Voxy LOD colour fix " + (on ? "ENABLED" : "DISABLED (raw brightness)")), false);
+        ctx.getSource().sendSuccess(()->Component.translatable(on ? "voxy.cmd.colorfix.on" : "voxy.cmd.colorfix.off"), false);
         return 0;
     }
 
     private static int dumpModels(CommandContext<CommandSourceStack> ctx, String name) {
         var renderer = IGetVoxyRenderSystem.getNullable();
         if (renderer == null) {
-            ctx.getSource().sendFailure(Component.literal("Voxy is not rendering"));
+            ctx.getSource().sendFailure(Component.translatable("voxy.cmd.not_rendering"));
             return 1;
         }
         try {
             String where = renderer.dumpModels(name);
-            ctx.getSource().sendSuccess(()->Component.literal("Voxy LOD models written to " + where), false);
+            ctx.getSource().sendSuccess(()->Component.translatable("voxy.cmd.dump.done", where), false);
         } catch (Exception e) {
-            ctx.getSource().sendFailure(Component.literal("Voxy dump failed: " + e));
+            ctx.getSource().sendFailure(Component.translatable("voxy.cmd.dump.failed", String.valueOf(e)));
         }
         return 0;
     }
 
     private static int setDebugMode(CommandContext<CommandSourceStack> ctx, int mode) {
         VoxyConfig.debugMode = mode;
-        String[] names = {"normal", "no tint", "full-detail textures (no mipmaps)", "tint only", "tinted pixels in red"};
-        ctx.getSource().sendSuccess(()->Component.literal("Voxy LOD debug view: " + mode + " = " + names[mode]), false);
+        ctx.getSource().sendSuccess(()->Component.translatable("voxy.cmd.debug", mode, Component.translatable("voxy.cmd.debug.mode" + mode)), false);
         return 0;
     }
 
@@ -129,35 +128,34 @@ public class VoxyCommands {
 
     private static int setCurveFix(CommandContext<CommandSourceStack> ctx, boolean on) {
         VoxyConfig.CONFIG.curveFix = on;
-        ctx.getSource().sendSuccess(()->Component.literal("Voxy world-curve fix " + (on ? "ENABLED (seamless + smooth)" : "DISABLED (original curve)")), false);
+        ctx.getSource().sendSuccess(()->Component.translatable(on ? "voxy.cmd.curvefix.on" : "voxy.cmd.curvefix.off"), false);
         return 0;
     }
 
     private static int distantGenStatus(CommandContext<CommandSourceStack> ctx) {
         var src = ctx.getSource();
         if (!VoxyConfig.CONFIG.distantGenEnabled) {
-            src.sendSuccess(()->Component.literal("Distant generation is disabled in the Voxy config"), false);
+            src.sendSuccess(()->Component.translatable("voxy.cmd.distantgen.disabled"), false);
             return 0;
         }
         if (Minecraft.getInstance().getSingleplayerServer() == null) {
-            src.sendSuccess(()->Component.literal("Distant generation only runs on the integrated server (singleplayer/LAN host)"), false);
+            src.sendSuccess(()->Component.translatable("voxy.cmd.distantgen.singleplayer_only"), false);
             return 0;
         }
-        src.sendSuccess(()->Component.literal("Distant generation: " + (DistantGenerationManager.isPaused()?"paused":"running")
-                + ", radius " + VoxyConfig.CONFIG.distantGenRadius + " chunks"), false);
+        src.sendSuccess(()->Component.translatable("voxy.cmd.distantgen.status", Component.translatable(DistantGenerationManager.isPaused()?"voxy.cmd.distantgen.state.paused":"voxy.cmd.distantgen.state.running"), VoxyConfig.CONFIG.distantGenRadius), false);
         var lines = DistantGenerationManager.statusLines();
         if (lines.isEmpty()) {
-            src.sendSuccess(()->Component.literal("  (no active generators yet)"), false);
+            src.sendSuccess(()->Component.translatable("voxy.cmd.distantgen.none"), false);
         }
         for (var line : lines) {
-            src.sendSuccess(()->Component.literal("  " + line), false);
+            src.sendSuccess(()->line, false);
         }
         return 0;
     }
 
     private static int distantGenSetPaused(CommandContext<CommandSourceStack> ctx, boolean pause) {
         DistantGenerationManager.setPaused(pause);
-        ctx.getSource().sendSuccess(()->Component.literal("Distant generation " + (pause?"paused":"resumed")), false);
+        ctx.getSource().sendSuccess(()->Component.translatable(pause ? "voxy.cmd.distantgen.paused" : "voxy.cmd.distantgen.resumed"), false);
         return 0;
     }
 
@@ -165,7 +163,7 @@ public class VoxyCommands {
         var server = Minecraft.getInstance().getSingleplayerServer();
         var level = Minecraft.getInstance().level;
         if (server == null || level == null) {
-            ctx.getSource().sendFailure(Component.literal("Distant generation only runs on the integrated server"));
+            ctx.getSource().sendFailure(Component.translatable("voxy.cmd.distantgen.singleplayer_only"));
             return 1;
         }
         var dim = level.dimension();
@@ -176,7 +174,7 @@ public class VoxyCommands {
                 DistantGenerationManager.resetLevel(serverLevel);
             }
         });
-        ctx.getSource().sendSuccess(()->Component.literal("Distant generation progress reset for " + dim.location() + " (terrain will re-ingest)"), false);
+        ctx.getSource().sendSuccess(()->Component.translatable("voxy.cmd.distantgen.reset", dim.location().toString()), false);
         return 0;
     }
 

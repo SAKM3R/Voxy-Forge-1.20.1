@@ -125,11 +125,11 @@ public class DistantGenerationManager {
     }
 
     /** Snapshot of per-dimension status lines. Only for display; read from any thread. */
-    public static List<String> statusLines() {
-        List<String> lines = new ArrayList<>();
+    public static List<net.minecraft.network.chat.Component> statusLines() {
+        List<net.minecraft.network.chat.Component> lines = new ArrayList<>();
         for (var generator : GENERATORS.values()) {
-            lines.add(generator.getLevel().dimension().location() + ": "
-                    + generator.describeStatus(VoxyConfig.CONFIG.distantGenRadius));
+            lines.add(net.minecraft.network.chat.Component.literal("  " + generator.getLevel().dimension().location() + ": ")
+                    .append(generator.describeStatus(VoxyConfig.CONFIG.distantGenRadius)));
         }
         return lines;
     }

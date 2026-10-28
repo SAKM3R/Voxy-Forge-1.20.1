@@ -173,10 +173,10 @@ public final class VoxyConfigMenu {
 
     private static OptionPage fogPage() {
         // All fog values are read per frame in NormalRenderPipeline.finish, so none need a reload.
-        return page("fog", Component.literal("Fog & Clouds"),
+        return page("fog", Component.translatable("voxy.config.fog"),
                 OptionGroup.createBuilder()
                         .add(bool("general.environmental_fog", (s, v) -> s.useEnvironmentalFog = v, s -> s.useEnvironmentalFog, renderingEnabled()))
-                        .add(slider("general.skyFogDistance", 16, 512, 8, v -> Component.literal(v + " chunks"),
+                        .add(slider("general.skyFogDistance", 16, 512, 8, v -> Component.translatable("voxy.unit.chunks", v),
                                 (s, v) -> s.skyFogDistance = v, s -> s.skyFogDistance, renderingEnabled()))
                         .add(slider("general.fogIntensity", 0, 100, 5, ControlValueFormatter.percentage(),
                                 (s, v) -> s.fogIntensity = v / 100.0f, s -> Math.round(s.fogIntensity * 100), renderingEnabled()))
@@ -189,12 +189,12 @@ public final class VoxyConfigMenu {
                         .build(),
                 OptionGroup.createBuilder()
                         .add(bool("general.caveFog", (s, v) -> s.caveFogEnabled = v, s -> s.caveFogEnabled, renderingEnabled()))
-                        .add(slider("general.caveFogDistance", 8, 128, 4, v -> Component.literal(v + " blocks"),
+                        .add(slider("general.caveFogDistance", 8, 128, 4, v -> Component.translatable("voxy.unit.blocks", v),
                                 (s, v) -> s.caveFogDistance = v, s -> s.caveFogDistance, renderingEnabled()))
                         .build(),
                 OptionGroup.createBuilder()
                         .add(bool("general.adaptCloudDistance", (s, v) -> s.adaptCloudDistance = v, s -> s.adaptCloudDistance, renderingEnabled()))
-                        .add(slider("general.cloudDistance", 0, VoxyConfig.MAX_CLOUD_DISTANCE, 8, v -> v == 0 ? Component.literal("Vanilla") : Component.literal(v + " chunks"),
+                        .add(slider("general.cloudDistance", 0, VoxyConfig.MAX_CLOUD_DISTANCE, 8, v -> v == 0 ? Component.translatable("voxy.value.vanilla") : Component.translatable("voxy.unit.chunks", v),
                                 (s, v) -> s.cloudDistance = v, s -> s.cloudDistance, renderingEnabled()))
                         .build()
         );
@@ -205,11 +205,11 @@ public final class VoxyConfigMenu {
         return page("extra", Component.translatable("voxy.config.advanced"),
                 OptionGroup.createBuilder()
                         .add(bool("distantgen.enabled", (s, v) -> s.distantGenEnabled = v, s -> s.distantGenEnabled, genEnabled))
-                        .add(slider("distantgen.radius", 16, 1024, 16, v -> Component.literal(v + " chunks"),
+                        .add(slider("distantgen.radius", 16, 1024, 16, v -> Component.translatable("voxy.unit.chunks", v),
                                 (s, v) -> s.distantGenRadius = v, s -> s.distantGenRadius, genEnabled))
                         .add(slider("distantgen.maxInFlight", 1, 128, 1, ControlValueFormatter.number(),
                                 (s, v) -> s.distantGenMaxInFlight = v, s -> s.distantGenMaxInFlight, genEnabled))
-                        .add(slider("distantgen.maxMspt", 10, 50, 1, v -> Component.literal(v + " ms"),
+                        .add(slider("distantgen.maxMspt", 10, 50, 1, v -> Component.translatable("voxy.unit.ms", v),
                                 (s, v) -> s.distantGenMaxMspt = v, s -> s.distantGenMaxMspt, genEnabled))
                         .build(),
                 OptionGroup.createBuilder()
@@ -217,10 +217,10 @@ public final class VoxyConfigMenu {
                         // vanilla; the side wings become LOD. 100% = off. Read per frame, so no reload needed.
                         .add(slider("advanced.center_lod_width", 30, 100, 1, ControlValueFormatter.percentage(),
                                 (s, v) -> s.lodCenterWidthPct = v, s -> s.lodCenterWidthPct, renderingEnabled()))
-                        .add(slider("advanced.lod_boundary_buffer", 0, 4, 1, v -> v == 0 ? Component.literal("Exact") : Component.literal(v + " blocks"),
+                        .add(slider("advanced.lod_boundary_buffer", 0, 4, 1, v -> v == 0 ? Component.translatable("voxy.value.exact") : Component.translatable("voxy.unit.blocks", v),
                                 (s, v) -> s.lodBoundaryBuffer = v, s -> s.lodBoundaryBuffer, renderingEnabled()))
                         // Uploaded as a per-frame uniform (MDICSectionRenderer), so it applies live.
-                        .add(slider("advanced.earth_curve", 0, 5000, 50, v -> v == 0 ? Component.literal("Disabled") : (v < 50 ? Component.literal("50 (min)") : Component.literal(v + "x")),
+                        .add(slider("advanced.earth_curve", 0, 5000, 50, v -> v == 0 ? Component.translatable("voxy.value.disabled") : (v < 50 ? Component.translatable("voxy.value.min50") : Component.literal(v + "x")),
                                 (s, v) -> s.earthCurveRatio = (v > 0 && v < 50) ? 50 : v, s -> s.earthCurveRatio, renderingEnabled()))
                         .build()
         );
